@@ -1,0 +1,2 @@
+# Thalaja-team
+Thalaja project
