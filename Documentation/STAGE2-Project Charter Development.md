@@ -79,7 +79,7 @@
 
 - Feedback Loops: Check user analytics. If the drop-off rate on the "Add Item" screen is high, it means form fatigue is winning, and you need to simplify the data entry UI.
 ---
-![](Project_Timeline.pdf)
+![Time Line](Project_Timeline.pdf)
 
 ---
 ![image1](image1.png)
