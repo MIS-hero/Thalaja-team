@@ -13,17 +13,17 @@ This report has is Stage two of the final project devoloment; it covers Objectiv
 
 ## Stakeholders and Roles
 
-###Stakeholders:
+### Stakeholders:
 
 **Internals**: Team members, Mentors
 
 **External**: End users, Retailers and Supermarket, cloud service providers
 
-###Roles:
+### Roles:
 
 Work simultaneously on Full Stack development of the App
 
-###Scope
+### Scope
 
 **In Scope**:
 
