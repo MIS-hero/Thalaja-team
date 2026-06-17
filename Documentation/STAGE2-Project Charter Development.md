@@ -7,22 +7,62 @@
 
 - This report has is Stage two of the final project devoloment; it covers Objectives, scope, Stakeholders, Roles, Risks and the High-level plan.
 ---
+## Project Purpose
+
+The purpose of this project is to simplify grocery shopping and household coordination by providing a shared mobile application that enables family members to create, manage, and update grocery lists collaboratively in real time. The application aims to improve communication between household members, reduce duplicate purchases, and make grocery shopping more efficient and organized.
+
+---
+
 ## Project Objectives
 
-- A cross-platform mobile application that allows household groups to sync grocery lists in real time, achieving a minimum of 500 active users and 4.5 star rating on the App Store in the first six months of release
-- Within the first 3-months of beta launch, achieve a “Shared -to-Single User ratio” of 2:1, where at least 65% of all registered users have successfully joined otrcreated a group with at least one other member.
+### Real-Time Collaboration
+
+Develop a cross-platform mobile application that enables household members to create, manage, and synchronize grocery lists in real time.
+
+### User Satisfaction
+
+Achieve a minimum of 500 active users and maintain an average rating of 4.5 stars or higher within the first six months after release.
+
+### Community Engagement
+
+Within the first three months of beta launch, ensure that at least 65% of registered users create or join a shared household group, promoting collaboration and active engagement.
+
 ---
-## Stakeholders and Roles
 
-### Stakeholders:
+## Stakeholders and Team Roles
 
-**Internals:** Team members, Mentors
+###  Project Manager
 
-**External:** End users, Retailers and Supermarket, cloud service providers
+**Aljawharah Alammar**
 
-### Roles:
+Responsible for project planning, task management, team communication, monitoring overall project progress, contributing to frontend development, and participating in the design of the user interface and project visual identity.
 
-- Work simultaneously on Full Stack development of the App.
+###  Backend Developers
+
+**Mousa Alrizqi**
+**Abdullah Alotaibi**
+
+Responsible for backend development, designing and maintaining the application's server-side architecture, developing APIs and database integration, implementing system features, debugging and resolving technical issues, making technical and architectural decisions, and ensuring reliable communication between the application's components.
+
+### UI/UX Designers & Frontend Developers
+
+**Randa Baeshen**
+**Reem Alyamani**
+**Aljawharah Alammar**
+
+Responsible for designing the initial Figma prototypes, planning the dashboard interface, developing the project's visual identity, and contributing to frontend development.
+
+
+### External Stakeholders
+
+| Stakeholder           | Interest / Role in Project                                                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Instructors / Mentors | Evaluate project progress, provide technical and project guidance, review deliverables, and offer feedback to help ensure the project meets academic and technical requirements.                 |
+| End Users – Families  | Primary users of the application who rely on the platform to create, organize, and manage shared grocery lists, improving household coordination and reducing shopping mistakes.                 |
+| Household Members     | Collaborate within shared groups by adding, editing, and updating grocery list items in real time. They benefit from improved communication, task distribution, and reduced duplicate purchases. |
+| Beta Testers          | Test the application before release, identify usability issues and bugs, and provide feedback to improve the overall user experience and application reliability.                                |
+
+
 ---
 ## Scope
 
