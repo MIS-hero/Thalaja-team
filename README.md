@@ -156,7 +156,7 @@ graph TB
 | **Flutter Presentation** | Screens, widgets, navigation, BLoC/Provider. No business logic. |
 | **Flutter Domain** | Pure Dart entities, use cases (`CreateList`, `ToggleItem`), repository contracts. |
 | **Flutter Data** | DTOs, API client (Dio), maps JSON ↔ entities, implements domain repos. |
-| **Flask API** | HTTP routing, request validation, JWT middleware, JSON serialization. |
+| **Flask API** | DIO routing, request validation, JWT middleware, JSON serialization. |
 | **Flask Facade** | Orchestrates workflows: validates membership, writes History, calls repos. |
 | **Flask Persistence** | SQLAlchemy repositories abstract Supabase PostgreSQL. |
 
