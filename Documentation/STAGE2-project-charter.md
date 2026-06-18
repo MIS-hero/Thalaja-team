@@ -57,7 +57,7 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 | Reem Alyamani | Product Manager — defines what gets built and why, owns user research and feature prioritization |
 | Mousa Alrizqi | Lead Software Architect (Backend) — system design, data architecture |
 | Abdullah Almouraibd | Lead Software Architect (Frontend / Flutter) — UI architecture, component structure |
-| Randa Baeshen Hussain | Scrum Master & Team Coordinator — sprint logistics, team cohesion |
+| Randa Baeshen | Scrum Master & Team Coordinator — sprint logistics, team cohesion |
 | Mentors | Guidance, feedback, and tiebreaker for team disagreements |
 
 > Every team member contributes across backend, frontend, design, and research. Sprint leadership rotates each cycle to ensure full-stack experience for all five members.
