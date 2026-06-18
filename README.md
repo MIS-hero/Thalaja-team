@@ -78,7 +78,7 @@ flowchart TB
 
     DB[(Supabase PostgreSQL)]
 
-    DA -->|HTTPS + JWT| API
+    DA -->|DIO + JWT| API
     REPO --> DB
 ```
 
