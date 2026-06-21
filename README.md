@@ -30,7 +30,7 @@ Families, roommates, and friend groups struggle with duplicate purchases, forgot
 
 | Stage | Document | Focus |
 | :--- | :--- | :--- |
-| **Stage 1** | [SharePoint — Stage 1]([https://studentksuedu-my.sharepoint.com/:w:/g/personal/446202251_student_ksu_edu_sa/IQD6pDC0-m2jQaqCCHfWs8nsAckIfo9m3vAC1H3J-0wdCIc?e=f71gFo](https://github.com/MIS-hero/Thalaja-team/blob/main/Documentation/STAGE1-ideation.md)) | Vision, requirements, initial design |
+| **Stage 1** | [SharePoint — Stage 1](https://github.com/MIS-hero/Thalaja-team/blob/main/Documentation/STAGE1-ideation.md) | Vision, requirements, initial design |
 | **Stage 2** | [SharePoint — Stage 2](https://studentksuedu-my.sharepoint.com/:w:/g/personal/446202251_student_ksu_edu_sa/IQAl74pkVmisTp_nztUkk_9TAYOv3VAYCVgtzZNhhaxhp5U?rtime=oNSzrYbF3kg) | Implementation details, testing, deployment |
 | **Miro Board** | [Thalaja Miro](https://miro.com/welcomeonboard/TGNsOHQ4SVpPN2l3VnFmQmpSMFVNVFdzbUFabGZvaW5MM1B0SE5BSG1nT0ZoOTFyWE5hZVNXWjBjMzhIeHNjZFR0N3JXUjBoRmc2cDlyTUJOSitsTm5CNmN6am1pT3JZZzVram40NXhscWQ5RHVqMVllcVlTbEp1Um4zM3hFcHF0R2lncW1vRmFBVnlLcVJzTmdFdlNRPT0hdjE=?share_link_id=514202759014) | Visual diagrams, wireframes, team collaboration |
 
