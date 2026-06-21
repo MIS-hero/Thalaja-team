@@ -42,7 +42,7 @@ Families, roommates, and friend groups struggle with duplicate purchases, forgot
 | :--- | :--- | :--- |
 | **Mobile Client** | Flutter (Dart) | Cross-platform iOS & Android UI |
 | **Client Architecture** | Clean Architecture | Separation: Presentation → Domain → Data |
-| **State Management** | BLoC / Riverpod *(choose one)* | Predictable UI state |
+| **State Management** | BLoC / Riverpod / Cubet *(choose one)* | Predictable UI state |
 | **Backend API** | Flask (Python) | REST API, business logic, authentication |
 | **Database** | Supabase (PostgreSQL) | Persistent storage only — **no Supabase Auth on frontend** |
 | **Authentication** | Flask JWT (access + refresh tokens) | Login/register handled entirely by backend |
