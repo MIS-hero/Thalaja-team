@@ -85,12 +85,11 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 ### ❌ Out of Scope
 
 - Geofence-based automatic triggers
-- Event / occasion-specific lists (BBQ, birthday, كشتة)
+- Event / occasion-specific lists (BBQ, birthday,...)
 - Financial transactions, bill splitting, price tracking
 - Budgeting / spending tracking
 - Store inventory APIs / real-time stock checks
 - Custom or algorithmic aisle sorting
-- Simultaneous multi-buyer real-time shopping sync
 
 ---
 
@@ -139,7 +138,7 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 | Household adoption (High) | Account creation required for all members — this also enables item-level attribution, serving two purposes at once |
 | Item recognition (Medium) | Treated as final-sprint feature — core list / submission flow built first, recognition layered on once that loop works |
 | Urgency tag inconsistency (Medium) | Monitored during beta — if overuse appears, a soft visual nudge may be added in v1.1 rather than a hard rule |
-| Sync / duplicate detection (Medium) | "This item may already be on the list" surfaced as a non-blocking prompt rather than preventing the add |
+| Sync / duplicate detection (Medium) | WebSocket broadcast from Flask, scoped per list, triggered off the same write that logs History.  |
 | Flutter learning curve (Medium) | Pre-build training completed via camp coursework and the Satr course before development begins |
 | Form fatigue (Medium) | Multiple add paths: browse from history, scan barcode / photo, add from recipes, or manual entry |
 | Rotating leadership (Low) | Decision log maintained from Stage 1 — context transfers between sprint leads |
