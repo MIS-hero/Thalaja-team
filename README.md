@@ -20,9 +20,9 @@ Families, roommates, and friend groups struggle with duplicate purchases, forgot
 
 | In Scope | Out of Scope (Later Phases) |
 | :--- | :--- |
-| High-level architecture & UML diagrams | Full UI polish & animations |
-| Domain model & entity relationships | Push notifications (FCM) |
-| API interaction flows (sequence diagrams) | Payment / store integrations |
+| High-level architecture & UML diagrams | --- |
+| Domain model & entity relationships | --- |
+| API interaction flows (sequence diagrams) | --- |
 | Flutter Clean Architecture structure | Offline-first sync engine |
 | Flask layered backend structure | Supabase Realtime subscriptions |
 
