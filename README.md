@@ -52,6 +52,100 @@ Families, roommates, and friend groups struggle with duplicate purchases, forgot
 > **Important:** Supabase is used purely as a managed PostgreSQL host. The Flutter app never calls Supabase Auth or Supabase client SDK directly. All data access goes through the Flask API.
 
 ---
+```md
+## User Stories
+
+### Main User Story
+
+As a family member or roommate,  
+I want to create and share a synced shopping list with my household,  
+so that we can avoid duplicate purchases, remember needed items, and reduce wasted money, time, and fuel.
+
+---
+
+## Problem Statement
+
+Families and roommates often buy items separately without clear communication. This can lead to duplicate purchases, forgotten items, multiple store trips, wasted money, wasted time, and unnecessary fuel usage.
+
+---
+
+## Target Audience
+
+- Families
+- Roommates
+- Shared households
+
+---
+
+## User Stories by Feature
+
+### User Management
+
+| Role | User Story | Goal |
+|---|---|---|
+| User | As a user, I want to sign in to my account. | So that I can securely access my lists, groups, reminders, and saved addresses. |
+| User | As a user, I want to create a family or household group. | So that I can share shopping lists with the people I live with. |
+| User | As a user, I want to join one or more groups. | So that I can manage different shared lists, such as family, roommates, or event-based groups. |
+| User | As a user, I want to create a private list. | So that I can keep personal shopping items separate from shared lists. |
+| List Creator | As a list creator, I want to control who can contribute to my list. | So that only selected users can add, edit, or delete items. |
+
+---
+
+### Shared Group Lists
+
+| Role | User Story | Goal |
+|---|---|---|
+| Group Member | As a group member, I want to add items to a shared list. | So that everyone knows what needs to be bought. |
+| Group Member | As a group member, I want to edit or delete items from a shared list. | So that the list stays accurate and updated. |
+| Group Member | As a group member, I want the list to sync in real time. | So that other members do not buy duplicate items. |
+| Group Member | As a group member, I want to mark items as purchased. | So that everyone can see what has already been bought. |
+
+---
+
+### Item Management
+
+| Role | User Story | Goal |
+|---|---|---|
+| User | As a user, I want to add item details such as name, brand, and volume. | So that the shopper knows exactly what to buy. |
+| User | As a user, I want to add items using voice input. | So that I can add items quickly without typing. |
+| User | As a user, I want to add items using barcode scanning. | So that I can quickly identify products. |
+| User | As a user, I want to add items using photos. | So that I can save product information visually. |
+
+---
+
+### Categories and Events
+
+| Role | User Story | Goal |
+|---|---|---|
+| User | As a user, I want to organize items by category. | So that shopping lists are easier to browse and manage. |
+| User | As a user, I want to create categories for events such as camping, beach trips, and BBQs. | So that I can prepare for specific occasions. |
+| User | As a user, I want to create categories for recipes. | So that I can group ingredients based on meals. |
+| User | As a user, I want to create seasonal categories such as Winter or Ramadan. | So that I can plan shopping around seasonal needs. |
+| User | As a user, I want to add new custom categories. | So that the app matches my household’s shopping habits. |
+
+---
+
+### Reminders and Saved Address
+
+| Role | User Story | Goal |
+|---|---|---|
+| User | As a user, I want to receive reminders for important items. | So that I do not forget items and need another store trip. |
+| User | As a user, I want to save my address. | So that the app can support location-based or delivery-related features. |
+
+---
+
+## Expected Output
+
+The application should provide a shared and private shopping list system that helps families and roommates:
+
+- Reduce miscommunication
+- Avoid duplicate purchases
+- Prevent forgotten items
+- Save money
+- Save time
+- Reduce unnecessary store trips
+- Organize shopping by groups, events, recipes, and seasons
+```
 
 ## 3. High-Level Architecture
 
