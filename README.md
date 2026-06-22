@@ -52,7 +52,7 @@ Families, roommates, and friend groups struggle with duplicate purchases, forgot
 > **Important:** Supabase is used purely as a managed PostgreSQL host. The Flutter app never calls Supabase Auth or Supabase client SDK directly. All data access goes through the Flask API.
 
 ---
-```md
+
 ## 3. User Stories
 
 ### Main User Story
