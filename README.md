@@ -53,7 +53,7 @@ Families, roommates, and friend groups struggle with duplicate purchases, forgot
 
 ---
 ```md
-## User Stories
+## 3. User Stories
 
 ### Main User Story
 
@@ -63,13 +63,13 @@ so that we can avoid duplicate purchases, remember needed items, and reduce wast
 
 ---
 
-## Problem Statement
+### Problem Statement
 
 Families and roommates often buy items separately without clear communication. This can lead to duplicate purchases, forgotten items, multiple store trips, wasted money, wasted time, and unnecessary fuel usage.
 
 ---
 
-## Target Audience
+### Target Audience
 
 - Families
 - Roommates
@@ -77,9 +77,9 @@ Families and roommates often buy items separately without clear communication. T
 
 ---
 
-## User Stories by Feature
+### User Stories by Feature
 
-### User Management
+#### User Management
 
 | Role | User Story | Goal |
 |---|---|---|
@@ -91,7 +91,7 @@ Families and roommates often buy items separately without clear communication. T
 
 ---
 
-### Shared Group Lists
+#### Shared Group Lists
 
 | Role | User Story | Goal |
 |---|---|---|
@@ -102,7 +102,7 @@ Families and roommates often buy items separately without clear communication. T
 
 ---
 
-### Item Management
+#### Item Management
 
 | Role | User Story | Goal |
 |---|---|---|
@@ -113,38 +113,35 @@ Families and roommates often buy items separately without clear communication. T
 
 ---
 
-### Categories and Events
+#### Categories and Events
 
 | Role | User Story | Goal |
 |---|---|---|
 | User | As a user, I want to organize items by category. | So that shopping lists are easier to browse and manage. |
-| User | As a user, I want to create categories for events such as camping, beach trips, and BBQs. | So that I can prepare for specific occasions. |
-| User | As a user, I want to create categories for recipes. | So that I can group ingredients based on meals. |
+| User | As a user, I want to create event categories such as camping, beach trips, and BBQs. | So that I can prepare shopping lists for specific occasions. |
+| User | As a user, I want to create recipe-based categories. | So that I can group ingredients based on meals. |
 | User | As a user, I want to create seasonal categories such as Winter or Ramadan. | So that I can plan shopping around seasonal needs. |
 | User | As a user, I want to add new custom categories. | So that the app matches my household’s shopping habits. |
 
 ---
 
-### Reminders and Saved Address
+#### Reminders and Saved Address
 
 | Role | User Story | Goal |
 |---|---|---|
-| User | As a user, I want to receive reminders for important items. | So that I do not forget items and need another store trip. |
-| User | As a user, I want to save my address. | So that the app can support location-based or delivery-related features. |
+| User | As a user, I want to receive reminders for important or forgotten items. | So that I do not need to make multiple store trips. |
+| User | As a user, I want to save my address. | So that the app can support location-based or delivery-related features in the future. |
 
 ---
 
-## Expected Output
+### Expected Output
 
-The application should provide a shared and private shopping list system that helps families and roommates:
+The application should provide a shared and private shopping list system that helps families and roommates reduce miscommunication, avoid duplicate purchases, prevent forgotten items, save money, save time, reduce unnecessary store trips, and organize shopping by groups, events, recipes, and seasons.
 
-- Reduce miscommunication
-- Avoid duplicate purchases
-- Prevent forgotten items
-- Save money
-- Save time
-- Reduce unnecessary store trips
-- Organize shopping by groups, events, recipes, and seasons
+---
+```
+
+```md
 ```
 
 ## 3. High-Level Architecture
