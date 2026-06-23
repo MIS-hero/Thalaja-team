@@ -84,21 +84,23 @@ Families and roommates often buy items separately without clear communication. T
 
 1. As a user, I want to sign in to my account so that I can securely access my lists, groups, reminders, and saved addresses.
 
-2. As a user, I want to create a family or household group so that I can share shopping lists with the people I live with.
+2.As a user, I want to reset my forgotten password so that I can regain access to my account securely without creating a new account.
 
-3. As a user, I want to join one or more groups so that I can manage different shared lists, such as family, roommate, or event-based lists.
+3. As a user, I want to create a family or household group so that I can share shopping lists with the people I live with.
 
-4. As a user, I want to create a private list so that I can keep my personal shopping items separate from shared household lists.
+4. As a user, I want to join one or more groups so that I can manage different shared lists, such as family, roommate, or event-based lists.
 
-5. As a user, I want to add items to a shared list so that everyone in the group knows what needs to be bought.
+5. As a user, I want to create a private list so that I can keep my personal shopping items separate from shared household lists.
 
-6. As a user, I want to edit or delete items from a shared list so that the list stays accurate and updated.
+6. As a user, I want to add items to a shared list so that everyone in the group knows what needs to be bought.
 
-7. As a user, I want the shared list to sync in real time so that other members do not accidentally buy duplicate items.
+7. As a user, I want to edit or delete items from a shared list so that the list stays accurate and updated.
 
-8. As a user, I want to mark items as purchased so that everyone can see what has already been bought.
+8. As a user, I want the shared list to sync in real time so that other members do not accidentally buy duplicate items.
 
-9. As a user, I want to control who can contribute to my list so that only selected users can add, edit, or delete items.
+9. As a user, I want to mark items as purchased so that everyone can see what has already been bought.
+
+10. As a user, I want to control who can contribute to my list so that only selected users can add, edit, or delete items.
 
 ---
 
