@@ -197,7 +197,6 @@ flowchart TB
     models_pkg --> persist_pkg
     persist_pkg --> postgres
 ```
-````
 
 ### 3.2 Package Diagram
 
