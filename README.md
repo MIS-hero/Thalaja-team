@@ -130,6 +130,7 @@ Families and roommates often buy items separately without clear communication. T
 
 20. As a user, I want to save my address so that the application can support location-based or delivery-related features in the future.
 
+``md
 ## 3. High-Level Architecture
 
 ### 3.1 Architecture Overview
@@ -162,6 +163,39 @@ flowchart TB
 
     DA -->|"Dio + JWT"| API
     REPO --> DB
+```
+
+### 3.2 Package Diagram
+
+```mermaid
+flowchart TB
+    subgraph FlutterApp["thalaja_mobile - Flutter"]
+        presentation["presentation/"]
+        domain["domain/"]
+        data["data/"]
+        core["core/"]
+    end
+
+    subgraph FlaskAPI["thalaja_api - Flask"]
+        api_pkg["app/api/v1/"]
+        services_pkg["app/services/"]
+        models_pkg["app/models/"]
+        persist_pkg["app/persistence/"]
+    end
+
+    subgraph Supabase["Supabase"]
+        postgres["PostgreSQL Database"]
+    end
+
+    presentation --> domain
+    domain --> data
+    data -->|"REST + JWT"| api_pkg
+    api_pkg --> services_pkg
+    services_pkg --> models_pkg
+    models_pkg --> persist_pkg
+    persist_pkg --> postgres
+```
+````
 
 ### 3.2 Package Diagram
 
