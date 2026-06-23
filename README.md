@@ -77,101 +77,127 @@ Families and roommates often buy items separately without clear communication. T
 
 ---
 
-### User Stories by Feature
 
-#### User Management
+## User Stories by Priority
 
-| Role | User Story | Goal |
-|---|---|---|
-| User | As a user, I want to sign in to my account. | So that I can securely access my lists, groups, reminders, and saved addresses. |
-| User | As a user, I want to create a family or household group. | So that I can share shopping lists with the people I live with. |
-| User | As a user, I want to join one or more groups. | So that I can manage different shared lists, such as family, roommates, or event-based groups. |
-| User | As a user, I want to create a private list. | So that I can keep personal shopping items separate from shared lists. |
-| List Creator | As a list creator, I want to control who can contribute to my list. | So that only selected users can add, edit, or delete items. |
+### High Priority
 
----
+1. As a user, I want to sign in to my account so that I can securely access my lists, groups, reminders, and saved addresses.
 
-#### Shared Group Lists
+2.As a user, I want to reset my forgotten password so that I can regain access to my account securely without creating a new account.
 
-| Role | User Story | Goal |
-|---|---|---|
-| Group Member | As a group member, I want to add items to a shared list. | So that everyone knows what needs to be bought. |
-| Group Member | As a group member, I want to edit or delete items from a shared list. | So that the list stays accurate and updated. |
-| Group Member | As a group member, I want the list to sync in real time. | So that other members do not buy duplicate items. |
-| Group Member | As a group member, I want to mark items as purchased. | So that everyone can see what has already been bought. |
+3. As a user, I want to create a family or household group so that I can share shopping lists with the people I live with.
 
----
+4. As a user, I want to join one or more groups so that I can manage different shared lists, such as family, roommate, or event-based lists.
 
-#### Item Management
+5. As a user, I want to create a private list so that I can keep my personal shopping items separate from shared household lists.
 
-| Role | User Story | Goal |
-|---|---|---|
-| User | As a user, I want to add item details such as name, brand, and volume. | So that the shopper knows exactly what to buy. |
-| User | As a user, I want to add items using voice input. | So that I can add items quickly without typing. |
-| User | As a user, I want to add items using barcode scanning. | So that I can quickly identify products. |
-| User | As a user, I want to add items using photos. | So that I can save product information visually. |
+6. As a user, I want to add items to a shared list so that everyone in the group knows what needs to be bought.
+
+7. As a user, I want to edit or delete items from a shared list so that the list stays accurate and updated.
+
+8. As a user, I want the shared list to sync in real time so that other members do not accidentally buy duplicate items.
+
+9. As a user, I want to mark items as purchased so that everyone can see what has already been bought.
+
+10. As a user, I want to control who can contribute to my list so that only selected users can add, edit, or delete items.
 
 ---
 
-#### Categories and Events
+### Medium Priority
 
-| Role | User Story | Goal |
-|---|---|---|
-| User | As a user, I want to organize items by category. | So that shopping lists are easier to browse and manage. |
-| User | As a user, I want to create event categories such as camping, beach trips, and BBQs. | So that I can prepare shopping lists for specific occasions. |
-| User | As a user, I want to create recipe-based categories. | So that I can group ingredients based on meals. |
-| User | As a user, I want to create seasonal categories such as Winter or Ramadan. | So that I can plan shopping around seasonal needs. |
-| User | As a user, I want to add new custom categories. | So that the app matches my household’s shopping habits. |
+10. As a user, I want to add item details such as name, brand, and volume so that the shopper knows exactly what to buy.
 
----
+11. As a user, I want to organize items by category so that shopping lists are easier to browse and manage.
 
-#### Reminders and Saved Address
+12. As a user, I want to create event-based categories such as camping, beach trips, and BBQs so that I can prepare shopping lists for specific occasions.
 
-| Role | User Story | Goal |
-|---|---|---|
-| User | As a user, I want to receive reminders for important or forgotten items. | So that I do not need to make multiple store trips. |
-| User | As a user, I want to save my address. | So that the app can support location-based or delivery-related features in the future. |
+13. As a user, I want to create recipe-based categories so that I can group ingredients based on meals.
+
+14. As a user, I want to create seasonal events such as Winter or Ramadan so that I can plan shopping around seasonal needs.
+
+15. As a user, I want to add new custom categories so that the application matches my household’s shopping habits.
+
+16. As a user, I want to receive reminders for important or forgotten items so that I do not need to make multiple store trips.
 
 ---
 
-### Expected Output
+### Low Priority
 
-The application should provide a shared and private shopping list system that helps families and roommates reduce miscommunication, avoid duplicate purchases, prevent forgotten items, save money, save time, reduce unnecessary store trips, and organize shopping by groups, events, recipes, and seasons.
+17. As a user, I want to add items using voice input so that I can add items quickly without typing.
 
----
-```
+18. As a user, I want to add items using barcode scanning so that I can quickly identify products and reduce manual entry.
 
-```md
-```
+19. As a user, I want to add items using photos so that I can save product information visually and help others recognize the item.
 
+20. As a user, I want to save my address so that the application can support location-based or delivery-related features in the future.
+
+``md
 ## 3. High-Level Architecture
 
 ### 3.1 Architecture Overview
 
-The system uses a **three-tier layered architecture** on the backend (mirroring HBnB) and **Clean Architecture** on the Flutter client. A **Facade** (`ThalajaFacade`) centralizes business rules on the server. Every mutating action on a shopping list writes a **History** record for the activity feed.
+The system uses a **three-tier layered architecture** on the backend, similar to the HBnB project, and **Clean Architecture** on the Flutter client. A **Facade** called `ThalajaFacade` centralizes the business rules on the server. Every action that changes a shopping list, such as adding, editing, deleting, or marking an item as purchased, creates a **History** record for the activity feed.
 
 ```mermaid
 flowchart TB
-    subgraph Client["Flutter App (Clean Architecture)"]
-        P[Presentation Layer<br/>Pages · Widgets · BLoC]
-        D[Domain Layer<br/>Entities · UseCases · Repo Interfaces]
-        DA[Data Layer<br/>Models · RemoteDataSource · Repo Impl]
-        P --> D --> DA
+    subgraph Client["Flutter App - Clean Architecture"]
+        P["Presentation Layer<br/>Pages · Widgets · BLoC"]
+        D["Domain Layer<br/>Entities · Use Cases · Repository Interfaces"]
+        DA["Data Layer<br/>Models · Remote Data Source · Repository Implementation"]
+
+        P --> D
+        D --> DA
     end
 
-    subgraph Server["Flask Backend (Layered)"]
-        API[Presentation Layer<br/>REST API v1]
-        FAC[Business Logic<br/>ThalajaFacade]
-        MOD[Domain Models]
-        REPO[Persistence Layer<br/>Repositories]
-        API --> FAC --> MOD --> REPO
+    subgraph Server["Flask Backend - Layered Architecture"]
+        API["Presentation Layer<br/>REST API v1"]
+        FAC["Business Logic<br/>ThalajaFacade"]
+        MOD["Domain Models"]
+        REPO["Persistence Layer<br/>Repositories"]
+
+        API --> FAC
+        FAC --> MOD
+        MOD --> REPO
     end
 
-    DB[(Supabase PostgreSQL)]
+    DB[("Supabase PostgreSQL")]
 
-    DA -->|DIO + JWT| API
+    DA -->|"Dio + JWT"| API
     REPO --> DB
 ```
+
+### 3.2 Package Diagram
+
+```mermaid
+flowchart TB
+    subgraph FlutterApp["thalaja_mobile - Flutter"]
+        presentation["presentation/"]
+        domain["domain/"]
+        data["data/"]
+        core["core/"]
+    end
+
+    subgraph FlaskAPI["thalaja_api - Flask"]
+        api_pkg["app/api/v1/"]
+        services_pkg["app/services/"]
+        models_pkg["app/models/"]
+        persist_pkg["app/persistence/"]
+    end
+
+    subgraph Supabase["Supabase"]
+        postgres["PostgreSQL Database"]
+    end
+
+    presentation --> domain
+    domain --> data
+    data -->|"REST + JWT"| api_pkg
+    api_pkg --> services_pkg
+    services_pkg --> models_pkg
+    models_pkg --> persist_pkg
+    persist_pkg --> postgres
+```
+````
 
 ### 3.2 Package Diagram
 
