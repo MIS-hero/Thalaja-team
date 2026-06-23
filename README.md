@@ -129,37 +129,39 @@ Families and roommates often buy items separately without clear communication. T
 19. As a user, I want to add items using photos so that I can save product information visually and help others recognize the item.
 
 20. As a user, I want to save my address so that the application can support location-based or delivery-related features in the future.
-```
-
 
 ## 3. High-Level Architecture
 
 ### 3.1 Architecture Overview
 
-The system uses a **three-tier layered architecture** on the backend (mirroring HBnB) and **Clean Architecture** on the Flutter client. A **Facade** (`ThalajaFacade`) centralizes business rules on the server. Every mutating action on a shopping list writes a **History** record for the activity feed.
+The system uses a **three-tier layered architecture** on the backend, similar to the HBnB project, and **Clean Architecture** on the Flutter client. A **Facade** called `ThalajaFacade` centralizes the business rules on the server. Every action that changes a shopping list, such as adding, editing, deleting, or marking an item as purchased, creates a **History** record for the activity feed.
 
 ```mermaid
 flowchart TB
-    subgraph Client["Flutter App (Clean Architecture)"]
-        P[Presentation Layer<br/>Pages · Widgets · BLoC]
-        D[Domain Layer<br/>Entities · UseCases · Repo Interfaces]
-        DA[Data Layer<br/>Models · RemoteDataSource · Repo Impl]
-        P --> D --> DA
+    subgraph Client["Flutter App - Clean Architecture"]
+        P["Presentation Layer<br/>Pages · Widgets · BLoC"]
+        D["Domain Layer<br/>Entities · Use Cases · Repository Interfaces"]
+        DA["Data Layer<br/>Models · Remote Data Source · Repository Implementation"]
+
+        P --> D
+        D --> DA
     end
 
-    subgraph Server["Flask Backend (Layered)"]
-        API[Presentation Layer<br/>REST API v1]
-        FAC[Business Logic<br/>ThalajaFacade]
-        MOD[Domain Models]
-        REPO[Persistence Layer<br/>Repositories]
-        API --> FAC --> MOD --> REPO
+    subgraph Server["Flask Backend - Layered Architecture"]
+        API["Presentation Layer<br/>REST API v1"]
+        FAC["Business Logic<br/>ThalajaFacade"]
+        MOD["Domain Models"]
+        REPO["Persistence Layer<br/>Repositories"]
+
+        API --> FAC
+        FAC --> MOD
+        MOD --> REPO
     end
 
-    DB[(Supabase PostgreSQL)]
+    DB[("Supabase PostgreSQL")]
 
-    DA -->|DIO + JWT| API
+    DA -->|"Dio + JWT"| API
     REPO --> DB
-```
 
 ### 3.2 Package Diagram
 
