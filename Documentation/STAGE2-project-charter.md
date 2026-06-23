@@ -1,4 +1,5 @@
 # 🛒 Thalaja | ثلاجة
+
 ### Stage 2 Report — Project Charter
 
 > *One household. One list. Everyone heard.*
@@ -98,19 +99,23 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 ### Step 1 — Identify Threats
 
 **Technology**
+
 - **Item recognition feasibility** — Barcode / photo recognition worked in a previous Swift/IoT context, but the Flutter path (ML Kit, TFLite, etc.) is new. Prior experience may not transfer directly.
 - **Real-time sync & duplicate prevention** — Item-level visibility depends on reliable sync. If two members add the same item near-simultaneously, the app needs to surface this rather than silently create a duplicate.
 
 **Timeline**
+
 - **Underestimating build time** — Past teams in this program have consistently needed more time than planned for MVP development.
 
 **User Adoption / UX**
+
 - **Flutter learning curve** — This is the team's first Flutter project. Though mitigated by prior training, real build velocity is still untested.
 - **Household adoption** — The app only delivers value once multiple household members create accounts and actively use it.
 - **Form fatigue** — Requiring brand / size / quantity for every item could cause users to default to vague, quick additions if entry isn't fast enough.
 - **Urgency tag inconsistency** — Since the urgency tag is requester-set, members may over-mark items as "urgent," making the filter less useful.
 
 **Team Dynamics**
+
 - **Rotating sprint leadership** — Rotation builds full-stack skills but can create inconsistent ownership when a feature changes hands mid-development.
 
 ---
@@ -157,7 +162,8 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 ### Sprints strategy
 
 1. Sprint duration is one week. Two feature streams run in parallel each sprint (Team A + Team B).
-3. Sprint Leader (rotating) handles Jira management, blocker resolution, sprint QA, and retrospective — not feature development that sprint.
+2. Sprint Leader (rotating) handles Jira management, blocker resolution, sprint QA, and retrospective — not feature development that sprint.
+
 ---
 
 ### Mermaid Gantt Chart
