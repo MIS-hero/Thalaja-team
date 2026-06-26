@@ -1,8 +1,8 @@
 ``` mermaid
 flowchart TB
-    User["User"] --> Device["Hardware Platform: Phone or Laptop"]
+    User["User"] --> Device["Hardware Platform: Phone "]
 
-    Device --> Frontend["Front-End: Mobile App or Web App"]
+    Device --> Frontend["Front-End: Mobile App"]
 
     Frontend -->|"Requests: login, groups, lists, items"| Backend["Back-End API"]
 
