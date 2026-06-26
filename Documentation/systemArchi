@@ -1,0 +1,20 @@
+flowchart TB
+    User["User"] --> Device["Hardware Platform<br/>Phone / Laptop"]
+
+    Device --> Frontend["Front-End<br/>Mobile App / Web App"]
+
+    Frontend -->|"Requests: login, lists, items, groups"| Backend["Back-End API"]
+
+    Backend -->|"Stores and retrieves data"| Database[("Database")]
+
+    Backend -->|"Connects to"| External["External Services<br/>Notifications, Barcode, Voice, Photos, Location"]
+
+    Backend --> Security["Security<br/>Login, Forgot Password, Permissions"]
+
+    Backend --> Interfaces["System Interfaces<br/>API Requests + Real-Time Sync"]
+
+    Backend --> Software["Software Platform<br/>App, API, Database Tools, Sync Tools"]
+
+    Backend --> Structure["System Structure<br/>Users, Groups, Lists, Items, Categories, Reminders"]
+
+    Interfaces -->|"Live updates"| Frontend
