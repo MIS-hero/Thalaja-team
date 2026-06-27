@@ -821,4 +821,6 @@ sequenceDiagram
 | Helper | generate_jwt() / decode_jwt() | Token issuing/verification | auth_service, require_auth | High #1 |
 | Helper | require_auth() | Decorator checking JWT on protected routes | all protected routes | — |
 | Helper | require_list_owner() | Decorator for permission-management endpoints | permissions endpoint | High #8 |
+
+
 *Thalaja Team · Stage 3 Technical Documentation · Section 1 of 7*
