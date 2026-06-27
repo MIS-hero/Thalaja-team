@@ -823,4 +823,4 @@ sequenceDiagram
 | Helper | require_list_owner() | Decorator for permission-management endpoints | permissions endpoint | High #8 |
 
 
-*Thalaja Team · Stage 3 Technical Documentation · Section 1 of 7*
+*Thalaja Team · Stage 3 Technical Documentation*
