@@ -160,5 +160,590 @@ Eleven screens. Wireframe specifications are in [`thalaja-stage3-wireframes.md`]
 | Screen 11 — Group Admin Settings | 📐 *[to be embedded]* |
 
 ---
+# Thalaja — Technical Diagrams
 
+## 1. Package Diagram
+
+```mermaid
+graph TB
+    subgraph FlutterApp["thalaja_mobile (Flutter)"]
+        subgraph presentation["presentation/"]
+            pages["pages/"]
+            widgets["widgets/"]
+            bloc["bloc/"]
+        end
+        subgraph domain["domain/"]
+            entities["entities/"]
+            usecases["usecases/"]
+            repo_iface["repositories/ interfaces"]
+        end
+        subgraph data["data/"]
+            models["models/"]
+            remote_ds["datasources/remote (REST client)"]
+            realtime_ds["datasources/realtime (Supabase channels)"]
+            device_ds["datasources/device (camera, mic, scanner)"]
+            repo_impl["repositories/ implementations"]
+        end
+        subgraph core["core/"]
+            network["network/"]
+            errors["errors/"]
+            utils["utils/"]
+        end
+    end
+
+    subgraph FlaskAPI["thalaja_api (Flask)"]
+        subgraph api_pkg["app/api/v1/"]
+            auth_routes["auth.py (login, register, reset-password)"]
+            group_routes["groups.py (create/join, membership, roles)"]
+            list_routes["lists.py (private/shared lists)"]
+            item_routes["items.py (CRUD, mark purchased)"]
+            category_routes["categories.py (custom/event/seasonal)"]
+            recipe_routes["recipes.py"]
+            reminder_routes["reminders.py"]
+            history_routes["history.py (purchase history)"]
+        end
+        subgraph services_pkg["app/services/"]
+            auth_service["auth_service.py"]
+            group_service["group_service.py (membership + permissions)"]
+            list_service["list_service.py (lists, items, categories, recipes)"]
+            reminder_service["reminder_service.py"]
+            history_service["history_service.py"]
+        end
+        subgraph models_pkg["app/models/"]
+            user_m["user.py"]
+            group_m["group.py"]
+            member_m["group_member.py (role: owner/contributor/viewer)"]
+            list_m["shopping_list.py"]
+            item_m["list_item.py"]
+            cat_m["category.py"]
+            recipe_m["recipe.py"]
+            reminder_m["reminder.py"]
+            hist_m["history.py"]
+            perm_m["list_permission.py"]
+        end
+        subgraph persist_pkg["app/persistence/"]
+            repos["repositories/"]
+        end
+        config["app/config.py"]
+        extensions["app/extensions.py"]
+    end
+
+    subgraph Supabase["Supabase"]
+        postgres["PostgreSQL Database"]
+        realtime["Supabase Realtime (live sync)"]
+    end
+
+    presentation --> domain
+    presentation --> core
+    data --> domain
+    data --> core
+    remote_ds -->|REST + JWT| api_pkg
+    realtime_ds -->|subscribe| realtime
+    device_ds --> repo_impl
+    repo_impl --> remote_ds
+    repo_impl --> realtime_ds
+
+    api_pkg --> auth_service
+    api_pkg --> group_service
+    api_pkg --> list_service
+    api_pkg --> reminder_service
+    api_pkg --> history_service
+
+    auth_service --> models_pkg
+    group_service --> models_pkg
+    list_service --> models_pkg
+    reminder_service --> models_pkg
+    history_service --> models_pkg
+
+    auth_service --> persist_pkg
+    group_service --> persist_pkg
+    list_service --> persist_pkg
+    reminder_service --> persist_pkg
+    history_service --> persist_pkg
+
+    persist_pkg --> models_pkg
+    persist_pkg --> postgres
+    postgres -->|change events| realtime
+
+    api_pkg --> extensions
+    api_pkg --> config
+```
+
+---
+
+## 2. Entity-Relationship Diagram
+
+```mermaid
+erDiagram
+    USER ||--o{ GROUP_MEMBER : joins
+    GROUP ||--o{ GROUP_MEMBER : has
+    USER ||--o{ SHOPPING_LIST : creates
+    GROUP |o--o{ SHOPPING_LIST : owns
+    SHOPPING_LIST ||--o{ LIST_ITEM : contains
+    CATEGORY |o--o{ LIST_ITEM : classifies
+    CATEGORY ||--o{ RECIPE : groups
+    RECIPE ||--o{ RECIPE_INGREDIENT : has
+    SHOPPING_LIST ||--o{ HISTORY : logs
+    USER ||--o{ HISTORY : performs
+    USER ||--o{ LIST_ITEM : adds
+    USER |o--o{ LIST_ITEM : buys
+    SHOPPING_LIST ||--o{ REMINDER : has
+    LIST_ITEM |o--o{ REMINDER : triggers
+    USER ||--o{ REMINDER : receives
+    SHOPPING_LIST ||--o{ LIST_PERMISSION : controls
+    USER ||--o{ LIST_PERMISSION : has
+    USER |o--o{ CATEGORY : creates
+    GROUP |o--o{ CATEGORY : scopes
+
+    USER {
+        uuid id PK
+        string name
+        string email
+        string phone
+        string avatar_url
+        string password_hash
+    }
+    GROUP {
+        uuid id PK
+        string name
+        enum type
+        string invite_code
+    }
+    GROUP_MEMBER {
+        uuid id PK
+        uuid group_id FK
+        uuid user_id FK
+        enum role
+    }
+    CATEGORY {
+        uuid id PK
+        string name
+        string icon
+        enum type
+        bool is_system
+        uuid created_by FK
+        uuid group_id FK
+    }
+    RECIPE {
+        uuid id PK
+        uuid category_id FK
+        string title
+        int servings
+    }
+    RECIPE_INGREDIENT {
+        uuid id PK
+        uuid recipe_id FK
+        string name
+        float quantity
+        string unit
+    }
+    SHOPPING_LIST {
+        uuid id PK
+        uuid group_id FK
+        uuid created_by FK
+        string name
+        enum status
+    }
+    LIST_ITEM {
+        uuid id PK
+        uuid list_id FK
+        uuid category_id FK
+        uuid added_by FK
+        uuid bought_by FK
+        string name
+        string brand
+        float quantity
+        string unit
+        bool is_bought
+        string image_url
+        string barcode
+    }
+    REMINDER {
+        uuid id PK
+        uuid list_id FK
+        uuid item_id FK
+        uuid user_id FK
+        string message
+        datetime remind_at
+        bool is_sent
+    }
+    LIST_PERMISSION {
+        uuid id PK
+        uuid list_id FK
+        uuid user_id FK
+        bool can_add
+        bool can_edit
+        bool can_delete
+    }
+    HISTORY {
+        uuid id PK
+        uuid list_id FK
+        uuid user_id FK
+        enum action
+        json metadata
+        datetime created_at
+    }
+```
+
+---
+
+## 3. Use Case Diagram
+
+```mermaid
+flowchart LR
+    Guest((Guest / New User))
+    User((Registered User))
+    Admin((Group Admin))
+    Admin -->|is a| User
+    subgraph System["Thalaja Shopping List System"]
+        Register["Register Account"]
+        Login["Sign In"]
+        ResetPassword["Reset Forgotten Password"]
+        UpdateProfile["Update Profile"]
+        CreateGroup["Create Group"]
+        JoinGroup["Join Group"]
+        InviteMember["Invite Member"]
+        ManageGroup["Manage Group Settings"]
+        CreatePrivateList["Create Private List"]
+        CreateSharedList["Create Shared List"]
+        ViewLists["View Lists"]
+        ControlContributors["Control List Contributors"]
+        ArchiveList["Archive / Complete List"]
+        DeleteList["Delete List"]
+        AddItem["Add Item"]
+        AddItemDetails["Add Item Details"]
+        EditItem["Edit Item"]
+        RemoveItem["Delete Item"]
+        MarkPurchased["Mark Item as Purchased"]
+        SyncList["Sync Shared List in Real Time"]
+        ManageCategories["Manage Categories"]
+        CreateRecipeCategory["Create Recipe-Based Category"]
+        AddRecipeIngredients["Add Recipe Ingredients to List"]
+        CreateReminder["Create Reminder"]
+        ReceiveReminder["Receive Notification"]
+        ViewHistory["View Purchase History"]
+        AddByVoice["Add Item by Voice"]
+        AddByBarcode["Add Item by Barcode"]
+        AddByCamera["Add Item by Camera Recognition"]
+    end
+    Guest --> Register
+    Guest --> Login
+    Guest --> ResetPassword
+    User --> Login
+    User --> ResetPassword
+    User --> UpdateProfile
+    User --> CreateGroup
+    User --> JoinGroup
+    User --> CreatePrivateList
+    User --> CreateSharedList
+    User --> ViewLists
+    User --> ControlContributors
+    User --> ArchiveList
+    User --> DeleteList
+    User --> AddItem
+    User --> EditItem
+    User --> RemoveItem
+    User --> MarkPurchased
+    User --> ManageCategories
+    User --> CreateRecipeCategory
+    User --> AddRecipeIngredients
+    User --> CreateReminder
+    User --> ReceiveReminder
+    User --> ViewHistory
+    User --> AddByVoice
+    User --> AddByBarcode
+    User --> AddByCamera
+    Admin --> InviteMember
+    Admin --> ManageGroup
+    AddItem -.->|includes| AddItemDetails
+    EditItem -.->|includes| SyncList
+    RemoveItem -.->|includes| SyncList
+    MarkPurchased -.->|includes| SyncList
+    AddRecipeIngredients -.->|includes| AddItem
+    AddByVoice -.->|extends| AddItem
+    AddByBarcode -.->|extends| AddItem
+    AddByCamera -.->|extends| AddItem
+```
+
+---
+
+## 4. Sequence Diagrams
+
+### 4.1 Register Account
+
+```mermaid
+sequenceDiagram
+    actor Guest
+    participant App as Flutter App
+    participant API as Flask API
+    participant Auth as Auth Service
+    participant DB as Supabase PostgreSQL
+
+    Guest->>App: Enter name, email, and password
+    App->>API: POST /auth/register
+    API->>Auth: registerUser(name, email, password)
+    Auth->>DB: Check if email already exists
+
+    alt Email already exists
+        DB-->>Auth: User found
+        Auth-->>API: Registration failed
+        API-->>App: 409 Conflict
+        App-->>Guest: Show email already used message
+    else Email is available
+        DB-->>Auth: No user found
+        Auth->>DB: Create user with hashed password
+        DB-->>Auth: User created
+        Auth-->>API: User data and tokens
+        API-->>App: 201 Created
+        App-->>Guest: Navigate to home
+    end
+```
+
+### 4.2 Sign In
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant Auth as Auth Service
+    participant DB as Supabase PostgreSQL
+
+    User->>App: Enter email and password
+    App->>API: POST /auth/login
+    API->>Auth: authenticate(email, password)
+    Auth->>DB: Find user by email
+
+    alt Invalid email or password
+        DB-->>Auth: User not found or password mismatch
+        Auth-->>API: Authentication failed
+        API-->>App: 401 Unauthorized
+        App-->>User: Show login error
+    else Valid credentials
+        DB-->>Auth: User found
+        Auth->>Auth: Verify password
+        Auth-->>API: Generate access token
+        API-->>App: 200 OK with token
+        App-->>User: Navigate to groups
+    end
+```
+
+### 4.3 Reset Forgotten Password
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant Auth as Auth Service
+    participant Email as Email Service
+    participant DB as Supabase PostgreSQL
+
+    User->>App: Request password reset
+    App->>API: POST /auth/forgot-password
+    API->>Auth: createResetToken(email)
+    Auth->>DB: Find user by email
+
+    alt Email not registered
+        DB-->>Auth: No user found
+        Auth-->>API: Reset request accepted
+        API-->>App: 200 OK
+        App-->>User: Show check your email message
+    else Email registered
+        DB-->>Auth: User found
+        Auth->>DB: Save reset token
+        Auth->>Email: Send password reset link
+        Email-->>User: Password reset email
+        Auth-->>API: Reset email sent
+        API-->>App: 200 OK
+        App-->>User: Show check your email message
+    end
+```
+
+### 4.4 Create Group
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant GroupService as Group Service
+    participant DB as Supabase PostgreSQL
+
+    User->>App: Enter group name
+    App->>API: POST /groups
+    API->>GroupService: createGroup(userId, groupName)
+    GroupService->>GroupService: Generate invite code
+    GroupService->>DB: Save group and add user as member with role=admin
+    DB-->>GroupService: Group created
+    GroupService-->>API: Group details with invite code
+    API-->>App: 201 Created
+    App-->>User: Show group and invite code (user is now admin)
+```
+
+### 4.5 Join Group
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant GroupService as Group Service
+    participant DB as Supabase PostgreSQL
+
+    User->>App: Enter invite code
+    App->>API: POST /groups/join
+    API->>GroupService: joinGroup(userId, inviteCode)
+    GroupService->>DB: Find group by invite code
+
+    alt Invalid invite code
+        DB-->>GroupService: No group found
+        GroupService-->>API: Join failed
+        API-->>App: 404 Not Found
+        App-->>User: Show invalid invite code message
+    else Valid invite code
+        DB-->>GroupService: Group found
+        GroupService->>DB: Add user as group member with role=member
+        DB-->>GroupService: Member added
+        GroupService-->>API: Group details
+        API-->>App: 200 OK
+        App-->>User: Show group lists
+    end
+```
+
+### 4.6 Create Shopping List
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant ListService as List Service
+    participant DB as Supabase PostgreSQL
+
+    User->>App: Create shopping list
+    App->>API: POST /lists
+
+    alt List is private (no groupId provided)
+        API->>ListService: createList(userId, null, title)
+        ListService->>DB: Save shopping list with group_id = null
+        DB-->>ListService: List created
+        ListService-->>API: List details
+        API-->>App: 201 Created
+        App-->>User: Open new private list
+    else List is shared (groupId provided)
+        API->>ListService: createList(userId, groupId, title)
+        ListService->>DB: Check group membership
+
+        alt User is not a group member
+            DB-->>ListService: Membership not found
+            ListService-->>API: Access denied
+            API-->>App: 403 Forbidden
+            App-->>User: Show permission error
+        else User is a group member
+            DB-->>ListService: Membership valid
+            ListService->>DB: Save shopping list with group_id
+            DB-->>ListService: List created
+            ListService-->>API: List details
+            API-->>App: 201 Created
+            App-->>User: Open new shared list
+        end
+    end
+```
+
+### 4.7 Add Item to List
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant ItemService as Item Service
+    participant DB as Supabase PostgreSQL
+    participant Sync as Real-Time Sync
+
+    User->>App: Add item details
+    App->>API: POST /lists/{listId}/items
+    API->>ItemService: addItem(userId, listId, itemData)
+    ItemService->>DB: Check list permission
+
+    alt User cannot add items
+        DB-->>ItemService: Permission denied
+        ItemService-->>API: Access denied
+        API-->>App: 403 Forbidden
+        App-->>User: Show permission error
+    else User can add items
+        DB-->>ItemService: Permission valid
+        ItemService->>DB: Save list item
+        DB-->>ItemService: Item created
+        ItemService->>Sync: Broadcast item added
+        Sync-->>App: Update shared list
+        ItemService-->>API: Item details
+        API-->>App: 201 Created
+        App-->>User: Show item in list
+    end
+```
+
+### 4.8 Mark Item as Purchased
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant ItemService as Item Service
+    participant DB as Supabase PostgreSQL
+    participant Sync as Real-Time Sync
+
+    User->>App: Mark item as purchased
+    App->>API: PATCH /items/{itemId}/purchase
+    API->>ItemService: markItemAsPurchased(userId, itemId)
+    ItemService->>DB: Check list permission
+
+    alt User cannot update item
+        DB-->>ItemService: Permission denied
+        ItemService-->>API: Access denied
+        API-->>App: 403 Forbidden
+        App-->>User: Show permission error
+    else User can update item
+        DB-->>ItemService: Permission valid
+        ItemService->>DB: Update item status and buyer
+        DB-->>ItemService: Item updated
+        ItemService->>Sync: Broadcast purchased status
+        Sync-->>App: Update shared list
+        ItemService-->>API: Updated item details
+        API-->>App: 200 OK
+        App-->>User: Show item as purchased
+    end
+```
+
+### 4.9 View List History
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant HistoryService as History Service
+    participant DB as Supabase PostgreSQL
+
+    User->>App: Open list history
+    App->>API: GET /lists/{listId}/history
+    API->>HistoryService: getListHistory(userId, listId)
+    HistoryService->>DB: Check list membership
+
+    alt User is not allowed to view history
+        DB-->>HistoryService: Access denied
+        HistoryService-->>API: Forbidden
+        API-->>App: 403 Forbidden
+        App-->>User: Show permission error
+    else User is allowed
+        DB-->>HistoryService: Access allowed
+        HistoryService->>DB: Get list history
+        DB-->>HistoryService: History records
+        HistoryService-->>API: History list
+        API-->>App: 200 OK
+        App-->>User: Show activity timeline
+    end
+```
 *Thalaja Team · Stage 3 Technical Documentation · Section 1 of 7*
