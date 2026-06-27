@@ -101,21 +101,21 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    actor Admin
+    actor User
     participant App as Flutter App
     participant API as Flask API
     participant GroupService as Group Service
     participant DB as Supabase PostgreSQL
 
-    Admin->>App: Enter group name
+    User->>App: Enter group name
     App->>API: POST /groups
-    API->>GroupService: createGroup(adminId, groupName)
+    API->>GroupService: createGroup(userId, groupName)
     GroupService->>GroupService: Generate invite code
-    GroupService->>DB: Save group and admin membership
+    GroupService->>DB: Save group and add user as member with role=admin
     DB-->>GroupService: Group created
     GroupService-->>API: Group details with invite code
     API-->>App: 201 Created
-    App-->>Admin: Show group and invite code
+    App-->>User: Show group and invite code (user is now admin)
 ```
 
 ---
@@ -124,13 +124,13 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    actor Member
+    actor User
     participant App as Flutter App
     participant API as Flask API
     participant GroupService as Group Service
     participant DB as Supabase PostgreSQL
 
-    Member->>App: Enter invite code
+    User->>App: Enter invite code
     App->>API: POST /groups/join
     API->>GroupService: joinGroup(userId, inviteCode)
     GroupService->>DB: Find group by invite code
@@ -139,14 +139,14 @@ sequenceDiagram
         DB-->>GroupService: No group found
         GroupService-->>API: Join failed
         API-->>App: 404 Not Found
-        App-->>Member: Show invalid invite code message
+        App-->>User: Show invalid invite code message
     else Valid invite code
         DB-->>GroupService: Group found
-        GroupService->>DB: Add user as group member
+        GroupService->>DB: Add user as group member with role=member
         DB-->>GroupService: Member added
         GroupService-->>API: Group details
         API-->>App: 200 OK
-        App-->>Member: Show group lists
+        App-->>User: Show group lists
     end
 ```
 
@@ -163,22 +163,32 @@ sequenceDiagram
     participant DB as Supabase PostgreSQL
 
     User->>App: Create shopping list
-    App->>API: POST /groups/{groupId}/lists
-    API->>ListService: createList(userId, groupId, categoryId, title)
-    ListService->>DB: Check group membership
+    App->>API: POST /lists
 
-    alt User is not a group member
-        DB-->>ListService: Membership not found
-        ListService-->>API: Access denied
-        API-->>App: 403 Forbidden
-        App-->>User: Show permission error
-    else User is a group member
-        DB-->>ListService: Membership valid
-        ListService->>DB: Save shopping list
+    alt List is private (no groupId provided)
+        API->>ListService: createList(userId, null, title)
+        ListService->>DB: Save shopping list with group_id = null
         DB-->>ListService: List created
         ListService-->>API: List details
         API-->>App: 201 Created
-        App-->>User: Open new list
+        App-->>User: Open new private list
+    else List is shared (groupId provided)
+        API->>ListService: createList(userId, groupId, title)
+        ListService->>DB: Check group membership
+
+        alt User is not a group member
+            DB-->>ListService: Membership not found
+            ListService-->>API: Access denied
+            API-->>App: 403 Forbidden
+            App-->>User: Show permission error
+        else User is a group member
+            DB-->>ListService: Membership valid
+            ListService->>DB: Save shopping list with group_id
+            DB-->>ListService: List created
+            ListService-->>API: List details
+            API-->>App: 201 Created
+            App-->>User: Open new shared list
+        end
     end
 ```
 
