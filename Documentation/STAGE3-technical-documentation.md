@@ -145,19 +145,37 @@
 
 Eleven screens. Wireframe specifications are in [`thalaja-stage3-wireframes.md`](./thalaja-stage3-wireframes.md). Figma designs will be embedded below as they are completed.
 
-| Screen | Figma Mockup |
-|---|---|
-| Screen 1 — Register | 📐 *[to be embedded]* |
-| Screen 2 — Login | 📐 *[to be embedded]* |
-| Screen 3 — Groups Home | 📐 *[to be embedded]* |
-| Screen 4 — Group Detail | 📐 *[to be embedded]* |
-| Screen 5 — List Detail | 📐 *[to be embedded]* |
-| Screen 6 — Item Add Sheet | 📐 *[to be embedded]* |
-| Screen 7 — Buying View | 📐 *[to be embedded]* |
-| Screen 8 — History Screen | 📐 *[to be embedded]* |
-| Screen 9 — Recipe Detail / Create | 📐 *[to be embedded]* |
-| Screen 10 — Notifications & Buyer Assignment | 📐 *[to be embedded]* |
-| Screen 11 — Group Admin Settings | 📐 *[to be embedded]* |
+| Screen |
+|---|
+| Screen 1 — Register | 
+| Screen 2 — Login |    
+| Screen 3 — Groups Home | 
+| Screen 4 — Group Detail |
+| Screen 5 — List Detail | 
+| Screen 6 — Item Add Sheet | 
+| Screen 7 — Buying View | 
+| Screen 8 — History Screen | 
+| Screen 9 — Recipe Detail / Create | 
+| Screen 10 — Notifications & Buyer Assignment | 
+| Screen 11 — Group Admin Settings | 
+
+Figma Mockup
+
+<p align="center">
+  <img src="images/register.png" width="180">
+  <img src="images/login.png" width="180">
+  <img src="images/groups_Home.png" width="180">
+  <img src="images/groups.png" width="180">
+</p>
+
+<p align="center">
+  <img src="images/list_Detail.png" width="180">
+  <img src="images/item_add.png" width="180">
+  <img src="images/History.png" width="180">
+  <img src="images/History_screen.png" width="180">
+</p>
+
+
 
 ---
 # Thalaja — Technical Diagrams
