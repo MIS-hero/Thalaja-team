@@ -288,8 +288,6 @@ graph TB
 
 ## 2. Entity-Relationship Diagram
 
-> **Subject Areas:** Entities are grouped by domain in the source below (Group · Grocery List · Recipe). For a color-coded presentation version, export to dbdiagram.io or Figma where visual subject areas can be applied without altering the schema.
-
 ```mermaid
 erDiagram
 
