@@ -171,8 +171,10 @@ Figma Mockup
 <p align="center">
   <img src="images/list_Detail.png" width="180">
   <img src="images/item_add.png" width="180">
-  <img src="images/History.png" width="180">
+  <img src="images/History (2).png" width="180">
   <img src="images/History_screen.png" width="180">
+  <img src="images/screenshot.png" width="180">
+
 </p>
 
 
