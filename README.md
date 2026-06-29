@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="documentation/assets/banner.svg" alt="Thalaja" width="100%"/>
+  <img src="Documentation/assets/banner.svg" alt="Thalaja" width="100%"/>
   <br/><br/>
 
   ![Platform](https://img.shields.io/badge/iOS_%26_Android-Flutter-FF4924?style=flat-square&logo=flutter&logoColor=white&labelColor=0D0050)
