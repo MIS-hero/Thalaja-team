@@ -179,22 +179,21 @@
 
 ---
 
-
 ## Mockups
 
 | Screen |
 |---|
-| Screen 1 — Register | 
-| Screen 2 — Login |    
-| Screen 3 — Groups Home | 
+| Screen 1 — Register |
+| Screen 2 — Login |
+| Screen 3 — Groups Home |
 | Screen 4 — Group Detail |
-| Screen 5 — List Detail | 
-| Screen 6 — Item Add Sheet | 
-| Screen 7 — Buying View | 
-| Screen 8 — History Screen | 
-| Screen 9 — Recipe Detail / Create | 
-| Screen 10 — Notifications & Buyer Assignment | 
-| Screen 11 — Group Admin Settings | 
+| Screen 5 — List Detail |
+| Screen 6 — Item Add Sheet |
+| Screen 7 — Buying View |
+| Screen 8 — History Screen |
+| Screen 9 — Recipe Detail / Create |
+| Screen 10 — Notifications & Buyer Assignment |
+| Screen 11 — Group Admin Settings |
 
 Figma Mockup
 
@@ -211,10 +210,7 @@ Figma Mockup
   <img src="assets/History (2).png" width="180">
   <img src="assets/History_screen.png" width="180">
   
-
 </p>
-
-
 
 =======
 ---
@@ -1017,6 +1013,7 @@ sequenceDiagram
         App-->>User: Show action timeline
     end
 ```
+
 ## External API Table
 
 | Service | Call | Method | Purpose | Used By |
@@ -1412,7 +1409,6 @@ POST /lists/{listId}/notifications/heading-to-store
 }
 ```
 
-
 ## Backend Operations Table
 
 | Layer | Internal Operation | Purpose | Used By External API | Related Story |
@@ -1462,7 +1458,6 @@ POST /lists/{listId}/notifications/heading-to-store
 | Helper | generate_jwt() / decode_jwt() | Token issuing/verification | auth_service, require_auth | US-01, US-02 |
 | Helper | require_auth() | Decorator validating JWT on protected routes | all protected routes | — |
 | Helper | require_admin() | Decorator verifying caller has role=admin in the target group | group + list admin endpoints | US-08, US-09, US-10, US-11, US-12 |
-
 
 ---
 
@@ -1764,6 +1759,7 @@ Example: feat: add OTP verification endpoint
 ### Definition of Done
 
 A feature card is done when:
+
 1. Unit tests pass for the affected service or BLoC
 2. Postman collection test for the endpoint passes
 3. Manual smoke test on a real device confirms the golden path

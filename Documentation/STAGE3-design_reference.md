@@ -53,44 +53,9 @@
 
 <div align="center">
 
-<!-- Phone shell -->
-<div style="display:inline-block;background:#0D0050;border-radius:52px;padding:14px 14px 24px;box-shadow:0 40px 100px rgba(13,0,80,.55),0 0 0 1px rgba(255,255,255,.07);">
+[![Open Interactive Prototype](https://img.shields.io/badge/▶_Open_Interactive_Prototype-FF4924?style=for-the-badge&labelColor=0D0050&logo=react&logoColor=white)](https://htmlpreview.github.io/?https://github.com/MIS-hero/Thalaja-team/blob/main/documentation/assets/Thalaja_Design_System/ui_kits/thalaja-app/standalone.html)
 
-<!-- Status bar -->
-<div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:#FFF8ED;border-radius:38px 38px 0 0;position:relative;">
-  <span style="font-size:14px;font-weight:700;color:#0D0050;font-family:system-ui;">9:41</span>
-  <span style="position:absolute;left:50%;top:9px;transform:translateX(-50%);width:108px;height:26px;background:#0D0050;border-radius:999px;"></span>
-  <span style="display:flex;gap:5px;align-items:center;">
-    <svg width="17" height="11" viewBox="0 0 18 12" fill="#0D0050"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="1.5" width="3" height="10.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.3"/></svg>
-    <svg width="22" height="11" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="3" stroke="#0D0050" stroke-width="1.5"/><rect x="3" y="3" width="14" height="6" rx="1.5" fill="#0D0050"/><rect x="22" y="4" width="1.5" height="4" rx="1" fill="#0D0050"/></svg>
-  </span>
-</div>
-
-<!-- App iframe -->
-<iframe
-  src="assets/Thalaja_Design_System/ui_kits/thalaja-app/standalone.html"
-  width="390"
-  height="756"
-  style="border:none;display:block;background:#FFF8ED;"
-  title="Thalaja Interactive Prototype">
-</iframe>
-
-<!-- Home bar -->
-<div style="height:30px;display:flex;align-items:center;justify-content:center;background:#FFF8ED;border-radius:0 0 38px 38px;">
-  <div style="width:118px;height:5px;background:#0D0050;border-radius:999px;opacity:.2;"></div>
-</div>
-
-</div>
-
-<br>
-
-**↑ Fully interactive — click through all screens**
-
-<sub>Lists · List Detail · Shop · Household &nbsp;|&nbsp; Viewport: 390 × 844 (iPhone 14)</sub>
-
-<br>
-
-<sub>If the prototype doesn't load above, <a href="assets/Thalaja_Design_System/ui_kits/thalaja-app/standalone.html">open it directly in a browser →</a></sub>
+<sub>Opens in browser &nbsp;·&nbsp; Lists · List Detail · Shop · Household &nbsp;·&nbsp; Viewport 390 × 844</sub>
 
 </div>
 
