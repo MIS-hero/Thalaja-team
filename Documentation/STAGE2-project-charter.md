@@ -54,14 +54,14 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 
 | Member | Role |
 |---|---|
-| Aljawharah Alammar | Project Manager & GitHub Owner — business thinking, pitch presentation, final ownership of repo and project direction |
-| Reem Alyamani | Product Manager — defines what gets built and why, owns user research and feature prioritization |
-| Mousa Alrizqi | Lead Software Architect (Backend) — system design, data architecture |
-| Abdullah Almouraibd | Lead Software Architect (Frontend / Flutter) — UI architecture, component structure |
-| Randa Baeshen | Scrum Master & Team Coordinator — sprint logistics, team cohesion |
+| Aljawharah Alammar | Project Manager & Frontend Lead |
+| Reem Alyamani | Frontend Developer |
+| Randa Baeshen | Frontend Developer |
+| Mousa Alrizqi | Backend Lead |
+| Abdullah Almouraibd | Backend Developer |
 | Mentors | Guidance, feedback, and tiebreaker for team disagreements |
 
-> Every team member contributes across backend, frontend, design, and research. Sprint leadership rotates each cycle to ensure full-stack experience for all five members.
+> Two backend developers (Mousa and Abdullah) and three frontend developers (Aljawharah, Reem, and Randa) work in parallel streams with a lead on each side. The team holds a daily standup meeting to sync progress, blockers, and plans.
 
 ### External Stakeholders
 
@@ -116,7 +116,7 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 
 **Team Dynamics**
 
-- **Rotating sprint leadership** — Rotation builds full-stack skills but can create inconsistent ownership when a feature changes hands mid-development.
+- **Cross-stream communication** — Frontend and backend streams work in parallel; misaligned assumptions on API contracts can cause integration delays.
 
 ---
 
@@ -131,7 +131,7 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 | Sync / duplicate detection | 2 | 4 | 8 | 🟡 Medium |
 | Flutter learning curve | 2 | 4 | 8 | 🟡 Medium |
 | Form fatigue | 2 | 4 | 8 | 🟡 Medium |
-| Rotating leadership context loss | 3 | 2 | 6 | 🟢 Low |
+| Cross-stream communication gaps | 2 | 2 | 4 | 🟢 Low |
 
 ---
 
@@ -146,7 +146,7 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 | Sync / duplicate detection (Medium) | WebSocket broadcast from Flask, scoped per list, triggered off the same write that logs History.  |
 | Flutter learning curve (Medium) | Pre-build training completed via camp coursework and the Satr course before development begins |
 | Form fatigue (Medium) | Multiple add paths: browse from history, scan barcode / photo, add from recipes, or manual entry |
-| Rotating leadership (Low) | Decision log maintained from Stage 1 — context transfers between sprint leads |
+| Cross-stream gaps (Low) | Daily standup surfaces contract mismatches early; leads align on API specs before each sprint begins |
 
 ---
 
@@ -161,8 +161,8 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 
 ### Sprints strategy
 
-1. Sprint duration is one week. Two feature streams run in parallel each sprint (Team A + Team B).
-2. Sprint Leader (rotating) handles Jira management, blocker resolution, sprint QA, and retrospective — not feature development that sprint.
+1. Sprint duration is one week. Frontend and backend streams run in parallel each sprint under their respective leads.
+2. Each sprint opens with a standup alignment session where leads agree on API contracts before feature work begins.
 
 ---
 
@@ -174,43 +174,37 @@ gantt
     axisFormat %b %d
 
     section Development Sprints
-    Sprint 1 · Setup · Auth · Groups                  :s1, 2026-06-17, 5d
-    Sprint 2 · Shared List Infra · Item Submission    :s2, 2026-06-22, 7d
-    Sprint 3 · Shared List Infra pt2 · Add Paths      :s3, 2026-06-29, 7d
-    Sprint 4A · Urgency Tags · Buying View            :s4a, 2026-07-06, 7d
-    Sprint 4B · Notifications                         :s4b, 2026-07-06, 7d
-    Sprint 5A · Histories · Recipes                   :s5a, 2026-07-13, 6d
-    Sprint 5B · Barcode & Photo Recognition           :s5b, 2026-07-13, 6d
-    Integration QA Hardening                          :crit, iq, 2026-07-18, 7d
+    Sprint 1 · Setup · Auth · Groups                  :done, s1, 2026-06-17, 5d
+    Sprint 2 · Shared List Infra · Item Submission    :done, s2, 2026-06-22, 7d
+    Sprint 3 · Shared List Infra pt2 · Add Paths      :active, s3, 2026-06-29, 7d
+    Sprint 4 · Urgency Tags · Buying View · Notifications :s4, 2026-07-06, 7d
+    Sprint 5 · Histories · Recipes · Barcode          :s5, 2026-07-13, 7d
+    Integration QA Hardening                          :crit, iq, 2026-07-20, 6d
+    MVP Complete                                      :milestone, mvp, 2026-07-25, 0d
 
     section Brand & Product Design
-    Brand Identity & Design System                    :d1, 2026-06-17, 7d
-    User Flows & Wireframes                           :d2, 2026-06-22, 7d
+    Brand Identity & Design System                    :done, d1, 2026-06-17, 7d
+    User Flows & Wireframes                           :done, d2, 2026-06-22, 7d
     High-Fidelity UI · Priority Screens               :d3, 2026-06-29, 14d
-    High-Fidelity UI · Remaining Screens              :d4, 2026-07-13, 12d
-    Interactive Prototype                             :d5, 2026-07-18, 7d
+    High-Fidelity UI · Remaining Screens              :d4, 2026-07-13, 7d
+    Interactive Prototype & Polish                    :d5, 2026-07-20, 6d
 
     section Quality Assurance
-    Sprint QA · Sprints 1–2                           :qa1, 2026-06-17, 14d
-    Sprint QA · Sprints 3–4                           :qa2, 2026-06-29, 14d
-    Sprint QA · Sprint 5                              :qa3, 2026-07-13, 6d
-    Integration & Regression Testing                  :crit, qa4, 2026-07-18, 7d
-    Beta Feedback QA Cycles                           :qa5, 2026-07-25, 14d
+    Sprint QA · Sprints 1–2                           :done, qa1, 2026-06-17, 14d
+    Sprint QA · Sprints 3–5                           :qa2, 2026-06-29, 21d
+    Integration & Regression Testing                  :crit, qa4, 2026-07-20, 6d
+    Beta Feedback QA Cycles                           :qa5, 2026-07-25, 12d
 
-    section Beta Launch
-    Closed Beta Setup & Distribution                  :b1, 2026-07-18, 7d
+    section Beta & Submission
+    Closed Beta Setup & Distribution                  :b1, 2026-07-20, 5d
     Beta Recruitment (via X account)                  :b2, 2026-07-06, 19d
-    Closed Beta · Active Testing (5 groups, 3+ each)  :crit, b3, 2026-07-25, 14d
-    Feedback Collection & Iteration                   :b4, 2026-07-25, 14d
-
-    section Public Launch
-    App Store Preparation · Assets & Metadata         :p1, 2026-08-01, 10d
-    Release Review Submission                         :p2, 2026-08-10, 5d
-    Launch Readiness Review                           :p3, 2026-08-15, 5d
+    Closed Beta · Active Testing (5 groups, 3+ each)  :crit, b3, 2026-07-25, 7d
+    Feedback Collection & Iteration                   :b4, 2026-07-25, 12d
+    Final Submission                                  :milestone, sub, 2026-08-06, 0d
 
     section X Account
-    Account Creation & First Post                     :x1, 2026-06-17, 1d
-    Weekly Dev Updates & Build Documentation          :x2, 2026-06-17, 56d
+    Account Creation & First Post                     :done, x1, 2026-06-17, 1d
+    Weekly Dev Updates & Build Documentation          :x2, 2026-06-17, 50d
     Beta Recruitment Posts                            :x3, 2026-07-06, 19d
 ```
 
@@ -218,14 +212,103 @@ gantt
 
 ### Sprint Breakdown
 
-| Sprint | Dates | Team A | Team B | Sprint Leader Focus | Key Deliverables |
-|---|---|---|---|---|---|
-| **Sprint 1** | Jun 17–21 | Flutter env setup · Backend architecture · Data models | Authentication (account creation, login, session) | Environment unblocked for all devs · Auth spec reviewed | Working login flow · Group model in DB · Dev environments confirmed |
-| **Sprint 2** | Jun 22–28 | Shared list infrastructure pt 1 (create list, real-time sync foundation, member permissions) | Item submission UI (brand, size, qty, notes fields) | Sync design validated · Submission form reviewed against form-fatigue risk | Items can be added to a shared list by any group member |
-| **Sprint 3** | Jun 29–Jul 5 | Shared list infrastructure pt 2 (multi-group support, group management, member invitation flow) | Additional item-add paths (browse from item history, browse from grocery catalog) | Group invitation flow end-to-end tested · History browsing UX checked | Multi-group lists working · Members can browse and re-add past items |
-| **Sprint 4** | Jul 6–12 | Urgency tagging + "shop urgent only" filter · Buying view (list lock, checkable items, aisle grouping) | Notifications ("heading to store" button + recurring reminder with optional attached list) | Urgency filter tested with over-tagging scenario · Buying view lock/unlock verified | Buyer can execute a full shop using the buying view · Notifications fire correctly |
-| **Sprint 5** | Jul 13–18 | Trip history + action log (both per list) · Group recipe creation + "add all to list" | Barcode scanning + photo item recognition (ML Kit / TFLite integration) | Recipe-to-list flow tested end-to-end · Barcode scanning tested on physical devices | Full MVP feature loop complete · Barcode recognition functional or scoped for post-beta |
-| **Hardening** | Jul 18–25 | Integration QA · Regression testing · Bug fixes | Integration QA · Regression testing · Bug fixes | Final milestone sign-off | **Working app — July 25 milestone** |
+Each row is one Jira card. User story IDs reference the stories in Stage 3 documentation.
+
+**Sprint 1 — Jun 17–21 · Setup, Auth, Groups** ✓ Done
+
+| Card Title | User Story | Stream | Priority |
+| --- | --- | --- | --- |
+| Project setup: Flutter clean arch scaffold + CI | — | Frontend | High |
+| Project setup: Flask API scaffold + DB schema | — | Backend | High |
+| Register: OTP flow (send + verify via Authentica) | US-01, US-36 | Backend | High |
+| Register: Registration screen + OTP entry UI | US-01 | Frontend | High |
+| Login: OTP flow (send + verify) + JWT issue | US-02 | Backend | High |
+| Login: Login screen + OTP entry UI | US-02 | Frontend | High |
+| Groups: Create group + invite code generation | US-04 | Backend | High |
+| Groups: Create group screen + invite code share | US-04 | Frontend | High |
+| Groups: Join group via invite code | US-05 | Backend | High |
+| Groups: Join group screen | US-05 | Frontend | High |
+
+---
+
+**Sprint 2 — Jun 22–28 · Shared List Infra + Item Submission** ✓ Done
+
+| Card Title | User Story | Stream | Priority |
+| --- | --- | --- | --- |
+| Lists: Create list endpoint + membership check | US-13 | Backend | High |
+| Lists: Create list screen + group list view | US-13 | Frontend | High |
+| Items: Add item endpoint (manual) + LIST_ACTION log | US-16 | Backend | High |
+| Items: Item add sheet — manual tab UI | US-16 | Frontend | High |
+| Real-time: Flask-SocketIO room setup per list | US-24 | Backend | High |
+| Real-time: Flutter SocketIO datasource + BLoC wiring | US-24 | Frontend | High |
+| Duplicate check: Fuzzy match on item add | US-25 | Backend | Medium |
+| Duplicate warning: Non-blocking banner in list UI | US-25 | Frontend | Medium |
+
+---
+
+**Sprint 3 — Jun 29–Jul 5 · Multi-Group + Add Paths** (Current)
+
+| Card Title | User Story | Stream | Priority |
+| --- | --- | --- | --- |
+| Groups: Multi-group membership + list-by-group endpoint | US-06 | Backend | High |
+| Groups: Groups home screen showing all groups | US-06 | Frontend | High |
+| Groups: Share invite code (deep link / copy) | US-07 | Backend | High |
+| Groups: Share invite code UI | US-07 | Frontend | High |
+| Items: Item history endpoint (past items per user) | US-17 | Backend | High |
+| Items: History tab in item add sheet | US-17 | Frontend | High |
+| Catalog: Seed Altamimi grocery catalog + barcode lookup endpoint | US-18, US-19 | Backend | Medium |
+| Catalog: Catalog tab in item add sheet | US-18 | Frontend | Medium |
+| Groups: Group admin settings (edit name, icon) | US-09 | Backend | Medium |
+| Groups: Group admin settings screen | US-09 | Frontend | Medium |
+
+---
+
+**Sprint 4 — Jul 6–12 · Urgency, Buying View, Notifications**
+
+| Card Title | User Story | Stream | Priority |
+| --- | --- | --- | --- |
+| Items: Urgency flag endpoint (mark/unmark urgent) | US-22 | Backend | High |
+| Items: Urgency toggle in list item UI | US-22 | Frontend | High |
+| Trip: Create trip endpoint (lock list into shopping session) | US-38 | Backend | High |
+| Buying View: Locked buying mode screen + aisle grouping | US-26 | Frontend | High |
+| Buying View: Check off item endpoint (mark purchased) | US-26 | Backend | High |
+| Buying View: Urgent-only filter | US-27 | Frontend | Medium |
+| Trip: Complete trip endpoint (unbought items back to list) | US-38, US-15 | Backend | High |
+| Notifications: Heading to store — FCM batch push | US-30 | Backend | High |
+| Notifications: Heading to store button in UI | US-30 | Frontend | High |
+| Notifications: Assign buyer — FCM push | US-31 | Backend | Medium |
+| Notifications: Assign buyer UI | US-31 | Frontend | Medium |
+
+---
+
+**Sprint 5 — Jul 13–19 · Histories, Recipes, Barcode**
+
+| Card Title | User Story | Stream | Priority |
+| --- | --- | --- | --- |
+| History: Action log endpoint (LIST_ACTION query) | US-28 | Backend | High |
+| History: Action log tab UI | US-28 | Frontend | High |
+| History: Trip history endpoint | US-29 | Backend | Should |
+| History: Trip history tab UI | US-29 | Frontend | Should |
+| Recipes: Create recipe endpoint (with INSTRUCTION steps) | US-33 | Backend | Should |
+| Recipes: Create/view recipe screen | US-33 | Frontend | Should |
+| Recipes: Import all ingredients to list endpoint | US-34 | Backend | Should |
+| Recipes: Import button on recipe detail screen | US-34 | Frontend | Should |
+| Recipes: Recipe owner edit/delete permissions | US-37 | Backend | High |
+| Items: Upload item image (Supabase Storage) | US-21 | Backend | Should |
+| Items: Image attach option in add sheet | US-21 | Frontend | Should |
+| Items: Barcode scan tab (ML Kit / TFLite) | US-19 | Frontend | Could |
+
+---
+
+**Hardening — Jul 20–25 · Integration QA**
+
+| Card Title | User Story | Stream | Priority |
+| --- | --- | --- | --- |
+| Integration test: Full list lifecycle (add → buy → complete trip) | All | Both | High |
+| Regression: Real-time sync under multi-user load | US-24 | Both | High |
+| Bug bash: Fix critical bugs from QA | — | Both | High |
+| Polish: Loading states, empty states, error banners | — | Frontend | Medium |
+| Postman: Run full API collection, document failures | — | Backend | High |
 
 ---
 
