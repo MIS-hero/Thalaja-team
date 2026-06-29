@@ -1,0 +1,40 @@
+/* Thalaja — Typography tokens
+   Display: CooperArabic (AR) + Baloo 2 (Latin) — friendly, rounded, retro warmth.
+   Body/UI:  Tajawal — clean bilingual geometric sans.
+   Per-glyph fallback: Arabic glyphs render in Cooper/Tajawal natively,
+   Latin glyphs cascade to Baloo 2 / Tajawal. */
+:root {
+  --font-display: 'CooperArabic', 'Baloo 2', system-ui, sans-serif;
+  --font-body: 'Tajawal', 'Baloo 2', system-ui, sans-serif;
+  --font-mono: 'Tajawal', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Weights */
+  --fw-light: 300; /* @kind font */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium: 500; /* @kind font */
+  --fw-bold: 700; /* @kind font */
+  --fw-black: 800; /* @kind font */
+
+  /* Type scale (px). Display sizes lean large & rounded. */
+  --fs-display-xl: 64px;   /* hero / splash */
+  --fs-display-lg: 48px;   /* screen titles */
+  --fs-display-md: 36px;
+  --fs-display-sm: 28px;   /* section headers */
+  --fs-title: 22px;        /* card titles */
+  --fs-body-lg: 18px;
+  --fs-body: 16px;         /* default UI text */
+  --fs-body-sm: 14px;
+  --fs-caption: 13px;
+  --fs-micro: 11px;        /* labels, overlines */
+
+  /* Line heights */
+  --lh-tight: 1.05; /* @kind font */
+  --lh-snug: 1.2; /* @kind font */
+  --lh-normal: 1.45; /* @kind font */
+  --lh-relaxed: 1.6; /* @kind font */
+
+  /* Letter spacing */
+  --ls-tight: -0.01em;
+  --ls-normal: 0; /* @kind font */
+  --ls-wide: 0.04em;       /* overlines / small caps */
+}

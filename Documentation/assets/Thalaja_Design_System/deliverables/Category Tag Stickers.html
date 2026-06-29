@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thalaja — Category Tag Stickers</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  :root {
+    --tomato:#FF4924; --lt-tomato:#FF8A6E; --dp-tomato:#E5350F;
+    --mint:#00EE8E;   --lt-mint:#8DF6C8;   --dp-mint:#00A862;
+    --peri:#4444D5;   --lt-peri:#9A9AEC;   --dp-peri:#2E2BA0;
+    --lav:#F3CDEA;    --dp-lav:#E48FCF;    --lt-lav:#FBE6F4;
+    --sand:#F6DFA8;
+    --navy:#0D0050;   --cream:#FFF8ED;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; }
+  body {
+    background:
+      radial-gradient(120% 80% at 50% 0%, #ffe6df 0%, var(--cream) 55%);
+    color: var(--navy);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding: 56px clamp(20px, 5vw, 72px) 100px;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; }
+
+  /* ── Masthead ─────────────────────────────── */
+  .mast { text-align: center; margin-bottom: 14px; }
+  .mast .kicker {
+    font-family: var(--font-body); font-weight: 800;
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--indigo); margin: 0 0 10px;
+  }
+  .mast h1 {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 5vw, 56px); line-height: 1.15;
+    margin: 0; color: var(--navy); font-weight: 800;
+  }
+  .mast p {
+    font-size: 16px; color: var(--ink-500); max-width: 560px;
+    margin: 12px auto 0; line-height: 1.5;
+  }
+
+  /* ── Section frame ────────────────────────── */
+  .sec { margin-top: 56px; }
+  .sec-head { display:flex; align-items:baseline; gap:14px; margin-bottom:22px;
+    border-bottom: 2.5px solid var(--navy); padding-bottom: 12px; }
+  .sec-head .no {
+    font-family: var(--font-display); font-weight:800; font-size: 22px;
+    color: var(--cream); background: var(--navy);
+    width: 38px; height: 38px; border-radius: 999px;
+    display:grid; place-items:center; flex:0 0 auto;
+  }
+  .sec-head h2 { font-family: var(--font-display); font-weight:800;
+    font-size: 24px; margin:0; color: var(--navy); }
+  .sec-head .meta { font-size: 13px; color: var(--ink-500); margin-right:auto; }
+
+  /* ── Reasoning table ──────────────────────── */
+  .tbl-scroll { overflow-x: auto; border-radius: 16px; }
+  table { border-collapse: collapse; width:100%; min-width: 880px;
+    background: var(--white); border-radius: 16px; overflow:hidden;
+    box-shadow: 4px 5px 0 rgba(13,0,80,.10); }
+  thead th {
+    background: var(--navy); color: var(--cream); text-align: right;
+    font-family: var(--font-body); font-weight:700; font-size: 12.5px;
+    letter-spacing:.02em; padding: 13px 14px; white-space: nowrap;
+  }
+  tbody td { padding: 12px 14px; font-size: 13.5px; line-height:1.45;
+    border-bottom: 1.5px solid var(--border-soft); color: var(--text-body);
+    vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: var(--surface-sunken); }
+  .cat-cell { display:flex; align-items:center; gap:10px; white-space:nowrap; }
+  .cat-cell .ar { font-family: var(--font-display); font-weight:800; font-size:16px; }
+  .cat-cell .en { font-size:11px; color: var(--ink-300); }
+  .swatch { width: 26px; height: 26px; border-radius: 8px;
+    border: 2px solid var(--navy); flex:0 0 auto; }
+  .fillname { font-weight:700; font-size:12.5px; white-space:nowrap; }
+  .dot-yes { color: var(--success-ink); font-weight:700; }
+  .dot-no  { color: var(--ink-300); }
+  .pill { display:inline-block; padding: 2px 9px; border-radius:999px;
+    font-size:11px; font-weight:700; border:1.5px solid var(--navy); }
+
+  /* ── Sticker grid ─────────────────────────── */
+  .grid { display:grid; grid-template-columns: repeat(5, 1fr);
+    gap: 30px 22px; align-items:center; justify-items:center; }
+  .cell { display:flex; flex-direction:column; align-items:center; gap:9px;
+    width:100%; max-width: 408px; }
+  .cell .idx { font-size:11px; font-weight:700; color: var(--ink-300);
+    font-family: var(--font-body); letter-spacing:.04em; text-align:center; }
+  /* fluid sticker: fills its cell, never taller than ~140px (aspect 320:110) */
+  .cell .sticker { width:100%; aspect-ratio: 320 / 110; }
+
+  .sticker { position: relative; line-height:0; }
+  .sticker .star { display:block; width:100%; height:100%;
+    filter: drop-shadow(3px 4px 0 rgba(13,0,80,.18)); }
+  .sticker .content {
+    position:absolute; left:19.5%; right:19.5%; top:26%; bottom:26%;
+    display:flex; flex-direction:row; align-items:center; gap:5%;
+    direction: ltr;
+  }
+  .sticker .art { flex:0 0 33%; height:100%;
+    display:flex; align-items:center; justify-content:center; }
+  .sticker .art svg { width:100%; height:100%; overflow:visible;
+    display:block; max-height:118%; }
+  .sticker .label {
+    flex:1 1 auto; min-width:0; direction: rtl; text-align: right;
+    font-family: var(--font-display); font-weight:800;
+    white-space: nowrap; line-height:1; letter-spacing:-0.01em;
+  }
+
+  /* ── Legibility strip ─────────────────────── */
+  .strip { background: var(--white); border:2.5px solid var(--navy);
+    border-radius: 20px; padding: 26px 22px; box-shadow: 4px 5px 0 var(--navy);
+    display:flex; flex-wrap:wrap; gap: 16px 14px; align-items:center; justify-content:center; }
+  .strip .sticker { line-height:0; }
+  .strip-note { font-size:13px; color: var(--ink-500); margin: 14px 2px 0;
+    display:flex; align-items:center; gap:8px; }
+  .strip-note b { color: var(--navy); }
+
+  .legend { display:flex; flex-wrap:wrap; gap: 8px 18px; margin-top:18px;
+    font-size:12.5px; color: var(--ink-500); }
+  .legend span { display:flex; align-items:center; gap:7px; }
+  .legend i { width:15px; height:15px; border-radius:5px; border:1.5px solid var(--navy);
+    display:inline-block; }
+
+  /* ── Tweaks panel ─────────────────────────── */
+  #tweaks { position: fixed; top: 20px; left: 20px; z-index: 50;
+    width: 268px; background: var(--cream); direction: ltr; text-align: left;
+    border: 2.5px solid var(--navy); border-radius: 22px;
+    box-shadow: 5px 6px 0 var(--navy);
+    font-family: var(--font-body); color: var(--navy);
+    padding: 16px 16px 18px; display: none; }
+  #tweaks[data-on="1"] { display: block; }
+  #tweaks .tw-head { display:flex; align-items:center; justify-content:space-between;
+    margin-bottom: 14px; }
+  #tweaks .tw-title { font-family: var(--font-display); font-weight:800; font-size:19px; }
+  #tweaks .tw-close { width:28px; height:28px; border-radius:999px; flex:0 0 auto;
+    border:2px solid var(--navy); background:var(--white); color:var(--navy);
+    font-size:15px; line-height:1; cursor:pointer; font-weight:700;
+    display:grid; place-items:center; }
+  #tweaks .tw-close:active { transform: translate(1px,1px); }
+  .tw-field { margin-top: 15px; }
+  .tw-field > label { display:flex; align-items:baseline; justify-content:space-between;
+    font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    color: var(--ink-500); margin-bottom: 7px; }
+  .tw-field .tw-val { font-family: var(--font-display); font-weight:800; font-size:13px;
+    color: var(--navy); text-transform:none; letter-spacing:0; }
+  .tw-hint { font-size:11.5px; color: var(--ink-300); margin-top:5px; line-height:1.3; }
+  /* slider */
+  .tw-range { -webkit-appearance:none; appearance:none; width:100%; height:8px;
+    border-radius:999px; background: var(--indigo-tint); border:2px solid var(--navy);
+    outline:none; cursor:pointer; }
+  .tw-range::-webkit-slider-thumb { -webkit-appearance:none; appearance:none;
+    width:22px; height:22px; border-radius:999px; background: var(--red);
+    border:2.5px solid var(--navy); box-shadow:2px 2px 0 var(--navy); cursor:grab; }
+  .tw-range::-moz-range-thumb { width:20px; height:20px; border-radius:999px;
+    background: var(--red); border:2.5px solid var(--navy); cursor:grab; }
+  /* segmented */
+  .tw-seg { display:grid; grid-template-columns: repeat(3,1fr); gap:6px; }
+  .tw-seg button { font-family: var(--font-body); font-weight:700; font-size:12.5px;
+    padding:9px 4px; border-radius:12px; border:2px solid var(--navy);
+    background: var(--white); color: var(--navy); cursor:pointer; transition: .08s ease; }
+  .tw-seg button[aria-pressed="true"] { background: var(--navy); color: var(--cream); }
+  .tw-seg button:active { transform: translate(1px,1px); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <p class="kicker">Thalaja · ثلاجة · Brand System</p>
+    <h1>ملصقات تصنيف · Category Tag Stickers</h1>
+    <p>Fifteen horizontal star-tags built on the Thalaja mark — the organic 8-point rounded star stretched ~3:1, with the signature navy outline and cream peel halo. Illustration on the left, Arabic name on the right (RTL).</p>
+  </header>
+
+  <!-- 1 · Reasoning -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="no">١</span>
+      <h2>Reasoning</h2>
+      <span class="meta">fill · concept · ث motif · text contrast</span>
+    </div>
+    <div class="tbl-scroll">
+      <table id="reason-table">
+        <thead>
+          <tr>
+            <th>الفئة · Category</th>
+            <th>Fill — why it fits</th>
+            <th>Illustration concept</th>
+            <th>ث dots?</th>
+            <th>Text · contrast</th>
+          </tr>
+        </thead>
+        <tbody><!-- generated --></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2 · Grid -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="no">٢</span>
+      <h2>The 15 stickers</h2>
+      <span class="meta">~140px height · 5 × 3</span>
+    </div>
+    <div class="grid" id="grid"><!-- generated --></div>
+    <div class="legend">
+      <span><i style="background:var(--tomato)"></i>Tomato family</span>
+      <span><i style="background:var(--mint)"></i>Mint family</span>
+      <span><i style="background:var(--peri)"></i>Peri / navy family</span>
+      <span><i style="background:var(--lav)"></i>Lavender family</span>
+      <span><i style="background:var(--sand)"></i>Cream / sand family</span>
+    </div>
+  </section>
+
+  <!-- 3 · Legibility -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="no">٣</span>
+      <h2>Legibility check</h2>
+      <span class="meta">all 15 at 46px height</span>
+    </div>
+    <div class="strip" id="strip"><!-- generated --></div>
+    <p class="strip-note">At small scale the bold silhouette stays a single read and the Arabic name auto-fits to one line — verifying the priority order: <b>legibility&nbsp;&gt;&nbsp;contrast&nbsp;&gt;&nbsp;expressiveness&nbsp;&gt;&nbsp;ث&nbsp;integration.</b></p>
+  </section>
+
+</div>
+
+<!-- Tweaks panel -->
+<aside id="tweaks" aria-label="Tweaks">
+  <div class="tw-head">
+    <span class="tw-title">Tweaks</span>
+    <button class="tw-close" id="tw-close" title="Close" aria-label="Close">✕</button>
+  </div>
+
+  <div class="tw-field">
+    <label for="tw-energy">Star energy <span class="tw-val" id="tw-energy-val">—</span></label>
+    <input type="range" class="tw-range" id="tw-energy" min="0" max="100" step="1">
+    <div class="tw-hint">Soft pebble → bold starburst.</div>
+  </div>
+
+  <div class="tw-field">
+    <label for="tw-wobble">Hand-cut wobble <span class="tw-val" id="tw-wobble-val">—</span></label>
+    <input type="range" class="tw-range" id="tw-wobble" min="0" max="100" step="1">
+    <div class="tw-hint">Machine-crisp → hand-stuck &amp; scattered.</div>
+  </div>
+
+  <div class="tw-field">
+    <label>Sticker finish</label>
+    <div class="tw-seg" id="tw-finish">
+      <button type="button" data-finish="peel">Peel</button>
+      <button type="button" data-finish="inked">Inked</button>
+      <button type="button" data-finish="soft">Soft</button>
+    </div>
+    <div class="tw-hint">Cream-halo sticker · bold flat ink · gentle soft chip.</div>
+  </div>
+</aside>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   Star-tag shape — organic 8-point rounded star, stretched 3:1.
+   Catmull-Rom through 16 alternating outer/inner vertices around
+   an ellipse, with small seeded jitter for a hand-cut feel.
+   ════════════════════════════════════════════════════════════ */
+const VB_W = 320, VB_H = 110, RATIO = VB_W / VB_H;
+const CX = 160, CY = 55, RX = 148, RY = 44, POINTS = 8;
+
+/* ════════════════════════════════════════════════════════════
+   TWEAKS — three expressive controls that reshape the whole feel.
+   • starEnergy  soft pebble (0) → spiky starburst (100)
+   • wobble      machine-crisp (0) → hand-cut & scattered (100)
+   • finish      'peel' (cream-halo sticker) | 'inked' (bold flat) | 'soft' (gentle chip)
+   ════════════════════════════════════════════════════════════ */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "starEnergy": 38,
+  "wobble": 0,
+  "finish": "peel"
+}/*EDITMODE-END*/;
+const TW = Object.assign({}, TWEAK_DEFAULTS);
+
+const FINISH = {
+  peel:  { halo:16, outline:8, shadow:'drop-shadow(3px 4px 0 rgba(13,0,80,.18))' },
+  inked: { halo:0,  outline:9, shadow:'drop-shadow(3px 5px 0 rgba(13,0,80,.32))' },
+  soft:  { halo:0,  outline:0, shadow:'drop-shadow(0 7px 15px rgba(13,0,80,.20))' }
+};
+// map the two sliders to geometry
+function starOpts(){
+  const e = TW.starEnergy/100, w = TW.wobble/100;
+  return {
+    inner: 0.91 - 0.34*e,        // high inner = round pill; low = deep spikes
+    jr: 0.015 + 0.20*w,          // radius jitter
+    ja: 0.008 + 0.10*w,          // angle jitter
+    rotMax: 4.5*w                 // per-sticker rotation (deg)
+  };
+}
+
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0;
+  let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t;
+  return ((t^t>>>14)>>>0)/4294967296; }; }
+
+function starVerts(seed, o){
+  const rng = mulberry32(seed*2654435761 >>> 0);
+  const total = POINTS*2, v=[];
+  for(let i=0;i<total;i++){
+    const outer = i%2===0;
+    const ang = (i/total)*Math.PI*2 - Math.PI/2;
+    const jr = 1 + (rng()-0.5)*o.jr;
+    const ja = (rng()-0.5)*o.ja;
+    const r  = (outer?1:o.inner)*jr;
+    v.push([ CX + Math.cos(ang+ja)*RX*r, CY + Math.sin(ang+ja)*RY*r ]);
+  }
+  return v;
+}
+function catmullClosed(p){
+  const n=p.length; let d=`M ${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)} `;
+  for(let i=0;i<n;i++){
+    const a=p[(i-1+n)%n], b=p[i], c=p[(i+1)%n], e=p[(i+2)%n];
+    const c1x=b[0]+(c[0]-a[0])/6, c1y=b[1]+(c[1]-a[1])/6;
+    const c2x=c[0]-(e[0]-b[0])/6, c2y=c[1]-(e[1]-b[1])/6;
+    d+=`C ${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${c[0].toFixed(1)} ${c[1].toFixed(1)} `;
+  }
+  return d+'Z';
+}
+function starPath(seed, o){ return catmullClosed(starVerts(seed, o)); }
+
+/* ── ث three-square motif (used only where natural) ── */
+function thMotif(color, cx, cy, s){
+  s = s || 11;
+  const r = (s*0.34).toFixed(1);
+  const sq = (x,y)=>`<rect x="${(x).toFixed(1)}" y="${(y).toFixed(1)}" width="${s}" height="${s}" rx="${r}" fill="${color}"/>`;
+  // cluster: top-right pair + one lower-left (mirrors the logo mark)
+  return sq(cx, cy) + sq(cx+s*1.25, cy) + sq(cx, cy+s*1.25);
+}
+// motif with optional rotation around the cluster centre
+function motif(color, cx, cy, s, rot){
+  const m = thMotif(color, cx, cy, s);
+  if(!rot) return m;
+  const rx = (cx + s*0.6).toFixed(1), ry = (cy + s*0.6).toFixed(1);
+  return `<g transform="rotate(${rot} ${rx} ${ry})">${m}</g>`;
+}
+// the Thalaja starburst seal (from assets/blob-starburst.svg), centred ~(110,110), r≈95
+const BLOB='M 123.7 22.3 Q 110.0 10.0 123.7 22.3 Q 137.4 34.6 154.9 35.1 Q 172.4 35.7 175.7 52.9 Q 179.1 70.1 194.1 81.3 Q 209.1 92.5 196.7 107.8 Q 184.2 123.1 191.6 142.3 Q 199.1 161.4 179.2 165.1 Q 159.4 168.9 151.6 185.8 Q 143.8 202.7 126.9 196.8 Q 110.0 190.9 93.3 196.2 Q 76.7 201.6 68.1 185.9 Q 59.5 170.1 40.7 165.5 Q 21.8 160.9 29.0 142.0 Q 36.1 123.0 22.8 107.6 Q 9.4 92.3 25.9 81.6 Q 42.3 70.9 44.8 53.1 Q 47.2 35.2 64.8 34.6 Q 82.3 33.9 96.2 22.0 Z';
+const YOLK='#F4C430';
+function blobShape(cx, cy, r, fill){
+  const s = r/95, tx=(cx-110*s).toFixed(2), ty=(cy-110*s).toFixed(2), sw=(7/s).toFixed(1);
+  return `<g transform="translate(${tx} ${ty}) scale(${s.toFixed(4)})"><path d="${BLOB}" fill="${fill}" stroke="${N}" stroke-width="${sw}" stroke-linejoin="round"/></g>`;
+}
+// the full app-icon mark: red starburst + navy outline + three mint ث-dots
+function logoMark(cx, cy, r){
+  const d = (r*0.30);
+  const sq=(dx,dy)=>`<rect x="${(cx+dx).toFixed(1)}" y="${(cy+dy).toFixed(1)}" width="${d.toFixed(1)}" height="${d.toFixed(1)}" rx="${(d*0.32).toFixed(1)}" fill="${C.mint}"/>`;
+  return blobShape(cx, cy, r, C.tomato)
+    + sq(-d*1.15, -d*1.25) + sq(d*0.1, -d*1.25) + sq(-d*1.15, -d*0.05);
+}
+
+/* ════════════════════════════════════════════════════════════
+   ILLUSTRATIONS — one consistent style:
+   bold single-color silhouette + 7px navy outline, round joins,
+   minimal internal detail. Built to read at 32px. viewBox 100×100.
+   Each icon is a function of its accent colour `c` (never the fill).
+   ════════════════════════════════════════════════════════════ */
+const N='#0D0050';
+const C={tomato:'#FF4924',ltTomato:'#FF8A6E',dpTomato:'#E5350F',mint:'#00EE8E',ltMint:'#8DF6C8',dpMint:'#00A862',peri:'#4444D5',ltPeri:'#9A9AEC',dpPeri:'#2E2BA0',lav:'#F3CDEA',dpLav:'#E48FCF',ltLav:'#FBE6F4',sand:'#F6DFA8',cream:'#FFF8ED',navy:'#0D0050'};
+const OUT='stroke="#0D0050" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"';
+const DET='stroke="#0D0050" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"'; // internal navy detail
+
+const ICON = {
+  /* 1 — apple + leaf */
+  produce: c => `
+    <path d="M50 40 C43 31 27 32 26 47 C25 62 39 84 50 84 C61 84 75 62 74 47 C73 32 57 31 50 40 Z" fill="${c}" ${OUT}/>
+    <path d="M50 40 Q53 24 70 22 Q67 38 50 40 Z" fill="${c}" ${OUT}/>`,
+  /* 2 — steak, ث motif branded as grill marks */
+  meat: c => `
+    <path d="M28 44 Q24 30 42 28 Q64 23 78 36 Q88 47 80 61 Q72 77 50 77 Q27 78 26 58 Q25 50 28 44 Z" fill="${c}" ${OUT}/>
+    ${motif(N, 41, 43, 11, 20)}`,
+  /* 3 — milk carton stamped with the three-dot ث brand mark */
+  dairy: c => `
+    <path d="M36 46 L36 82 L64 82 L64 46 L57 32 L50 39 L43 32 Z" fill="${c}" ${OUT}/>
+    <path d="M50 39 L50 46" ${DET}/>
+    ${motif(C.peri, 43, 55, 8, 0)}`,
+  /* 4 — slice of toast, ث dots as the toasted spots */
+  bakery: c => `
+    <path d="M30 48 Q30 30 50 30 Q70 30 70 48 L70 74 Q70 78 66 78 L34 78 Q30 78 30 74 Z" fill="${c}" ${OUT}/>
+    ${motif(N, 41, 50, 8, 14)}`,
+  /* 5 — tomato can wearing the Thalaja starburst logo */
+  pantry: c => `
+    <ellipse cx="50" cy="32" rx="19" ry="6" fill="${c}" ${OUT}/>
+    <path d="M31 32 L31 76 Q31 81 50 81 Q69 81 69 76 L69 32" fill="${c}" ${OUT}/>
+    ${logoMark(50, 57, 14)}`,
+  /* 6 — salt shaker (ث = the salt) */
+  cooking: c => `
+    <path d="M37 48 Q37 34 50 34 Q63 34 63 48 L66 76 Q66 80 62 80 L38 80 Q34 80 34 76 Z" fill="${c}" ${OUT}/>
+    <path d="M37 49 L63 49" ${DET}/>
+    GROUP_TH`,
+  /* 7 — egg: starburst white + one yellow ث-square yolk */
+  breakfast: c => `
+    ${blobShape(48, 54, 27, C.cream)}
+    <rect x="42" y="48" width="15" height="15" rx="5" transform="rotate(13 49.5 55.5)" fill="${YOLK}" stroke="${N}" stroke-width="6" stroke-linejoin="round"/>`,
+  /* 8 — cookie with the ث motif tilted into chocolate chips */
+  snacks: c => `
+    <circle cx="50" cy="52" r="27" fill="${c}" ${OUT}/>
+    ${motif(N, 40, 44, 10, 24)}`,
+  /* 9 — cup with the ث motif as ice cubes inside */
+  drinks: c => `
+    <path d="M34 42 L40 78 Q40 82 45 82 L55 82 Q60 82 60 78 L66 42 Z" fill="${c}" ${OUT}/>
+    <path d="M30 42 L70 42" ${DET}/>
+    <path d="M60 24 L53 46" ${DET}/>
+    ${motif(C.cream, 41, 50, 8, 16)}`,
+  /* 10 — ice cubes built from the ث motif in light peri */
+  frozen: c => {
+    const s=18, cx=29, cy=33, r=(s*0.28).toFixed(1);
+    const cube=(x,y)=>`<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="${r}" fill="${C.ltPeri}" ${OUT}/>`;
+    return cube(cx,cy) + cube(cx+s*1.25, cy) + cube(cx, cy+s*1.25)
+      + `<path d="M73 60 l2.6 6.5 l6.5 2.6 l-6.5 2.6 l-2.6 6.5 l-2.6 -6.5 l-6.5 -2.6 l6.5 -2.6 Z" fill="${C.cream}" stroke="${N}" stroke-width="3.5" stroke-linejoin="round"/>`;
+  },
+  /* 11 — cloche over plate */
+  ready: c => `
+    <path d="M24 64 a26 24 0 0 1 52 0 Z" fill="${c}" ${OUT}/>
+    <path d="M18 68 L82 68" ${DET}/>
+    <circle cx="50" cy="36" r="5" fill="${c}" ${OUT}/>`,
+  /* 12 — bold baby bottle */
+  baby: c => `
+    <path d="M42 33 Q42 21 50 17 Q58 21 58 33 Z" fill="${c}" ${OUT}/>
+    <rect x="43" y="33" width="14" height="7" rx="2.5" fill="${c}" ${OUT}/>
+    <rect x="36" y="40" width="28" height="44" rx="12" fill="${c}" ${OUT}/>
+    <path d="M41 52 L53 52 M41 60 L49 60 M41 68 L49 68" ${DET}/>`,
+  /* 13 — water droplet */
+  care: c => `
+    <path d="M50 22 C35 46 35 60 35 63 a15 15 0 0 0 30 0 C65 60 65 46 50 22 Z" fill="${c}" ${OUT}/>
+    <path d="M45 58 a9 9 0 0 0 6 9" ${DET}/>`,
+  /* 14 — two-tone capsule pill */
+  health: c => `
+    <g transform="rotate(-35 50 50)">
+      <rect x="26" y="40" width="48" height="22" rx="11" fill="${C.cream}" ${OUT}/>
+      <path d="M26 51 a11 11 0 0 1 11 -11 H50 v22 H37 a11 11 0 0 1 -11 -11 Z" fill="${c}" stroke="${N}" stroke-width="7" stroke-linejoin="round"/>
+    </g>`,
+  /* 15 — household broom */
+  home: c => `
+    <rect x="46" y="20" width="8" height="30" rx="4" fill="${c}" ${OUT}/>
+    <rect x="37" y="48" width="26" height="10" rx="3" fill="${c}" ${OUT}/>
+    <path d="M39 58 L61 58 L68 80 L32 80 Z" fill="${c}" ${OUT}/>
+    <path d="M42 64 L40 78 M50 64 L50 79 M58 64 L60 78" ${DET}/>`
+};
+
+/* ════════════════════════════════════════════════════════════
+   THE 15 CATEGORIES
+   ════════════════════════════════════════════════════════════ */
+const DATA = [
+  { ar:'الخضار والفواكه', en:'Produce', art:'produce', artColor:C.mint,
+    fill:C.peri, fillName:'Peri', text:C.cream,
+    why:'Fresh, lively secondary brand blue lets the green apple pop.',
+    concept:'A mint apple with a leaf — one clean silhouette.',
+    dots:false, dotWhy:'No natural fit — fruit reads better as a solid shape.',
+    txt:'Cream on Peri — AA large.' },
+
+  { ar:'اللحوم والدواجن', en:'Meat & poultry', art:'meat', artColor:C.sand,
+    fill:C.tomato, fillName:'Tomato', text:C.cream,
+    why:'Primary red = the rawest, most energetic category; reads as "meat".',
+    concept:'A steak with the ث motif branded in as grill marks.',
+    dots:true, dotWhy:'Natural: the three squares read as grill marks.',
+    txt:'Cream on Tomato — AA large.' },
+
+  { ar:'الألبان والبيض', en:'Dairy & eggs', art:'dairy', artColor:C.cream,
+    fill:C.mint, fillName:'Mint', text:C.navy,
+    why:'Mint = fresh / "in stock"; the cool dairy aisle. Takes navy ink by rule.',
+    concept:'A milk carton stamped with the three-dot ث brand mark.',
+    dots:true, dotWhy:'Natural: the brand mark sits on the carton like a label.',
+    txt:'Navy on Mint — AA (rule).' },
+
+  { ar:'المخبوزات', en:'Bakery', art:'bakery', artColor:C.sand,
+    fill:C.dpPeri, fillName:'Deep peri', text:C.cream,
+    why:'Deepened peri grounds the warm sand loaf; oven-dark backdrop.',
+    concept:'A slice of toast, the ث dots as the toasted spots.',
+    dots:true, dotWhy:'Natural: the three squares read as toasting.',
+    txt:'Cream on Deep peri — AA.' },
+
+  { ar:'المواد الغذائية', en:'Pantry', art:'pantry', artColor:C.peri,
+    fill:C.lav, fillName:'Lavender', text:C.navy,
+    why:'Soft lilac = the calm, shelf-stable staples shelf.',
+    concept:'A tomato can wearing the Thalaja starburst logo.',
+    dots:true, dotWhy:'The full starburst logo (ث dots included) brands the can.',
+    txt:'Navy on Lavender — AA.' },
+
+  { ar:'أساسيات الطبخ', en:'Cooking basics', art:'cooking', artColor:C.tomato,
+    fill:C.ltMint, fillName:'Light mint', text:C.navy,
+    why:'Airy mint tint for everyday prep; lets the tomato shaker stand out.',
+    concept:'A salt shaker with the ث dots as the salt.',
+    dots:true, dotWhy:'Natural: the three squares ARE the salt grains.',
+    txt:'Navy on Light mint — AA.' },
+
+  { ar:'الفطور', en:'Breakfast', art:'breakfast', artColor:C.tomato,
+    fill:C.dpLav, fillName:'Deep lavender', text:C.navy,
+    why:'Warm rosy lilac = a soft morning mood.',
+    concept:'A starburst egg-white with a single yellow ث-square yolk.',
+    dots:true, dotWhy:'Natural: one motif square = the yolk.',
+    txt:'Navy on Deep lavender — AA.' },
+
+  { ar:'الوجبات الخفيفة', en:'Snacks', art:'snacks', artColor:C.sand,
+    fill:C.ltTomato, fillName:'Light tomato', text:C.navy,
+    why:'Playful coral = fun, impulse snacking.',
+    concept:'A cookie with the ث motif tilted into chocolate chips.',
+    dots:true, dotWhy:'Natural: the tilted three squares ARE the chips.',
+    txt:'Navy on Light tomato — AA.' },
+
+  { ar:'المشروبات', en:'Drinks', art:'drinks', artColor:C.peri,
+    fill:C.sand, fillName:'Sand', text:C.navy,
+    why:'Warm sand keeps the bright peri cup legible.',
+    concept:'A cup with the ث motif floating inside as ice.',
+    dots:true, dotWhy:'Natural: the three squares float as ice cubes.',
+    txt:'Navy on Sand — AA.' },
+
+  { ar:'المجمّدات', en:'Frozen', art:'frozen', artColor:C.mint,
+    fill:C.dpTomato, fillName:'Deep tomato', text:C.cream,
+    why:'Hot deep red as a deliberate cold-contrast to the mint ice.',
+    concept:'Ice cubes built from the ث motif in light peri.',
+    dots:true, dotWhy:'Natural: the three squares ARE the ice cubes.',
+    txt:'Cream on Deep tomato — AA large.' },
+
+  { ar:'الوجبات الجاهزة', en:'Ready meals', art:'ready', artColor:C.tomato,
+    fill:C.ltPeri, fillName:'Light peri', text:C.navy,
+    why:'Soft periwinkle = convenient, ready-to-serve calm.',
+    concept:'A cloche/dome over a plate.',
+    dots:false, dotWhy:'Plate + dome is the recognisable read.',
+    txt:'Navy on Light peri — AA.' },
+
+  { ar:'مستلزمات الأطفال', en:'Baby', art:'baby', artColor:C.sand,
+    fill:C.dpMint, fillName:'Deep mint', text:C.navy,
+    why:'Calm deep green = gentle, caring nursery tone.',
+    concept:'A bold baby bottle with measure lines.',
+    dots:false, dotWhy:'A bottle reads instantly; no motif.',
+    txt:'Navy on Deep mint — AA.' },
+
+  { ar:'العناية الشخصية', en:'Personal care', art:'care', artColor:C.peri,
+    fill:C.cream, fillName:'Cream', text:C.navy,
+    why:'Clean paper-cream = freshness; peri droplet provides the colour.',
+    concept:'A peri water droplet with a light highlight.',
+    dots:false, dotWhy:'A droplet is the cleanest single read.',
+    txt:'Navy on Cream — AAA.' },
+
+  { ar:'الصحة', en:'Health', art:'health', artColor:C.mint,
+    fill:C.navy, fillName:'Navy', text:C.cream,
+    why:'The brand ink = trust and clinical seriousness.',
+    concept:'A two-tone capsule pill, mint + cream.',
+    dots:false, dotWhy:'A capsule reads instantly; no motif.',
+    txt:'Cream on Navy — AAA.' },
+
+  { ar:'مستلزمات المنزل', en:'Home supplies', art:'home', artColor:C.peri,
+    fill:C.ltLav, fillName:'Light lilac', text:C.navy,
+    why:'Fresh-laundry lilac tint; the peri broom pops on it.',
+    concept:'A household broom.',
+    dots:false, dotWhy:'A broom reads cleaner than a motif here.',
+    txt:'Navy on Light lilac — AA.' }
+];
+
+/* ── ث motif placement (only cooking still uses GROUP_TH; others embed inline) ── */
+const TH_PLACEMENT = {
+  cooking:  thMotif(N, 28, 16, 9)     // salt sprinkling above the shaker
+};
+function artSVG(key, color){
+  let inner = ICON[key](color);
+  inner = inner.replace('GROUP_TH', TH_PLACEMENT[key] || '');
+  return `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+}
+
+/* ── build a sticker. height=px for fixed (strip); null for fluid (grid) ── */
+function makeSticker(item, idx, height){
+  const el = document.createElement('div');
+  el.className = 'sticker';
+  if (height != null){
+    el.style.width = Math.round(height * RATIO) + 'px';
+    el.style.height = height + 'px';
+  }
+  const o = starOpts();
+  const fin = FINISH[TW.finish] || FINISH.peel;
+  const path = starPath(idx + 7, o);
+  // hand-cut scatter: seeded rotation of the whole tag
+  const rot = (mulberry32(idx*131 + 5)() - 0.5) * 2 * o.rotMax;
+  if (rot) el.style.transform = `rotate(${rot.toFixed(2)}deg)`;
+  const halo = fin.halo
+    ? `<path d="${path}" fill="none" stroke="${C.cream}" stroke-width="${fin.halo}" stroke-linejoin="round"/>`
+    : '';
+  el.innerHTML = `
+    <svg class="star" viewBox="0 0 ${VB_W} ${VB_H}">
+      ${halo}
+      <path d="${path}" fill="${item.fill}" stroke="${N}" stroke-width="${fin.outline}" stroke-linejoin="round"/>
+    </svg>
+    <div class="content">
+      <div class="art">${artSVG(item.art, item.artColor)}</div>
+      <div class="label" style="color:${item.text}">${item.ar}</div>
+    </div>`;
+  el.querySelector('.star').style.filter = fin.shadow;
+  return el;
+}
+
+/* ── fit each label: size from rendered sticker height, then shrink to one line ── */
+/* ── uniform fit: ONE font size for every label in a scope (longest dictates) ── */
+function fitLabels(scope){
+  const labs = [...scope.querySelectorAll('.sticker .label')];
+  if(!labs.length) return;
+  const h = labs[0].closest('.sticker').clientHeight;
+  let fs = h * 0.34;
+  const apply = v => labs.forEach(l=> l.style.fontSize = v + 'px');
+  apply(fs);
+  let guard = 0;
+  while(guard++ < 140){
+    const overflows = labs.some(l => l.scrollWidth > l.clientWidth + 0.5);
+    if(!overflows) break;
+    fs -= 0.5; apply(fs);
+  }
+}
+
+/* ── render grid + strip (re-runnable on tweak change) ── */
+const grid = document.getElementById('grid');
+const strip = document.getElementById('strip');
+function renderGrid(){
+  grid.innerHTML = '';
+  DATA.forEach((item, i)=>{
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.appendChild(makeSticker(item, i, null));
+    const idx = document.createElement('span');
+    idx.className = 'idx';
+    idx.textContent = String(i+1).padStart(2,'0') + ' · ' + item.en;
+    cell.appendChild(idx);
+    grid.appendChild(cell);
+  });
+}
+function renderStrip(){
+  strip.innerHTML = '';
+  DATA.forEach((item, i)=> strip.appendChild(makeSticker(item, i, 46)));
+}
+function renderStickers(){ renderGrid(); renderStrip(); requestAnimationFrame(fitAll); }
+renderStickers();
+
+/* ── render reasoning table ── */
+const tbody = document.querySelector('#reason-table tbody');
+DATA.forEach((item, i)=>{
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>
+      <div class="cat-cell">
+        <span class="ar">${item.ar}</span>
+        <span class="en">${String(i+1).padStart(2,'0')} · ${item.en}</span>
+      </div>
+    </td>
+    <td>
+      <div class="cat-cell">
+        <span class="swatch" style="background:${item.fill}"></span>
+        <span><span class="fillname">${item.fillName}</span><br>${item.why}</span>
+      </div>
+    </td>
+    <td>${item.concept}</td>
+    <td>${ item.dots
+        ? `<span class="dot-yes">● Yes</span><br><span style="font-size:11.5px;color:var(--ink-500)">${item.dotWhy}</span>`
+        : `<span class="dot-no">○ No</span><br><span style="font-size:11.5px;color:var(--ink-300)">${item.dotWhy}</span>` }</td>
+    <td><span class="pill" style="background:${item.fill};color:${item.text}">${item.ar.slice(0,6)}…</span><br><span style="font-size:11.5px;color:var(--ink-500)">${item.txt}</span></td>`;
+  tbody.appendChild(tr);
+});
+
+/* ── fit after fonts load (twice — re-measure once metrics settle) ── */
+function fitAll(){ fitLabels(grid); fitLabels(strip); }
+fitAll();
+if (document.fonts && document.fonts.ready){ document.fonts.ready.then(()=>{ fitAll(); setTimeout(fitAll, 120); }); }
+window.addEventListener('load', fitAll);
+let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(fitAll, 150); });
+
+/* ════════════════════════════════════════════════════════════
+   TWEAKS — host protocol + live controls
+   ════════════════════════════════════════════════════════════ */
+(function(){
+  const panel   = document.getElementById('tweaks');
+  const elEnergy= document.getElementById('tw-energy');
+  const elWobble= document.getElementById('tw-wobble');
+  const elEVal  = document.getElementById('tw-energy-val');
+  const elWVal  = document.getElementById('tw-wobble-val');
+  const segWrap = document.getElementById('tw-finish');
+
+  const energyWord = v => v < 20 ? 'pebble' : v < 45 ? 'soft' : v < 70 ? 'star' : v < 88 ? 'burst' : 'spike';
+  const wobbleWord = v => v < 12 ? 'crisp' : v < 40 ? 'gentle' : v < 70 ? 'hand-cut' : 'wonky';
+
+  function syncUI(){
+    elEnergy.value = TW.starEnergy;
+    elWobble.value = TW.wobble;
+    elEVal.textContent = energyWord(TW.starEnergy);
+    elWVal.textContent = wobbleWord(TW.wobble);
+    [...segWrap.children].forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.finish === TW.finish)));
+  }
+  function persist(edits){
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  function apply(edits, redraw){
+    Object.assign(TW, edits);
+    syncUI();
+    if (redraw) renderStickers();
+    persist(edits);
+  }
+
+  // live drag = redraw; commit persists (already persisted in apply)
+  elEnergy.addEventListener('input', ()=> apply({starEnergy: +elEnergy.value}, true));
+  elWobble.addEventListener('input', ()=> apply({wobble: +elWobble.value}, true));
+  segWrap.addEventListener('click', e=>{
+    const b = e.target.closest('button[data-finish]'); if(!b) return;
+    apply({finish: b.dataset.finish}, true);
+  });
+
+  // host edit-mode protocol — register listener BEFORE announcing availability
+  window.addEventListener('message', e=>{
+    const t = e.data && e.data.type;
+    if (t === '__activate_edit_mode')   panel.setAttribute('data-on','1');
+    if (t === '__deactivate_edit_mode') panel.removeAttribute('data-on');
+  });
+  document.getElementById('tw-close').addEventListener('click', ()=>{
+    panel.removeAttribute('data-on');
+    try { window.parent.postMessage({type:'__edit_mode_dismissed'}, '*'); } catch(e){}
+  });
+
+  syncUI();
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+})();
+</script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+#grid .content [d="M28 44 Q24 30 42 28 Q64 23 78 36 Q88 47 80 61 Q72 77 50 77 Q27 78 26 58 Q25 50 28 44 Z"] { fill: rgb(229, 53, 15) !important }
+#grid .content [d="M28 44 Q24 30 42 28 Q64 23 78 36 Q88 47 80 61 Q72 77 50 77 Q27 78 26 58 Q25 50 28 44 Z"] { stroke: rgb(255, 138, 110) !important }
+#grid .content [transform="rotate(20 47.6 49.6)"] >rect:nth-child(1) { fill: rgb(246, 223, 168) !important }
+#grid .content [transform="rotate(20 47.6 49.6)"] >rect:nth-child(1) { fill: rgb(255, 138, 110) !important }
+#grid >.cell .art [x="54.8"] { fill: rgb(255, 138, 110) !important }
+#grid .content g >[y="56.8"] { fill: rgb(255, 138, 110) !important }
+#grid >div:nth-child(4) .art >svg { width: 60px !important }
+#grid >div:nth-child(4) .art >svg { width: 10px !important }
+#grid >div:nth-child(4) .art >svg { height: 500px !important }
+#grid >div:nth-child(4) .art >svg { width: 40px !important }
+#grid >div:nth-child(4) .art >svg { height: 5px !important }
+#grid .content [transform="rotate(14 45.8 54.8)"] >rect:nth-child(1) { fill: rgb(255, 138, 110) !important }
+#grid .content [transform="rotate(14 45.8 54.8)"] >[x="51.0"] { fill: rgb(255, 138, 110) !important }
+#grid .content [transform="rotate(14 45.8 54.8)"] >[y="60.0"] { fill: rgb(255, 138, 110) !important }
+#grid .content [d="M42 33 Q42 21 50 17 Q58 21 58 33 Z"] { stroke-width: 6px !important }
+#grid > div:nth-child(12) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1) > rect:nth-child(2) { opacity: 0 !important }
+</style>

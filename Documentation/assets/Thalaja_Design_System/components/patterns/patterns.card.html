@@ -1,0 +1,65 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Patterns — blobs, list rows, chips, cards" subtitle="Domain components: starburst blobs, grocery rows, chips, list cards" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--bg-app); padding: 22px; }
+  .grid { display: flex; flex-direction: column; gap: 18px; }
+  .label { font-family: var(--font-body); font-size: 11px; font-weight: 700; letter-spacing: .04em;
+           text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const NS = window.ThalajaDesignSystem_ed2185;
+    const { Blob, GroceryItem, CategoryChip, ListSummaryCard, QtyStepper } = NS;
+    function Demo() {
+      const [done,setDone] = React.useState(false);
+      const [q,setQ] = React.useState(2);
+      const [cat,setCat] = React.useState('dairy');
+      return (
+        <div className="grid">
+          <div>
+            <div className="label">Starburst blobs</div>
+            <div className="row">
+              <Blob size={64} tone="red" rotate={-6}><span style={{fontSize:26}}>🍅</span></Blob>
+              <Blob size={64} tone="mint" rotate={4}><span style={{fontSize:26}}>🥬</span></Blob>
+              <Blob size={64} tone="indigo" rotate={-4}><span style={{fontSize:26}}>🧀</span></Blob>
+              <Blob size={64} tone="lilac" halo={null}><span style={{fontSize:26}}>🛒</span></Blob>
+            </div>
+          </div>
+          <div>
+            <div className="label">Category chips</div>
+            <div className="row">
+              <CategoryChip label="Dairy" icon="🥛" tone="indigo" selected={cat==='dairy'} onClick={()=>setCat('dairy')} />
+              <CategoryChip label="Produce" icon="🥬" tone="mint" selected={cat==='produce'} onClick={()=>setCat('produce')} />
+              <CategoryChip label="Bakery" icon="🍞" tone="red" selected={cat==='bakery'} onClick={()=>setCat('bakery')} />
+            </div>
+          </div>
+          <div className="row" style={{alignItems:'stretch', gap:16}}>
+            <div style={{flex:1, minWidth:280}}>
+              <div className="label">Grocery row</div>
+              <GroceryItem name="Laban" note="2 cartons · full fat" category="🥛" categoryTone="indigo"
+                addedBy="Reem" checked={done} onToggle={setDone}
+                trailing={<QtyStepper value={q} onChange={setQ} size="sm" />} />
+            </div>
+            <div style={{width:240}}>
+              <div className="label">List card</div>
+              <ListSummaryCard title="Weekend run" household="Al-Otaibi" members={["Reem","Sara","Khalid","Nora","Mona"]} total={12} done={5} accent="red" />
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+  </script>
+</body>
+</html>

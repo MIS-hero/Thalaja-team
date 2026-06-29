@@ -116,14 +116,14 @@ flutter run
         <img src="https://avatars.githubusercontent.com/u/0?v=4" width="72px" alt="Mousa"/>
         <br/><sub><b>Mousa Alrizqi</b></sub>
       </a>
-      <br/><sub>Backend Lead</sub>
+      <br/><sub>Backend Developer</sub>
     </td>
     <td align="center">
       <a href="https://github.com/ahotb">
         <img src="https://avatars.githubusercontent.com/u/0?v=4" width="72px" alt="Abdullah"/>
         <br/><sub><b>Abdullah Almouraibd</b></sub>
       </a>
-      <br/><sub>Backend Developer</sub>
+      <br/><sub>Backend Lead</sub>
     </td>
     <td align="center">
       <a href="https://github.com/Randa-hb10">

@@ -1,0 +1,66 @@
+/* Thalaja — Color tokens
+   Bold, joyful, high-chroma palette pulled from the brand sheet.
+   Base ramps + semantic aliases. */
+:root {
+  /* ── Brand base ───────────────────────────────── */
+  --red: #FF4924;          /* primary action, energy */
+  --red-press: #E5350F;    /* pressed / darker */
+  --red-tint: #FFE3DC;     /* soft fill, backgrounds */
+
+  --mint: #00EE8E;         /* fresh, success, "in stock" */
+  --mint-press: #00C775;
+  --mint-tint: #C9FBE5;
+
+  --indigo: #4444D5;       /* secondary brand, links */
+  --indigo-press: #3232B0;
+  --indigo-tint: #E1E1FA;
+
+  --navy: #0D0050;         /* ink, outlines, deep surfaces */
+  --navy-soft: #2A2173;    /* raised navy surface */
+
+  --lilac: #F3CDEA;        /* gentle accent, tags */
+  --lilac-deep: #E9A9D9;
+
+  --cream: #FFF8ED;        /* paper / app background */
+  --white: #FFFFFF;
+
+  /* ── Ink scale (navy-based) ───────────────────── */
+  --ink-900: var(--navy);
+  --ink-700: #2E2566;
+  --ink-500: #5B5390;      /* muted body */
+  --ink-300: #9C97BC;      /* hints, placeholders */
+  --ink-100: #D9D6E8;      /* hairlines */
+
+  /* ── Semantic surfaces ────────────────────────── */
+  --bg-app: var(--cream);
+  --surface-card: var(--white);
+  --surface-sunken: #FBF3E4;     /* slightly deeper cream */
+  --surface-inverse: var(--navy);
+  --surface-brand: var(--red);
+
+  /* ── Semantic text ────────────────────────────── */
+  --text-strong: var(--navy);
+  --text-body: #211A57;
+  --text-muted: var(--ink-500);
+  --text-hint: var(--ink-300);
+  --text-on-color: var(--cream);
+  --text-on-mint: var(--navy);
+  --link: var(--indigo);
+
+  /* ── Borders ──────────────────────────────────── */
+  --border-hair: var(--ink-100);
+  --border-soft: #ECE7DA;        /* on cream surfaces */
+  --border-bold: var(--navy);    /* signature heavy outline */
+
+  /* ── Semantic states ──────────────────────────── */
+  --success: var(--mint);
+  --success-ink: #006B43;
+  --success-tint: var(--mint-tint);
+  --danger: var(--red);
+  --danger-tint: var(--red-tint);
+  --info: var(--indigo);
+  --info-tint: var(--indigo-tint);
+
+  /* ── Focus ────────────────────────────────────── */
+  --focus-ring: var(--indigo);
+}
