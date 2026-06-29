@@ -1340,7 +1340,7 @@ POST /lists/{listId}/notifications/heading-to-store
 ```
 
 
-## Internal API / Backend Operations Table
+## Backend Operations Table
 
 | Layer | Internal Operation | Purpose | Used By External API | Related Story |
 |---|---|---|---|---|
