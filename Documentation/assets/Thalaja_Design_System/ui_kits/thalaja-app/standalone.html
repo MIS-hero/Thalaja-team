@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thalaja — Interactive Prototype</title>
+<style>
+/* ── Google Fonts ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@font-face {
+  font-family: 'CooperArabic';
+  src: url('../../assets/fonts/CooperArabic.ttf') format('truetype');
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+/* ── Color tokens ─────────────────────────────────────── */
+:root {
+  --red: #FF4924;          --red-press: #E5350F;    --red-tint: #FFE3DC;
+  --mint: #00EE8E;         --mint-press: #00C775;   --mint-tint: #C9FBE5;
+  --indigo: #4444D5;       --indigo-press: #3232B0; --indigo-tint: #E1E1FA;
+  --navy: #0D0050;         --navy-soft: #2A2173;
+  --lilac: #F3CDEA;        --lilac-deep: #E9A9D9;
+  --cream: #FFF8ED;        --white: #FFFFFF;
+  --ink-900: var(--navy);  --ink-700: #2E2566;
+  --ink-500: #5B5390;      --ink-300: #9C97BC;      --ink-100: #D9D6E8;
+  --bg-app: var(--cream);
+  --surface-card: var(--white);
+  --surface-sunken: #FBF3E4;
+  --surface-inverse: var(--navy);
+  --surface-brand: var(--red);
+  --text-strong: var(--navy);
+  --text-body: #211A57;
+  --text-muted: var(--ink-500);
+  --text-hint: var(--ink-300);
+  --text-on-color: var(--cream);
+  --text-on-mint: var(--navy);
+  --link: var(--indigo);
+  --border-hair: var(--ink-100);
+  --border-soft: #ECE7DA;
+  --border-bold: var(--navy);
+  --success: var(--mint);       --success-ink: #006B43; --success-tint: var(--mint-tint);
+  --danger: var(--red);         --danger-tint: var(--red-tint);
+  --info: var(--indigo);        --info-tint: var(--indigo-tint);
+  --focus-ring: var(--indigo);
+}
+
+/* ── Typography tokens ────────────────────────────────── */
+:root {
+  --font-display: 'CooperArabic', 'Baloo 2', system-ui, sans-serif;
+  --font-body: 'Tajawal', 'Baloo 2', system-ui, sans-serif;
+  --font-mono: 'Tajawal', ui-monospace, 'SF Mono', Menlo, monospace;
+  --fw-light: 300; --fw-regular: 400; --fw-medium: 500; --fw-bold: 700; --fw-black: 800;
+  --fs-display-xl: 64px; --fs-display-lg: 48px; --fs-display-md: 36px; --fs-display-sm: 28px;
+  --fs-title: 22px; --fs-body-lg: 18px; --fs-body: 16px; --fs-body-sm: 14px;
+  --fs-caption: 13px; --fs-micro: 11px;
+  --lh-tight: 1.05; --lh-snug: 1.2; --lh-normal: 1.45; --lh-relaxed: 1.6;
+  --ls-tight: -0.01em; --ls-normal: 0; --ls-wide: 0.04em;
+}
+
+/* ── Spacing tokens ───────────────────────────────────── */
+:root {
+  --space-0:0; --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+  --space-5:20px; --space-6:24px; --space-7:32px; --space-8:40px;
+  --space-9:48px; --space-10:64px; --space-12:80px;
+  --gutter:20px; --container-max:480px;
+  --control-h-sm:36px; --control-h-md:48px; --control-h-lg:56px; --tap-min:44px;
+  --icon-sm:18px; --icon-md:24px; --icon-lg:28px;
+}
+
+/* ── Radii tokens ─────────────────────────────────────── */
+:root {
+  --radius-xs:8px; --radius-sm:12px; --radius-md:16px; --radius-lg:24px;
+  --radius-xl:32px; --radius-2xl:40px; --radius-pill:999px;
+}
+
+/* ── Shadow tokens ────────────────────────────────────── */
+:root {
+  --shadow-pop-sm: 2px 3px 0 var(--navy);
+  --shadow-pop:    4px 5px 0 var(--navy);
+  --shadow-pop-lg: 6px 7px 0 var(--navy);
+  --shadow-pop-indigo: 4px 5px 0 var(--indigo);
+  --shadow-pop-red:    4px 5px 0 var(--red);
+  --shadow-sm: 0 2px 6px rgba(13,0,80,.08);
+  --shadow-md: 0 8px 20px rgba(13,0,80,.12);
+  --shadow-lg: 0 18px 40px rgba(13,0,80,.18);
+  --stroke-bold: 2.5px; --stroke-heavy: 4px;
+}
+
+/* ── Base ─────────────────────────────────────────────── */
+:root { color-scheme: light; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+  background: radial-gradient(circle at 50% 0%, #ffe6df 0%, var(--cream) 60%);
+  -webkit-font-smoothing: antialiased;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 16px;
+}
+button { font-family: inherit; }
+::selection { background: var(--mint); color: var(--navy); }
+a { color: var(--link); text-underline-offset: 2px; }
+#root { display: flex; justify-content: center; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+
+<script type="text/babel">
+// ── Icons ──────────────────────────────────────────────────────────────────
+const Icon = ({ d, size = 24, stroke = 'currentColor', sw = 2.2, fill = 'none', children, ...rest }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={stroke}
+    strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" {...rest}>
+    {children || (Array.isArray(d) ? d.map((p, i) => <path key={i} d={p} />) : <path d={d} />)}
+  </svg>
+);
+
+const Icons = {
+  plus:        (p) => <Icon {...p}><path d="M12 5v14"/><path d="M5 12h14"/></Icon>,
+  check:       (p) => <Icon {...p}><path d="M20 6L9 17l-5-5"/></Icon>,
+  search:      (p) => <Icon {...p}><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></Icon>,
+  home:        (p) => <Icon {...p}><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></Icon>,
+  list:        (p) => <Icon {...p}><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><circle cx="3.5" cy="6" r="1.2"/><circle cx="3.5" cy="12" r="1.2"/><circle cx="3.5" cy="18" r="1.2"/></Icon>,
+  users:       (p) => <Icon {...p}><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 5.2a3.2 3.2 0 010 5.6"/><path d="M21 20c0-2.8-1.8-4.8-4-5.3"/></Icon>,
+  bell:        (p) => <Icon {...p}><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 003.4 0"/></Icon>,
+  cart:        (p) => <Icon {...p}><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.2l2.3 12.4a1.6 1.6 0 001.6 1.3h8.9a1.6 1.6 0 001.6-1.3L21 7H5.3"/></Icon>,
+  trash:       (p) => <Icon {...p}><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/></Icon>,
+  chevronLeft: (p) => <Icon {...p}><path d="M15 5l-7 7 7 7"/></Icon>,
+  chevronRight:(p) => <Icon {...p}><path d="M9 5l7 7-7 7"/></Icon>,
+  x:           (p) => <Icon {...p}><path d="M6 6l12 12"/><path d="M18 6L6 18"/></Icon>,
+  dots:        (p) => <Icon {...p}><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></Icon>,
+  share:       (p) => <Icon {...p}><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.3"/><path d="M8.3 13.2l7.4 4.3"/></Icon>,
+  clock:       (p) => <Icon {...p}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></Icon>,
+  sparkle:     (p) => <Icon {...p}><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></Icon>,
+  mic:         (p) => <Icon {...p}><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0"/><path d="M12 18v3"/></Icon>,
+};
+
+// ── UI Primitives ─────────────────────────────────────────────────────────
+const BLOB_PATH = "M 123.7 22.3 Q 110.0 10.0 123.7 22.3 Q 137.4 34.6 154.9 35.1 Q 172.4 35.7 175.7 52.9 Q 179.1 70.1 194.1 81.3 Q 209.1 92.5 196.7 107.8 Q 184.2 123.1 191.6 142.3 Q 199.1 161.4 179.2 165.1 Q 159.4 168.9 151.6 185.8 Q 143.8 202.7 126.9 196.8 Q 110.0 190.9 93.3 196.2 Q 76.7 201.6 68.1 185.9 Q 59.5 170.1 40.7 165.5 Q 21.8 160.9 29.0 142.0 Q 36.1 123.0 22.8 107.6 Q 9.4 92.3 25.9 81.6 Q 42.3 70.9 44.8 53.1 Q 47.2 35.2 64.8 34.6 Q 82.3 33.9 96.2 22.0 Z";
+
+function Blob({ size = 80, tone = 'red', halo = 'var(--cream)', haloWidth = 7, rotate = 0, children, style = {} }) {
+  const TONES = { red:'var(--red)', mint:'var(--mint)', indigo:'var(--indigo)', lilac:'var(--lilac)', navy:'var(--navy)', cream:'var(--cream)' };
+  const fill = TONES[tone] || tone;
+  return (
+    <span style={{ position:'relative', display:'inline-grid', placeItems:'center', width:size, height:size, flex:'none', transform: rotate?`rotate(${rotate}deg)`:undefined, ...style }}>
+      <svg viewBox="0 0 220 220" width={size} height={size} style={{ position:'absolute', inset:0, color:fill }}>
+        <path d={BLOB_PATH} fill="currentColor" stroke={halo||'none'} strokeWidth={halo?haloWidth:0}/>
+      </svg>
+      {children!=null && <span style={{ position:'relative', display:'grid', placeItems:'center', transform: rotate?`rotate(${-rotate}deg)`:undefined }}>{children}</span>}
+    </span>
+  );
+}
+
+function Button({ children, variant='primary', size='md', iconLeft, iconRight, block=false, disabled=false, style={}, ...rest }) {
+  const sizes = { sm:{h:36,p:'0 16px',f:14,g:6}, md:{h:48,p:'0 22px',f:16,g:8}, lg:{h:56,p:'0 28px',f:18,g:10} }[size];
+  const V = {
+    primary:  { bg:'var(--red)',     c:'var(--cream)', sh:'var(--shadow-pop)', b:'2.5px solid var(--navy)' },
+    secondary:{ bg:'var(--indigo)',  c:'var(--cream)', sh:'var(--shadow-pop)', b:'2.5px solid var(--navy)' },
+    mint:     { bg:'var(--mint)',    c:'var(--navy)',  sh:'var(--shadow-pop)', b:'2.5px solid var(--navy)' },
+    outline:  { bg:'transparent',   c:'var(--navy)',  sh:'none',              b:'2.5px solid var(--navy)' },
+    ghost:    { bg:'transparent',   c:'var(--indigo)',sh:'none',              b:'2.5px solid transparent' },
+  }[variant];
+  return (
+    <button disabled={disabled} style={{
+      display: block?'flex':'inline-flex', width: block?'100%':'auto', alignItems:'center', justifyContent:'center',
+      gap:sizes.g, height:sizes.h, padding:sizes.p, fontFamily:'var(--font-body)', fontWeight:700, fontSize:sizes.f, lineHeight:1,
+      color:V.c, background:V.bg, border:V.b, borderRadius:'var(--radius-pill)', boxShadow:V.sh, whiteSpace:'nowrap',
+      cursor:disabled?'not-allowed':'pointer', opacity:disabled?0.45:1, transition:'transform .08s, box-shadow .08s',
+      WebkitTapHighlightColor:'transparent', ...style }}
+      onMouseDown={e=>{ if(disabled||V.sh==='none')return; e.currentTarget.style.transform='translate(2px,3px)'; e.currentTarget.style.boxShadow='none'; }}
+      onMouseUp={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow=V.sh; }}
+      onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow=V.sh; }} {...rest}>
+      {iconLeft && <span style={{display:'inline-flex',flex:'none'}}>{iconLeft}</span>}{children}{iconRight && <span style={{display:'inline-flex',flex:'none'}}>{iconRight}</span>}
+    </button>
+  );
+}
+
+function IconButton({ children, variant='soft', size='md', shape='circle', tone='indigo', style={}, ...rest }) {
+  const dim = { sm:36, md:44, lg:52 }[size];
+  const T = {
+    indigo:{ soft:['var(--indigo-tint)','var(--indigo)'],     solid:['var(--indigo)','var(--cream)'] },
+    red:   { soft:['var(--red-tint)','var(--red-press)'],      solid:['var(--red)','var(--cream)'] },
+    mint:  { soft:['var(--mint-tint)','var(--success-ink)'],   solid:['var(--mint)','var(--navy)'] },
+    navy:  { soft:['rgba(13,0,80,.06)','var(--navy)'],         solid:['var(--navy)','var(--cream)'] },
+  }[tone];
+  let bg='transparent', c='var(--navy)', b='2px solid transparent';
+  if(variant==='soft')   {[bg,c]=T.soft;}
+  else if(variant==='solid')   {[bg,c]=T.solid; b='2px solid var(--navy)';}
+  else if(variant==='outline') {c=T.soft[1]; b='2px solid var(--navy)';}
+  else if(variant==='ghost')   {c=T.soft[1];}
+  return (
+    <button style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:dim, height:dim, flex:'none',
+      background:bg, color:c, border:b, borderRadius: shape==='circle'?'var(--radius-pill)':'var(--radius-md)', cursor:'pointer',
+      transition:'transform .08s', WebkitTapHighlightColor:'transparent', ...style }}
+      onMouseDown={e=>e.currentTarget.style.transform='scale(0.9)'}
+      onMouseUp={e=>e.currentTarget.style.transform=''}
+      onMouseLeave={e=>e.currentTarget.style.transform=''} {...rest}>
+      {children}
+    </button>
+  );
+}
+
+function Badge({ children, tone='neutral', variant='soft', size='md', dot=false, style={} }) {
+  const T = {
+    neutral:{ soft:['rgba(13,0,80,.06)','var(--ink-700)'],     solid:['var(--navy)','var(--cream)'] },
+    red:    { soft:['var(--red-tint)','var(--red-press)'],      solid:['var(--red)','var(--cream)'] },
+    mint:   { soft:['var(--mint-tint)','var(--success-ink)'],   solid:['var(--mint)','var(--navy)'] },
+    indigo: { soft:['var(--indigo-tint)','var(--indigo-press)'],solid:['var(--indigo)','var(--cream)'] },
+    lilac:  { soft:['var(--lilac)','var(--navy)'],              solid:['var(--lilac-deep)','var(--navy)'] },
+  }[tone];
+  const [bg,c] = variant==='solid'?T.solid:T.soft;
+  const d = size==='sm'?{f:11,p:'2px 8px',h:20}:{f:13,p:'3px 10px',h:24};
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', gap:5, height:d.h, padding:d.p,
+      background: variant==='outline'?'transparent':bg, color: variant==='outline'?T.soft[1]:c,
+      border: variant==='outline'?`1.5px solid ${T.soft[1]}`:'1.5px solid transparent',
+      borderRadius:'var(--radius-pill)', fontFamily:'var(--font-body)', fontWeight:700, fontSize:d.f,
+      lineHeight:1, whiteSpace:'nowrap', ...style }}>
+      {dot && <span style={{ width:6, height:6, borderRadius:999, background:'currentColor', flex:'none' }}/>}{children}
+    </span>
+  );
+}
+
+const AV_FILLS = ['var(--red)','var(--indigo)','var(--mint)','var(--lilac-deep)'];
+const AV_INK   = { 'var(--red)':'var(--cream)','var(--indigo)':'var(--cream)','var(--mint)':'var(--navy)','var(--lilac-deep)':'var(--navy)' };
+function Avatar({ name='', src, size=44, shape='circle', colorIndex, style={} }) {
+  const initials = name.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  const idx = colorIndex!=null ? colorIndex%4 : [...name].reduce((a,c)=>a+c.charCodeAt(0),0)%4;
+  const fill = AV_FILLS[idx], ink = AV_INK[fill], fs = Math.round(size*0.4);
+  if(shape==='blob') return (
+    <span style={{ position:'relative', display:'inline-grid', placeItems:'center', width:size, height:size, flex:'none', ...style }}>
+      <svg viewBox="0 0 220 220" width={size} height={size} style={{ position:'absolute', inset:0, color:fill }}><path d={BLOB_PATH} fill="currentColor" stroke="var(--cream)" strokeWidth="8"/></svg>
+      <span style={{ position:'relative', fontFamily:'var(--font-display)', fontWeight:700, fontSize:fs, color:ink }}>{initials}</span>
+    </span>
+  );
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:size, height:size, flex:'none',
+      borderRadius:'var(--radius-pill)', background: src?'var(--surface-sunken)':fill, border:'2px solid var(--navy)',
+      overflow:'hidden', color:ink, fontFamily:'var(--font-display)', fontWeight:700, fontSize:fs, ...style }}>
+      {src ? <img src={src} alt={name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/> : initials}
+    </span>
+  );
+}
+function AvatarGroup({ children, max=4, size=36, style={} }) {
+  const items = React.Children.toArray(children), shown = items.slice(0,max), extra = items.length-shown.length;
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', ...style }}>
+      {shown.map((ch,i)=><span key={i} style={{ marginLeft: i===0?0:-size*0.32, zIndex:i }}>{React.cloneElement(ch,{size})}</span>)}
+      {extra>0 && <span style={{ marginLeft:-size*0.32, width:size, height:size, borderRadius:'var(--radius-pill)', background:'var(--navy)', color:'var(--cream)', border:'2px solid var(--cream)', display:'inline-flex', alignItems:'center', justifyContent:'center', fontFamily:'var(--font-body)', fontWeight:700, fontSize:Math.round(size*0.34), zIndex:99 }}>+{extra}</span>}
+    </span>
+  );
+}
+
+function Checkbox({ checked=false, onChange, label, size=24, style={} }) {
+  return (
+    <label style={{ display:'inline-flex', alignItems:'center', gap:10, cursor:'pointer', userSelect:'none', ...style }}>
+      <span onClick={e=>{ e.preventDefault(); onChange&&onChange(!checked); }} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:size, height:size, flex:'none', borderRadius:Math.round(size*0.32), background: checked?'var(--mint)':'var(--surface-card)', border:'2.5px solid var(--navy)', transition:'background .15s' }}>
+        <svg width={size*0.62} height={size*0.62} viewBox="0 0 24 24" fill="none" style={{ opacity: checked?1:0, transition:'opacity .12s' }}><path d="M5 13l4 4L19 7" stroke="var(--navy)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </span>
+      {label && <span style={{ fontFamily:'var(--font-body)', fontSize:16, fontWeight:500, color:'var(--text-body)', textDecoration: checked?'line-through':'none', textDecorationColor:'var(--ink-300)', opacity: checked?0.55:1 }}>{label}</span>}
+    </label>
+  );
+}
+
+function QtyStepper({ value=1, onChange, min=0, max=99, unit, size='md', style={} }) {
+  const dim = size==='sm'?32:40;
+  const set = n => onChange && onChange(Math.max(min, Math.min(max, n)));
+  const Btn = ({ sign, onClick, dis }) => (
+    <button onClick={onClick} disabled={dis} style={{ width:dim, height:dim, flex:'none', display:'inline-flex', alignItems:'center', justifyContent:'center', background:'var(--surface-card)', border:'none', borderRadius:'var(--radius-pill)', cursor:dis?'not-allowed':'pointer', opacity:dis?0.35:1, color:'var(--navy)', transition:'transform .08s' }}
+      onMouseDown={e=>{ if(!dis) e.currentTarget.style.transform='scale(0.86)'; }}
+      onMouseUp={e=>e.currentTarget.style.transform=''}
+      onMouseLeave={e=>e.currentTarget.style.transform=''}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round">{sign==='+'?<><path d="M12 5v14"/><path d="M5 12h14"/></>:<path d="M5 12h14"/>}</svg>
+    </button>
+  );
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', gap:2, padding:3, background:'var(--surface-sunken)', border:'2px solid var(--navy)', borderRadius:'var(--radius-pill)', ...style }}>
+      <Btn sign="-" onClick={()=>set(value-1)} dis={value<=min}/>
+      <span style={{ minWidth:dim, textAlign:'center', fontFamily:'var(--font-display)', fontWeight:700, fontSize: size==='sm'?16:19, color:'var(--navy)', fontVariantNumeric:'tabular-nums', display:'inline-flex', alignItems:'baseline', justifyContent:'center', gap:3 }}>
+        {value}{unit && <span style={{ fontSize:11, fontFamily:'var(--font-body)', fontWeight:700, color:'var(--text-muted)' }}>{unit}</span>}
+      </span>
+      <Btn sign="+" onClick={()=>set(value+1)} dis={value>=max}/>
+    </span>
+  );
+}
+
+function SegmentedControl({ options=[], value, onChange, size='md', style={} }) {
+  const opts = options.map(o=> typeof o==='string'?{value:o,label:o}:o);
+  const h = size==='sm'?36:44;
+  return (
+    <div style={{ display:'inline-flex', alignItems:'center', gap:4, padding:4, background:'var(--surface-sunken)', border:'2px solid var(--navy)', borderRadius:'var(--radius-pill)', ...style }}>
+      {opts.map(o=>{ const a=o.value===value; return (
+        <button key={o.value} onClick={()=>onChange&&onChange(o.value)} style={{ display:'inline-flex', alignItems:'center', gap:6, height:h, padding:'0 18px', border:'none', cursor:'pointer', borderRadius:'var(--radius-pill)', background:a?'var(--navy)':'transparent', color:a?'var(--cream)':'var(--text-muted)', fontFamily:'var(--font-body)', fontWeight:700, fontSize:size==='sm'?14:16, transition:'background .15s, color .15s', whiteSpace:'nowrap' }}>
+          {o.label}{o.badge!=null && <span style={{ minWidth:18, height:18, padding:'0 5px', borderRadius:999, background:a?'var(--mint)':'var(--ink-100)', color:'var(--navy)', fontSize:11, fontWeight:700, display:'inline-flex', alignItems:'center', justifyContent:'center' }}>{o.badge}</span>}
+        </button>
+      ); })}
+    </div>
+  );
+}
+
+function Card({ children, variant='plain', tone, padding='md', radius='lg', style={}, ...rest }) {
+  const pads  = { none:0, sm:'12px', md:'20px', lg:'32px' };
+  const radii = { md:'var(--radius-md)', lg:'var(--radius-lg)', xl:'var(--radius-xl)' };
+  const fills = { red:'var(--red-tint)', mint:'var(--mint-tint)', indigo:'var(--indigo-tint)', lilac:'var(--lilac)' };
+  let bg='var(--surface-card)', border='1.5px solid var(--border-soft)', boxShadow='none';
+  if(tone) bg = fills[tone]||bg;
+  if(variant==='pop')    { border='2.5px solid var(--navy)'; boxShadow='var(--shadow-pop)'; }
+  else if(variant==='sunken') { bg='var(--surface-sunken)'; }
+  else if(variant==='brand')  { bg='var(--red)'; border='2.5px solid var(--navy)'; boxShadow='var(--shadow-pop)'; }
+  return <div style={{ background:bg, border, borderRadius:radii[radius], boxShadow, padding:pads[padding], color: variant==='brand'?'var(--cream)':'var(--text-body)', ...style }} {...rest}>{children}</div>;
+}
+
+function CategoryChip({ label, icon, selected=false, onClick, tone='indigo', style={} }) {
+  const T = { indigo:'var(--indigo)', red:'var(--red)', mint:'var(--mint)', lilac:'var(--lilac-deep)' };
+  const sel = T[tone], selInk = (tone==='mint'||tone==='lilac')?'var(--navy)':'var(--cream)';
+  return (
+    <button onClick={onClick} style={{ display:'inline-flex', alignItems:'center', gap:7, height:38, padding:'0 16px', cursor:'pointer', background: selected?sel:'var(--surface-card)', color: selected?selInk:'var(--text-body)', border:`2px solid ${selected?'var(--navy)':'var(--border-soft)'}`, borderRadius:'var(--radius-pill)', fontFamily:'var(--font-body)', fontWeight:700, fontSize:14, boxShadow: selected?'var(--shadow-pop-sm)':'none', transition:'background .15s, transform .08s, box-shadow .08s', whiteSpace:'nowrap', ...style }}
+      onMouseDown={e=>e.currentTarget.style.transform='scale(0.96)'}
+      onMouseUp={e=>e.currentTarget.style.transform=''}
+      onMouseLeave={e=>e.currentTarget.style.transform=''}>
+      {icon!=null && <span style={{ fontSize:16, lineHeight:1 }}>{icon}</span>}{label}
+    </button>
+  );
+}
+
+function GroceryItem({ name, note, checked=false, onToggle, category, categoryTone='lilac', addedBy, trailing, style={} }) {
+  const tf = { red:'var(--red-tint)', mint:'var(--mint-tint)', indigo:'var(--indigo-tint)', lilac:'var(--lilac)' }[categoryTone]||'var(--lilac)';
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 14px', background:'var(--surface-card)', border:'1.5px solid var(--border-soft)', borderRadius:'var(--radius-md)', opacity:checked?0.72:1, transition:'opacity .15s', ...style }}>
+      <Checkbox checked={checked} onChange={onToggle} size={26}/>
+      {category!=null && <span style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:40, height:40, flex:'none', fontSize:20, background:tf, borderRadius:'var(--radius-sm)' }}>{category}</span>}
+      <span style={{ flex:1, minWidth:0, display:'flex', flexDirection:'column', gap:2 }}>
+        <span style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:16, color:'var(--text-strong)', textDecoration:checked?'line-through':'none', textDecorationColor:'var(--ink-300)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{name}</span>
+        {note && <span style={{ fontFamily:'var(--font-body)', fontSize:13, color:'var(--text-muted)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{note}</span>}
+      </span>
+      {addedBy && <Avatar name={addedBy} size={28}/>}{trailing!=null && <span style={{ flex:'none' }}>{trailing}</span>}
+    </div>
+  );
+}
+
+function ListSummaryCard({ title, household, members=[], total=0, done=0, accent='red', onClick, style={} }) {
+  const A = { red:'var(--red)', indigo:'var(--indigo)', mint:'var(--mint)', lilac:'var(--lilac-deep)' };
+  const bar = A[accent]||A.red, pct = total>0?Math.round(done/total*100):0;
+  return (
+    <div onClick={onClick} style={{ display:'flex', flexDirection:'column', gap:14, padding:18, background:'var(--surface-card)', border:'2.5px solid var(--navy)', borderRadius:'var(--radius-lg)', boxShadow:'var(--shadow-pop)', cursor:onClick?'pointer':'default', transition:'transform .1s, box-shadow .1s', ...style }}
+      onMouseDown={e=>{ if(onClick){ e.currentTarget.style.transform='translate(2px,3px)'; e.currentTarget.style.boxShadow='none'; } }}
+      onMouseUp={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='var(--shadow-pop)'; }}
+      onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='var(--shadow-pop)'; }}>
+      <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:12 }}>
+        <div style={{ minWidth:0 }}>
+          <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:22, color:'var(--text-strong)', lineHeight:1.15, marginBottom:2 }}>{title}</div>
+          {household && <div style={{ fontFamily:'var(--font-body)', fontSize:13, color:'var(--text-muted)', fontWeight:600 }}>{household}</div>}
+        </div>
+        <span style={{ width:14, height:14, borderRadius:999, background:bar, flex:'none', border:'2px solid var(--navy)', marginTop:4 }}/>
+      </div>
+      <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
+        <div style={{ height:12, borderRadius:999, background:'var(--surface-sunken)', overflow:'hidden', border:'1.5px solid var(--border-soft)' }}><div style={{ width:`${pct}%`, height:'100%', background:bar, borderRadius:999, transition:'width .3s' }}/></div>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <span style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:13, color:'var(--text-muted)' }}>{done}/{total} done</span>
+          {members.length>0 && <AvatarGroup size={28} max={4}>{members.map((m,i)=><Avatar key={i} name={m}/>)}</AvatarGroup>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── App ────────────────────────────────────────────────────────────────────
+const { useState } = React;
+const I = Icons;
+
+const MEMBERS = ['Reem','Sara','Khalid','Nora','Mona'];
+const CATS = [
+  { id:'all',     label:'All',     icon:'🧺' },
+  { id:'dairy',   label:'Dairy',   icon:'🥛', tone:'indigo' },
+  { id:'produce', label:'Produce', icon:'🥬', tone:'mint' },
+  { id:'bakery',  label:'Bakery',  icon:'🍞', tone:'red' },
+  { id:'pantry',  label:'Pantry',  icon:'🫙', tone:'lilac' },
+  { id:'meat',    label:'Meat',    icon:'🍗', tone:'red' },
+];
+const initialLists = [
+  { id:'l1', title:'Weekend run', accent:'red', members:['Reem','Sara','Khalid','Nora','Mona'], items:[
+    { id:1, name:'Laban',        note:'2 cartons · full fat', cat:'dairy',   by:'Reem',   qty:2, done:false },
+    { id:2, name:'Cucumber',     note:'1 kg',                 cat:'produce', by:'Sara',   qty:1, done:false },
+    { id:3, name:'Tamees bread', note:'4 loaves',             cat:'bakery',  by:'Khalid', qty:4, done:false },
+    { id:4, name:'Tomatoes',     note:'1.5 kg',               cat:'produce', by:'Nora',   qty:1, done:true  },
+    { id:5, name:'Eggs',         note:'1 tray',               cat:'dairy',   by:'Reem',   qty:1, done:true  },
+    { id:6, name:'Chicken',      note:'2 kg · whole',         cat:'meat',    by:'Mona',   qty:2, done:false },
+  ]},
+  { id:'l2', title:'Ramadan pantry', accent:'indigo', members:['Reem','Nora','Mona'], items:[
+    { id:1, name:'Dates — Sukkari', note:'2 kg',      cat:'pantry', by:'Nora', qty:2, done:true  },
+    { id:2, name:'Vermicelli',      note:'3 packs',   cat:'pantry', by:'Reem', qty:3, done:false },
+    { id:3, name:'Rose water',      note:'1 bottle',  cat:'pantry', by:'Mona', qty:1, done:false },
+  ]},
+  { id:'l3', title:'Coffee corner', accent:'mint', members:['Khalid','Reem'], items:[
+    { id:1, name:'Arabic coffee beans', note:'500 g', cat:'pantry', by:'Khalid', qty:1, done:false },
+    { id:2, name:'Cardamom',            note:'100 g', cat:'pantry', by:'Reem',   qty:1, done:false },
+  ]},
+];
+const catIcon = id => (CATS.find(c=>c.id===id)||{}).icon || '🛒';
+const catTone = id => (CATS.find(c=>c.id===id)||{}).tone || 'lilac';
+
+function Phone({ children }) {
+  return (
+    <div style={{ width:390, height:'min(844px, 94vh)', background:'var(--cream)', borderRadius:46, border:'3px solid var(--navy)',
+      boxShadow:'0 30px 70px rgba(13,0,80,.28)', overflow:'hidden', position:'relative', display:'flex', flexDirection:'column' }}>
+      <div style={{ height:50, flex:'none', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 26px 0 30px', fontFamily:'var(--font-body)', fontWeight:700, fontSize:15, color:'var(--navy)' }}>
+        <span>9:41</span>
+        <span style={{ position:'absolute', left:'50%', top:9, transform:'translateX(-50%)', width:110, height:26, background:'var(--navy)', borderRadius:999 }}/>
+        <span style={{ display:'flex', gap:6, alignItems:'center' }}>
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="var(--navy)"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="1.5" width="3" height="10.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.35"/></svg>
+          <svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="3" stroke="var(--navy)" strokeWidth="1.5"/><rect x="3" y="3" width="14" height="6" rx="1.5" fill="var(--navy)"/><rect x="22" y="4" width="1.5" height="4" rx="1" fill="var(--navy)"/></svg>
+        </span>
+      </div>
+      <div style={{ flex:1, minHeight:0, position:'relative', display:'flex', flexDirection:'column' }}>{children}</div>
+    </div>
+  );
+}
+
+function TabBar({ tab, setTab }) {
+  const tabs = [ {id:'home',icon:I.home,label:'Lists'}, {id:'shop',icon:I.cart,label:'Shop'}, {id:'people',icon:I.users,label:'Household'} ];
+  return (
+    <div style={{ flex:'none', display:'flex', alignItems:'center', justifyContent:'space-around', padding:'8px 16px 22px', background:'var(--surface-card)', borderTop:'1.5px solid var(--border-soft)' }}>
+      {tabs.map(t=>{ const a=t.id===tab; const Ico=t.icon; return (
+        <button key={t.id} onClick={()=>setTab(t.id)} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:3, border:'none', background:'none', cursor:'pointer', padding:'4px 14px', color:a?'var(--red)':'var(--ink-300)' }}>
+          <Ico size={25} sw={a?2.6:2.2}/>
+          <span style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:11, color:a?'var(--navy)':'var(--ink-300)' }}>{t.label}</span>
+        </button>
+      ); })}
+    </div>
+  );
+}
+
+function HomeScreen({ lists, openList, onAdd }) {
+  return (
+    <div style={{ flex:1, minHeight:0, overflowY:'auto', padding:'8px 20px 16px' }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18 }}>
+        <div>
+          <div style={{ fontFamily:'var(--font-body)', fontSize:14, fontWeight:600, color:'var(--text-muted)' }}>Sabah al-khair, Reem 👋</div>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700, color:'var(--navy)', lineHeight:1.2 }}>Al-Otaibi fridge</div>
+        </div>
+        <IconButton tone="indigo" variant="soft" ariaLabel="Notifications"><I.bell size={22}/></IconButton>
+      </div>
+      <div onClick={onAdd} style={{ display:'flex', alignItems:'center', gap:12, padding:'13px 16px', background:'var(--surface-card)', border:'2px solid var(--navy)', borderRadius:'var(--radius-pill)', boxShadow:'var(--shadow-pop-sm)', cursor:'pointer', marginBottom:22 }}>
+        <I.search size={20} stroke="var(--ink-300)"/>
+        <span style={{ flex:1, fontFamily:'var(--font-body)', fontWeight:600, color:'var(--ink-300)', fontSize:15 }}>Add to a list…</span>
+        <I.mic size={20} stroke="var(--indigo)"/>
+      </div>
+      <Card tone="lilac" radius="lg" padding="md" style={{ display:'flex', alignItems:'center', gap:14, marginBottom:24, border:'2px solid var(--navy)' }}>
+        <Blob size={56} tone="red" rotate={-8}><I.sparkle size={26} stroke="var(--cream)"/></Blob>
+        <div style={{ flex:1 }}>
+          <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:17, color:'var(--navy)' }}>Suhoor is in 3 days</div>
+          <div style={{ fontFamily:'var(--font-body)', fontSize:13, color:'var(--navy)', opacity:.8 }}>Thalaja noticed you're low on dates & laban.</div>
+        </div>
+      </Card>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
+        <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:20, color:'var(--navy)' }}>Shared lists</span>
+        <Badge tone="neutral">{lists.length}</Badge>
+      </div>
+      <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+        {lists.map(l=>(
+          <ListSummaryCard key={l.id} title={l.title} household="Al-Otaibi household" members={l.members}
+            total={l.items.length} done={l.items.filter(i=>i.done).length} accent={l.accent} onClick={()=>openList(l.id)} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ListDetail({ list, back, toggle, setQty, onAdd }) {
+  const [cat, setCat] = useState('all');
+  const [seg, setSeg] = useState('todo');
+  const visible = list.items.filter(i =>
+    (cat==='all' || i.cat===cat) && (seg==='todo' ? !i.done : i.done));
+  const todo = list.items.filter(i=>!i.done).length;
+  const done = list.items.filter(i=>i.done).length;
+  return (
+    <div style={{ flex:1, minHeight:0, display:'flex', flexDirection:'column' }}>
+      <div style={{ flex:'none', padding:'4px 18px 16px' }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:14 }}>
+          <IconButton tone="navy" variant="soft" ariaLabel="Back" onClick={back}><I.chevronLeft size={22}/></IconButton>
+          <div style={{ display:'flex', gap:8 }}>
+            <IconButton tone="navy" variant="soft" ariaLabel="Share"><I.share size={20}/></IconButton>
+            <IconButton tone="navy" variant="soft" ariaLabel="More"><I.dots size={20}/></IconButton>
+          </div>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:14 }}>
+          <Blob size={52} tone={list.accent} rotate={-6}><I.cart size={24} stroke={list.accent==='mint'?'var(--navy)':'var(--cream)'}/></Blob>
+          <div style={{ flex:1, minWidth:0 }}>
+            <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:26, color:'var(--navy)', lineHeight:1 }}>{list.title}</div>
+            <div style={{ display:'flex', alignItems:'center', gap:8, marginTop:6 }}>
+              <AvatarGroup size={26} max={4}>{list.members.map((m,i)=><Avatar key={i} name={m}/>)}</AvatarGroup>
+              <span style={{ fontFamily:'var(--font-body)', fontSize:13, fontWeight:600, color:'var(--text-muted)' }}>{list.members.length} shopping</span>
+            </div>
+          </div>
+        </div>
+        <SegmentedControl value={seg} onChange={setSeg} size="sm" style={{ width:'100%', display:'flex' }}
+          options={[{value:'todo',label:'To buy',badge:todo},{value:'done',label:'Bought',badge:done}]} />
+      </div>
+      <div style={{ flex:'none', display:'flex', gap:8, padding:'0 18px 14px', overflowX:'auto' }}>
+        {CATS.map(c=>(
+          <CategoryChip key={c.id} label={c.label} icon={c.icon} tone={c.tone||'indigo'} selected={cat===c.id} onClick={()=>setCat(c.id)} />
+        ))}
+      </div>
+      <div style={{ flex:1, minHeight:0, overflowY:'auto', padding:'0 18px 90px', display:'flex', flexDirection:'column', gap:10 }}>
+        {visible.length===0 ? (
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12, padding:'40px 0', textAlign:'center' }}>
+            <Blob size={88} tone="lilac" halo={null}><I.check size={40} stroke="var(--navy)"/></Blob>
+            <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:19, color:'var(--navy)' }}>{seg==='todo'?'All bought! 🎉':'Nothing here yet'}</div>
+          </div>
+        ) : visible.map(it=>(
+          <GroceryItem key={it.id} name={it.name} note={it.note} category={catIcon(it.cat)} categoryTone={catTone(it.cat)}
+            addedBy={it.by} checked={it.done} onToggle={()=>toggle(it.id)}
+            trailing={!it.done ? <QtyStepper value={it.qty} onChange={q=>setQty(it.id,q)} size="sm"/> : null} />
+        ))}
+      </div>
+      <div style={{ position:'absolute', left:0, right:0, bottom:0, padding:'12px 18px 18px', background:'linear-gradient(to top, var(--cream) 70%, transparent)' }}>
+        <Button variant="primary" block size="lg" iconLeft={<I.plus size={22}/>} onClick={onAdd}>Add item</Button>
+      </div>
+    </div>
+  );
+}
+
+function AddSheet({ onClose, onConfirm }) {
+  const [name, setName] = useState('');
+  const [cat, setCat] = useState('produce');
+  const [qty, setQty] = useState(1);
+  return (
+    <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', flexDirection:'column', justifyContent:'flex-end' }}>
+      <div onClick={onClose} style={{ position:'absolute', inset:0, background:'rgba(13,0,80,.4)' }}/>
+      <div style={{ position:'relative', background:'var(--surface-card)', borderTopLeftRadius:32, borderTopRightRadius:32, border:'2.5px solid var(--navy)', borderBottom:'none', padding:'14px 20px 26px', boxShadow:'0 -10px 40px rgba(13,0,80,.2)' }}>
+        <div style={{ width:44, height:5, borderRadius:999, background:'var(--ink-100)', margin:'0 auto 16px' }}/>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
+          <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:22, color:'var(--navy)', lineHeight:1.2 }}>Add item</span>
+          <IconButton tone="navy" variant="soft" size="sm" ariaLabel="Close" onClick={onClose}><I.x size={18}/></IconButton>
+        </div>
+        <input autoFocus value={name} onChange={e=>setName(e.target.value)} placeholder="What do we need?"
+          style={{ width:'100%', height:52, padding:'0 18px', marginBottom:16, boxSizing:'border-box', background:'var(--surface-card)', border:'2px solid var(--navy)', borderRadius:'var(--radius-md)', outline:'none', fontFamily:'var(--font-body)', fontSize:17, fontWeight:600, color:'var(--text-body)' }}/>
+        <div style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:13, color:'var(--text-muted)', marginBottom:8 }}>Category</div>
+        <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:18 }}>
+          {CATS.filter(c=>c.id!=='all').map(c=>(
+            <CategoryChip key={c.id} label={c.label} icon={c.icon} tone={c.tone||'indigo'} selected={cat===c.id} onClick={()=>setCat(c.id)} />
+          ))}
+        </div>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:22 }}>
+          <span style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:15, color:'var(--navy)' }}>Quantity</span>
+          <QtyStepper value={qty} onChange={setQty} min={1}/>
+        </div>
+        <Button variant="primary" block size="lg" iconLeft={<I.plus size={22}/>}
+          onClick={()=>onConfirm({ name: name.trim()||'New item', cat, qty, by:'Reem' })}>Add to list</Button>
+      </div>
+    </div>
+  );
+}
+
+function ShopScreen({ lists, openList }) {
+  const all = lists.flatMap(l => l.items.filter(i=>!i.done).map(i=>({ ...i, list:l.title, listId:l.id, accent:l.accent })));
+  const byCat = {};
+  all.forEach(i => { (byCat[i.cat] = byCat[i.cat]||[]).push(i); });
+  return (
+    <div style={{ flex:1, minHeight:0, overflowY:'auto', padding:'8px 20px 16px' }}>
+      <div style={{ fontFamily:'var(--font-display)', fontSize:30, fontWeight:700, color:'var(--navy)', marginBottom:4 }}>Shopping run</div>
+      <div style={{ fontFamily:'var(--font-body)', fontSize:14, color:'var(--text-muted)', fontWeight:600, marginBottom:20 }}>{all.length} items across {lists.length} lists, grouped by aisle</div>
+      {Object.entries(byCat).map(([c, items])=>(
+        <div key={c} style={{ marginBottom:22 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
+            <span style={{ fontSize:18 }}>{catIcon(c)}</span>
+            <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:17, color:'var(--navy)', textTransform:'capitalize' }}>{c}</span>
+            <Badge tone="neutral" size="sm">{items.length}</Badge>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {items.map(it=>(
+              <div key={it.listId+it.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'11px 14px', background:'var(--surface-card)', border:'1.5px solid var(--border-soft)', borderRadius:'var(--radius-md)' }}>
+                <span style={{ width:34, height:34, flex:'none', borderRadius:'var(--radius-sm)', background:'var(--surface-sunken)', display:'inline-flex', alignItems:'center', justifyContent:'center', fontSize:17 }}>{catIcon(it.cat)}</span>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:15, color:'var(--text-strong)' }}>{it.name}</div>
+                  <div style={{ fontFamily:'var(--font-body)', fontSize:12, color:'var(--text-muted)' }}>{it.list} · {it.qty}×</div>
+                </div>
+                <Avatar name={it.by} size={26}/>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Household() {
+  const roles = { Reem:'Admin', Sara:'Member', Khalid:'Member', Nora:'Member', Mona:'Member' };
+  return (
+    <div style={{ flex:1, minHeight:0, overflowY:'auto', padding:'8px 20px 16px' }}>
+      <div style={{ fontFamily:'var(--font-display)', fontSize:30, fontWeight:700, color:'var(--navy)', marginBottom:18 }}>Household</div>
+      <Card variant="brand" radius="xl" padding="lg" style={{ marginBottom:22, position:'relative', overflow:'hidden' }}>
+        <Blob size={130} tone="indigo" halo="var(--red)" haloWidth={5} style={{ position:'absolute', right:-30, top:-30, opacity:.9 }}/>
+        <div style={{ position:'relative' }}>
+          <div style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:13, opacity:.85, letterSpacing:'.04em', textTransform:'uppercase' }}>Family fridge</div>
+          <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:30, lineHeight:1.05, margin:'4px 0 14px' }}>Al-Otaibi household</div>
+          <AvatarGroup size={38} max={5}>{MEMBERS.map((m,i)=><Avatar key={i} name={m}/>)}</AvatarGroup>
+        </div>
+      </Card>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
+        <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:20, color:'var(--navy)' }}>Members</span>
+        <Button variant="outline" size="sm" iconLeft={<I.plus size={18}/>}>Invite</Button>
+      </div>
+      <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:20 }}>
+        {MEMBERS.map(m=>(
+          <div key={m} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 14px', background:'var(--surface-card)', border:'1.5px solid var(--border-soft)', borderRadius:'var(--radius-md)' }}>
+            <Avatar name={m} size={42}/>
+            <div style={{ flex:1 }}>
+              <div style={{ fontFamily:'var(--font-body)', fontWeight:700, fontSize:16, color:'var(--text-strong)' }}>{m}</div>
+              <div style={{ fontFamily:'var(--font-body)', fontSize:12, color:'var(--text-muted)' }}>{m==='Reem'?'You':'Joined this month'}</div>
+            </div>
+            <Badge tone={roles[m]==='Admin'?'mint':'neutral'}>{roles[m]}</Badge>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tab, setTab]     = useState('home');
+  const [lists, setLists] = useState(initialLists);
+  const [openId, setOpenId] = useState(null);
+  const [sheet, setSheet] = useState(false);
+
+  const open   = lists.find(l=>l.id===openId);
+  const update = (id, fn) => setLists(ls => ls.map(l => l.id===id ? fn(l) : l));
+  const toggle = (itemId) => update(openId, l => ({ ...l, items: l.items.map(i=>i.id===itemId?{...i,done:!i.done}:i) }));
+  const setQty = (itemId, q) => update(openId, l => ({ ...l, items: l.items.map(i=>i.id===itemId?{...i,qty:q}:i) }));
+  const addItem = (data) => {
+    const targetId = openId || lists[0].id;
+    update(targetId, l => ({ ...l, items: [{ id: Date.now(), name:data.name, note:`${data.qty} · added by ${data.by}`, cat:data.cat, by:data.by, qty:data.qty, done:false }, ...l.items] }));
+    if(!openId){ setOpenId(targetId); setTab('home'); }
+    setSheet(false);
+  };
+
+  let body;
+  if(open)           { body = <ListDetail list={open} back={()=>setOpenId(null)} toggle={toggle} setQty={setQty} onAdd={()=>setSheet(true)} />; }
+  else if(tab==='people') { body = <Household/>; }
+  else if(tab==='shop')   { body = <ShopScreen lists={lists} openList={id=>setOpenId(id)} />; }
+  else                    { body = <HomeScreen lists={lists} openList={id=>setOpenId(id)} onAdd={()=>setSheet(true)} />; }
+
+  return (
+    <Phone>
+      {body}
+      {!open && <TabBar tab={tab} setTab={t=>{ setTab(t); setOpenId(null); }} />}
+      {sheet && <AddSheet onClose={()=>setSheet(false)} onConfirm={addItem} />}
+    </Phone>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

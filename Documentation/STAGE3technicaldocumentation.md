@@ -34,7 +34,8 @@
 ### API Reference
 
 - [External API Table](#external-api-table)
-- [Internal API / Backend Operations Table](#internal-api--backend-operations-table)
+- [Internal API Table](#internal-api-table)
+- [Backend Operations Table](#backend-operations-table)
 
 ### Engineering
 
@@ -1016,6 +1017,19 @@ sequenceDiagram
         App-->>User: Show action timeline
     end
 ```
+## External API Table
+
+| Service | Call | Method | Purpose | Used By |
+|---|---|---|---|---|
+| Authentica | POST /otp/send | HTTP | Send OTP via SMS, WhatsApp, or email | auth_service — registration + login |
+| Authentica | POST /otp/verify | HTTP | Verify submitted OTP code | auth_service — registration + login |
+| Firebase FCM | POST /fcm/send (batch) | HTTP | Push notification to one or many device tokens | notification_service |
+| Supabase PostgreSQL | TCP connection (SQLAlchemy) | — | All persistent read/write operations | all repositories |
+| Supabase Storage | PUT /object/{bucket}/{path} | HTTP | Upload item or recipe images | item_service, recipe_service |
+| Altamimi Catalog | GET /items/barcode/{code} | HTTP | Barcode-to-product lookup for item add | item_service |
+
+---
+
 ## Internal API Table
 
 | Module | API Name | Method | Endpoint | Auth | Related Story |

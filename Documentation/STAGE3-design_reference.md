@@ -1,12 +1,24 @@
-# Thalaja — Design Reference
+<div align="center" style="background:#0D0050;border-radius:20px;padding:48px 32px 36px;margin-bottom:4px;">
+  <img src="assets/Thalaja_Design_System/assets/logo-app-icon.png" width="96" height="96" style="border-radius:24px;display:block;margin:0 auto 20px;" alt="Thalaja"/>
+  <h1 style="color:#FFF8ED;font-size:40px;font-weight:800;margin:0 0 10px;letter-spacing:-0.01em;">Thalaja — Design Reference</h1>
+  <p style="color:#9C97BC;font-size:17px;margin:0 0 24px;">ثلاجة &nbsp;·&nbsp; Shared grocery lists for Saudi families</p>
+  <p>
+    <img src="https://img.shields.io/badge/Sprint_4-Active-FF4924?style=flat-square&labelColor=0D0050" alt="Sprint 4 Active"/>
+    <img src="https://img.shields.io/badge/iOS_%26_Android-Flutter-FF4924?style=flat-square&logo=flutter&logoColor=white&labelColor=0D0050" alt="Flutter"/>
+    <img src="https://img.shields.io/badge/MVP-Jul_25_2026-00EE8E?style=flat-square&labelColor=0D0050" alt="MVP Jul 25"/>
+    <img src="https://img.shields.io/badge/Design_System-Live-4444D5?style=flat-square&labelColor=0D0050" alt="Design System"/>
+  </p>
+</div>
 
-> These notes define layout, components, interactions, and states for each screen.
-> Use them to build frames in Figma. Once designs are complete, embed the Figma mockup links back into the main Stage 3 documentation.
+---
+
+> Layout, component specs, token reference, and interaction states for every screen. Open the interactive prototype below to explore the full flow, then use the screen specs to build in Figma.
 
 ---
 
 ## Table of Contents
 
+- [Interactive Prototype](#interactive-prototype)
 - [Brand System](#brand-system)
   - [Color Tokens](#color-tokens)
   - [Typography](#typography)
@@ -22,7 +34,6 @@
   - [Core](#core)
   - [Forms](#forms)
   - [Patterns](#patterns)
-- [App Mockup](#app-mockup)
 - [Screen Inventory](#screen-inventory)
   - [Screen 1 — Register](#screen-1--register)
   - [Screen 2 — Login](#screen-2--login)
@@ -38,23 +49,82 @@
 
 ---
 
+## Interactive Prototype
+
+<div align="center">
+
+<!-- Phone shell -->
+<div style="display:inline-block;background:#0D0050;border-radius:52px;padding:14px 14px 24px;box-shadow:0 40px 100px rgba(13,0,80,.55),0 0 0 1px rgba(255,255,255,.07);">
+
+<!-- Status bar -->
+<div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:#FFF8ED;border-radius:38px 38px 0 0;position:relative;">
+  <span style="font-size:14px;font-weight:700;color:#0D0050;font-family:system-ui;">9:41</span>
+  <span style="position:absolute;left:50%;top:9px;transform:translateX(-50%);width:108px;height:26px;background:#0D0050;border-radius:999px;"></span>
+  <span style="display:flex;gap:5px;align-items:center;">
+    <svg width="17" height="11" viewBox="0 0 18 12" fill="#0D0050"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="1.5" width="3" height="10.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.3"/></svg>
+    <svg width="22" height="11" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="20" height="10" rx="3" stroke="#0D0050" stroke-width="1.5"/><rect x="3" y="3" width="14" height="6" rx="1.5" fill="#0D0050"/><rect x="22" y="4" width="1.5" height="4" rx="1" fill="#0D0050"/></svg>
+  </span>
+</div>
+
+<!-- App iframe -->
+<iframe
+  src="assets/Thalaja_Design_System/ui_kits/thalaja-app/standalone.html"
+  width="390"
+  height="756"
+  style="border:none;display:block;background:#FFF8ED;"
+  title="Thalaja Interactive Prototype">
+</iframe>
+
+<!-- Home bar -->
+<div style="height:30px;display:flex;align-items:center;justify-content:center;background:#FFF8ED;border-radius:0 0 38px 38px;">
+  <div style="width:118px;height:5px;background:#0D0050;border-radius:999px;opacity:.2;"></div>
+</div>
+
+</div>
+
+<br>
+
+**↑ Fully interactive — click through all screens**
+
+<sub>Lists · List Detail · Shop · Household &nbsp;|&nbsp; Viewport: 390 × 844 (iPhone 14)</sub>
+
+<br>
+
+<sub>If the prototype doesn't load above, <a href="assets/Thalaja_Design_System/ui_kits/thalaja-app/standalone.html">open it directly in a browser →</a></sub>
+
+</div>
+
+---
+
 ## Brand System
 
 ### Color Tokens
 
-| Name | CSS Token | Hex | Role |
-|---|---|---|---|
-| **Tomato** | `--red` | `#FF4924` | **Primary** — buttons, CTAs, logo fill, key actions |
-| Night | `--navy` | `#0D0050` | Text, dark backgrounds, logo stroke |
-| Cream | `--cream` | `#FFF8ED` | App background |
-| Mint | `--mint` | `#00EE8E` | Accent, success states, ث dot motif |
-| Peri | `--indigo` | `#4444D5` | Secondary, app icon background |
-| Lavender | `--lilac` | `#F3CDEA` | Soft accent |
+<table>
+<tr>
+  <td align="center" width="116" style="background:#FF4924;padding:22px 8px 14px;border-radius:12px 12px 0 0;border:2.5px solid #0D0050;border-bottom:none;"><strong style="color:#FFF8ED;font-size:14px;display:block;">Tomato</strong></td>
+  <td align="center" width="116" style="background:#0D0050;padding:22px 8px 14px;border-radius:12px 12px 0 0;border:2.5px solid #0D0050;border-bottom:none;"><strong style="color:#FFF8ED;font-size:14px;display:block;">Night</strong></td>
+  <td align="center" width="116" style="background:#FFF8ED;padding:22px 8px 14px;border-radius:12px 12px 0 0;border:2.5px solid #0D0050;border-bottom:none;"><strong style="color:#0D0050;font-size:14px;display:block;">Cream</strong></td>
+  <td align="center" width="116" style="background:#00EE8E;padding:22px 8px 14px;border-radius:12px 12px 0 0;border:2.5px solid #0D0050;border-bottom:none;"><strong style="color:#0D0050;font-size:14px;display:block;">Mint</strong></td>
+  <td align="center" width="116" style="background:#4444D5;padding:22px 8px 14px;border-radius:12px 12px 0 0;border:2.5px solid #0D0050;border-bottom:none;"><strong style="color:#FFF8ED;font-size:14px;display:block;">Peri</strong></td>
+  <td align="center" width="116" style="background:#F3CDEA;padding:22px 8px 14px;border-radius:12px 12px 0 0;border:2.5px solid #0D0050;border-bottom:none;"><strong style="color:#0D0050;font-size:14px;display:block;">Lavender</strong></td>
+</tr>
+<tr>
+  <td align="center" style="padding:10px 4px;border:2.5px solid #0D0050;border-top:none;border-radius:0 0 12px 12px;"><code>#FF4924</code><br><code>--red</code></td>
+  <td align="center" style="padding:10px 4px;border:2.5px solid #0D0050;border-top:none;border-radius:0 0 12px 12px;"><code>#0D0050</code><br><code>--navy</code></td>
+  <td align="center" style="padding:10px 4px;border:2.5px solid #0D0050;border-top:none;border-radius:0 0 12px 12px;"><code>#FFF8ED</code><br><code>--cream</code></td>
+  <td align="center" style="padding:10px 4px;border:2.5px solid #0D0050;border-top:none;border-radius:0 0 12px 12px;"><code>#00EE8E</code><br><code>--mint</code></td>
+  <td align="center" style="padding:10px 4px;border:2.5px solid #0D0050;border-top:none;border-radius:0 0 12px 12px;"><code>#4444D5</code><br><code>--indigo</code></td>
+  <td align="center" style="padding:10px 4px;border:2.5px solid #0D0050;border-top:none;border-radius:0 0 12px 12px;"><code>#F3CDEA</code><br><code>--lilac</code></td>
+</tr>
+</table>
 
 Each action color has a `-tint` (soft fill) and `-press` (darker pressed) step — e.g. `--red-tint: #FFE3DC`, `--red-press: #E5350F`. See `tokens/colors.css` for the full ink scale (`--ink-900` → `--ink-100`) and semantic aliases (`--bg-app`, `--surface-card`, `--text-strong`, etc.).
 
 > Tomato `--red` / `#FF4924` is primary. Night `--navy` / `#0D0050` is text and dark backgrounds.
 > These are the most frequently confused pair — do not swap them.
+
+---
 
 ### Typography
 
@@ -66,7 +136,17 @@ Each action color has a `-tint` (soft fill) and `-press` (darker pressed) step �
 
 > CooperArabic covers Arabic glyphs only — Latin cascades to Baloo 2. Display is set tight (−0.01em, line-height 1.05–1.2) and heavy (700–800). Body is 16px · 400–500 weight · line-height 1.45.
 
+---
+
 ### Logo System
+
+<div align="center">
+  <img src="assets/Thalaja_Design_System/assets/brand-sheet.png" width="500" style="border-radius:16px;border:2.5px solid #ECE7DA;" alt="Thalaja brand sheet — app icon lockups and colour palette"/>
+  <br>
+  <sub>Brand sheet: app icon lockups · six-colour palette · starburst blob motif</sub>
+</div>
+
+<br>
 
 | Element | Spec |
 |---|---|
@@ -75,6 +155,8 @@ Each action color has a `-tint` (soft fill) and `-press` (darker pressed) step �
 | Stroke | Night `#0D0050`, thick |
 | Dot motif | Three Mint `#00EE8E` rounded squares — form the ث dots; also read as fruit dots on the star (intentional dual meaning) |
 | App icon | Star on Peri `#4444D5` background |
+
+---
 
 ### Category Sticker System
 
@@ -86,11 +168,23 @@ Each action color has a `-tint` (soft fill) and `-press` (darker pressed) step �
 | Right zone | Arabic category name, RTL-aligned |
 | ث dot motif | Integrated only where it emerges naturally from the illustration — never forced |
 
+<div align="center">
+  <img src="assets/Thalaja_Design_System/screenshots/grid2.png" width="720" style="border-radius:16px;margin-top:8px;" alt="All 15 Arabic category sticker tags"/>
+  <br>
+  <sub>All 15 category sticker tags — unique colour per aisle, Arabic name RTL-aligned, ث dot motif where natural</sub>
+</div>
+
+---
+
 ### Aesthetic Direction
 
 Retro fruit sticker: octagonal badges, scalloped outlines, expressive flat illustration.
 Apply this vocabulary to components before defaulting to flat-minimal system defaults.
 The visual system should feel like a physical sticker collection, not a productivity app.
+
+<div align="center">
+  <img src="assets/Thalaja_Design_System/screenshots/tweaks-peel.png" width="720" style="border-radius:16px;margin-top:8px;" alt="Category stickers showing the full set on cream background"/>
+</div>
 
 ---
 
@@ -195,31 +289,15 @@ Components live in `documentation/assets/Thalaja_Design_System/components/`. All
 
 ---
 
-## App Mockup
-
-Interactive click-through covering the core user flows. Open the file directly in a browser — no build step required.
-
-**[Open interactive mockup →](assets/Thalaja_Design_System/ui_kits/thalaja-app/index.html)**
-
-Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.jsx` (screens + state) · `ui.jsx` (design-system primitives) · `icons.jsx` (Lucide icon set).
-
-**Screens included:**
-
-- **Lists (Home)** — shared list cards with progress bars and member avatars, search bar, household insight callout
-- **List Detail** — grocery item rows with category filter chips, segmented To Buy / Bought toggle, quantity stepper, add-item FAB
-- **Add Item Sheet** — bottom sheet with category chip picker, quantity stepper, and name input
-- **Shop View** — all pending items across lists, grouped by aisle category
-- **Household** — member list with role badges, invite button, household card
-
----
-
 ## Screen Inventory
 
-## Screen 1 — Register
+<details>
+<summary><strong>Screen 1 — Register</strong></summary>
 
 **Layout:** Single-column form, centered vertically. Thalaja logo at top.
 
 **Components:**
+
 - First and Last Name field (text input)
 - Phone field (phone keyboard type)
 - Email field (email keyboard type)
@@ -227,6 +305,7 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 - "Already have an account? Sign in" text link at bottom
 
 **Interactions:**
+
 - Inline field validation on blur — red border + error message below field
 - On submit: navigate to OTP Entry
 - On OTP success: navigate to Groups Home
@@ -240,9 +319,12 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 - "Resend code" link — active only after timer expires
 - States: awaiting input · invalid code · expired · loading
 
+</details>
+
 ---
 
-## Screen 2 — Login
+<details>
+<summary><strong>Screen 2 — Login</strong></summary>
 
 **Layout:** Single-column form, centered vertically. Thalaja logo at top.
 
@@ -260,66 +342,83 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 
 **States to design:** default · error banner ("Phone or email not found") · loading · OTP entry
 
+</details>
+
 ---
 
-## Screen 3 — Groups Home
+<details>
+<summary><strong>Screen 3 — Groups Home</strong></summary>
 
 **Layout:** Scrollable list view. Top app bar with app name and profile avatar (tapping avatar opens profile settings). FAB bottom-right for creating a group.
 
 **Components:**
+
 - Group cards — group icon, group name, member count, most recent list name
 - FAB: "Create Group" → opens bottom sheet
 - Bottom sheet — Create Group: group name field + group icon picker + confirm button → displays generated invite code on success
 - "Join a Group" text link or secondary button beneath the FAB
 
 **Interactions:**
+
 - Tap group card → Group Detail
 - Long-press group card → context menu: "Leave Group" (non-admins), "Delete Group" (admin)
 
 **States to design:** empty (no groups) · populated · create group sheet · invite code reveal screen
 
+</details>
+
 ---
 
-## Screen 4 — Group Detail
+<details>
+<summary><strong>Screen 4 — Group Detail</strong></summary>
 
 **Layout:** Top section shows group icon, group name, and a member avatar strip (max 5 visible, +N overflow). Below: two tabbed sections — **Lists** and **Recipes** — organised within the same screen.
 
 **Components:**
 
 **Lists tab:**
+
 - List cards — list icon, list name, item count, urgent item count (badge), last updated timestamp, status chip (Active / Completed)
 - FAB: "New List" (visible on Lists tab)
 - Long-press list card → admin context menu: rename, remove
 
 **Recipes tab:**
+
 - Recipe cards — recipe image thumbnail, recipe name, ingredient count, created by (member name)
 - FAB: "New Recipe" (visible on Recipes tab)
 - Long-press recipe card → admin context menu: delete
 - Tap recipe card → Recipe Detail
 
 **Persistent controls:**
+
 - All members: share invite code button accessible from top bar
 - Admin only: kebab menu (⋮) in top bar → Group Admin Settings screen
 
 **Interactions:**
+
 - Tap list card → List Detail
 - Tap member avatar strip → member list overlay showing name and role
 
 **States to design:** Lists tab populated · Lists tab empty · Recipes tab populated · Recipes tab empty · admin view vs. member view distinction
 
+</details>
+
 ---
 
-## Screen 5 — List Detail
+<details>
+<summary><strong>Screen 5 — List Detail</strong></summary>
 
 **Layout:** Top app bar with list name, History icon button, and Buying Mode icon button. Scrollable item list grouped by aisle category. FAB bottom-right: "Add Item."
 
 **Components:**
+
 - Item cards — name, brand (if set), quantity + unit, notes snippet, image thumbnail (if set), urgency badge (if `is_urgent` is true), requester avatar + name
 - Real-time sync active while screen is open via WebSocket — additions, edits, and removals from other members appear without pull-to-refresh (US-24)
 - "Possible duplicate" inline warning banner on add when item name closely matches an existing list entry (US-25)
 - Bulk delete: accessible via list options menu (⋮ top bar) — requires confirmation dialog showing item count; most recent bulk delete entry in the action log includes an "Undo" button (US-23)
 
 **Interactions:**
+
 - Tap item card → item edit sheet
 - Long-press item card → context menu: edit, delete
 - FAB → Item Add Sheet (Screen 6)
@@ -328,9 +427,12 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 
 **States to design:** populated list · empty list · real-time item arrival animation · duplicate warning banner · bulk delete confirmation dialog · post-bulk-delete undo state
 
+</details>
+
 ---
 
-## Screen 6 — Item Add Sheet (Bottom Sheet)
+<details>
+<summary><strong>Screen 6 — Item Add Sheet (Bottom Sheet)</strong></summary>
 
 **Layout:** Modal bottom sheet, scrollable. Segmented tab row at top for add paths.
 
@@ -346,6 +448,7 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 | Recipe | List of saved recipes; tap to preview ingredients then import | Sprint 5 |
 
 **Manual tab components:**
+
 - Name (text, required)
 - Brand (text, optional)
 - Quantity (numeric) + Unit (dropdown or text: kg / g / L / ml / pcs / box / etc.)
@@ -355,13 +458,17 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 
 **States to design:** each tab default · barcode and photo disabled states · manual tab validation errors · catalog loading state
 
+</details>
+
 ---
 
-## Screen 7 — Buying View
+<details>
+<summary><strong>Screen 7 — Buying View</strong></summary>
 
 **Layout:** Full-screen. Top bar with list name and "Exit Buying Mode" button. Urgency filter toggle below top bar. Items grouped under aisle section headers, ordered by a standard grocery store aisle sequence.
 
 **Components:**
+
 - Aisle section headers (e.g., Produce, Dairy, Meat, Frozen, Bakery, Pantry, Beverages, Household)
 - Checklist item rows — name, brand, quantity, image thumbnail (if set), requester name
 - Urgency filter toggle: "Show All" / "Urgent Only" — filters without leaving the view
@@ -369,37 +476,48 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 - "Complete Trip" button fixed at bottom — visible once at least one item is checked
 
 **Locked behavior:**
+
 - "Add Item" FAB is hidden
 - Item edit is disabled
 - Only check and uncheck interactions are active
 
 **Interactions:**
+
 - "Complete Trip" → confirmation dialog → list closes → saved to group trip history → navigate back to Group Detail with list status updated to Completed
 
 **States to design:** in-progress shop · urgent-only filtered view · all items checked · complete trip confirmation dialog
 
+</details>
+
 ---
 
-## Screen 8 — History Screen
+<details>
+<summary><strong>Screen 8 — History Screen</strong></summary>
 
 **Layout:** Accessed via the History icon button on List Detail. Two tabs: **Action Log** and **Trip History**.
 
 **Action Log tab:**
+
 - Chronological feed, newest first
 - Each entry: actor avatar + name · human-readable action description · relative timestamp
 - Action types: item added · item edited · item removed · bulk delete (with "Undo" button on the most recent entry, time-limited) · item checked as bought · item unchecked · list created · list completed · recipe imported · member joined group
 
 **Trip History tab:**
+
 - Past completed shopping trips for this list, newest first
 - Trip card: date · buyer name · item count · expandable to show the full item list from that trip
 
+</details>
+
 ---
 
-## Screen 9 — Recipe Detail / Create
+<details>
+<summary><strong>Screen 9 — Recipe Detail / Create</strong></summary>
 
 **Layout:** Recipes are surfaced in two places: the **Recipes tab on Group Detail** (browse and manage) and the **Item Add Sheet Recipe tab** (browse and import only). This screen covers the Recipe Detail view and the Create/Edit form, reached by tapping a recipe card or the "New Recipe" FAB on Group Detail.
 
 **Components:**
+
 - Recipe cards — recipe image thumbnail, recipe name, ingredient count, created by (member name)
 - FAB: "New Recipe"
 - Recipe create/edit form:
@@ -413,23 +531,29 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 
 **States to design:** recipe list populated · empty recipe list · recipe detail · create form · edit form
 
+</details>
+
 ---
 
-## Screen 10 — Notifications & Buyer Assignment
+<details>
+<summary><strong>Screen 10 — Notifications & Buyer Assignment</strong></summary>
 
 **Layout:** Accessible from List Detail via a dedicated button or top bar action. Contains three notification actions as distinct UI sections.
 
 **Heading to Store** (US-30)
+
 - Button: "I'm Heading to the Store"
 - On tap: confirmation dialog ("This will notify all group members to add their last items. Continue?") → sends FCM push notification to all group members → confirmation feedback to buyer
 
 **Assign Buyer** (US-31)
+
 - Label: "Assign a Buyer for This Trip"
 - Member picker showing current group members
 - On confirm: sends FCM push notification to selected member ("You've been assigned as buyer for [list name]. Head to the store when ready.")
 - Confirmation feedback shown inline
 
 **Remind Member** (US-32, Could Have)
+
 - Label: "Remind Someone to Add Their Items"
 - Member picker showing current group members
 - On confirm: sends FCM push notification to selected member ("Don't forget to add your items to [list name] before the next trip.")
@@ -437,26 +561,36 @@ Viewport: 390 × 844 (iPhone 14 canvas). Source files: `ui_kits/thalaja-app/app.
 
 **States to design:** default · confirmation dialogs · sent feedback state
 
+</details>
+
 ---
 
-## Screen 11 — Group Admin Settings
+<details>
+<summary><strong>Screen 11 — Group Admin Settings</strong></summary>
 
 **Layout:** Settings-style screen. Accessible via the kebab menu (⋮) on Group Detail. Visible only to the group admin.
 
 **Group Identity**
+
 - Group name — editable inline field, save on tap confirm
 - Group icon — tap to change (image picker or icon/emoji selector)
 
 **Members**
+
 - Member list rows: avatar · name · role chip (Admin / Member) · kebab menu per row
 - Member kebab options: "Remove from Group" · "Transfer Admin Role" (removes current admin's role, assigns to this member — requires confirmation dialog)
 - Invite Code display with copy button and "Regenerate" option
 
 **Danger Zone**
+
 - "Delete Group" — destructive action, confirmation dialog required, clearly separated visually
 
 > *Note: List removal is triggered from the list card long-press on Group Detail (admin only). Recipe removal is triggered from Recipe detail (admin only). Both are admin-gated actions but do not live on this settings screen.*
 
+</details>
+
 ---
 
-*Thalaja Team · Wireframe Notes for Figma · Stage 3*
+<div align="center">
+  <sub>Thalaja Team · Design Reference · Stage 3 · Built at Holberton / Tuwaiq Academy · Saudi Arabia · 2026</sub>
+</div>
