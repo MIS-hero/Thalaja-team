@@ -19,27 +19,29 @@
 ## 1. Team Overview
 
 **Team Name:** Thalaja (ثلاجة)
-**Methodology:** Agile — sprint-based, with a rotating sprint leader each cycle
+**Methodology:** Agile — sprint-based
 **Stack:** Flutter (iOS & Android)
 
 ### Who We Are
 
 Five people, five different strengths, one shared goal: ship something real and learn the full stack while doing it.
 
-| Member | Permanent Role | What They Bring |
+| Member | Role | What They Bring |
 |---|---|---|
-| **Aljawharah Alammar** | Project Manager & GitHub Owner | Business thinking, pitch presentation, final ownership of the repo and project direction |
-| **Reem Alyamani** | Product Manager | Defines what gets built and why — owns user research and feature prioritization |
-| **Randa Baeshen Hussain** | Scrum Master & Team Coordinator | Keeps sprints on track, brings the team together, creative input under deadline pressure |
-| **Mousa Alrizqi** | Lead Software Architect (Backend) | System design, data architecture, technical depth |
-| **Abdullah Almouraibd** | Lead Software Architect (Frontend/Flutter) | UI architecture, component structure, technical depth |
+| **Aljawharah Alammar** | Project Manager & Frontend Lead | Business thinking, pitch presentation, final ownership of the repo and project direction |
+| **Reem Alyamani** | Frontend Developer | Defines what gets built and why — owns user research and feature prioritization |
+| **Randa Baeshen Hussain** | Frontend Developer | Keeps sprints on track, brings the team together, creative input under deadline pressure |
+| **Mousa Alrizqi** | Backend Lead | System design, data architecture, technical depth |
+| **Abdullah Almouraibd** | Backend Developer | UI architecture, component structure, technical depth |
 
-Permanent roles exist so every decision has a clear owner. But **everyone codes, everyone designs, everyone researches** — sprint leadership rotates each cycle so all five of us build real full-stack experience by the end of this project.
+Permanent roles exist so every decision has a clear owner. Two backend developers and three frontend developers work in parallel streams, each with a lead driving technical decisions on their side.
 
 ### How We Work Together
 
-**Tools:** Discord · Jira · GitHub · Miro · Google Drive
-**Meeting Cadence:** Two sessions per week, in-person or online
+**Development Tools:** Discord · Jira · GitHub · Miro · Google Drive · Cursor · Claude · ChatGPT
+**Learning Tools:** NotebookLM · roadmap.sh · YouTube
+**Meeting Cadence:** Daily standup + additional sessions as needed, in-person or online
+**Board (Miro — wireframes, flows, retros, decision log):** [INSERT MIRO LINK]
 
 ### Our Team Agreements
 
@@ -54,6 +56,7 @@ We didn't want a generic "be respectful" list — we built our agreements around
 - **Come prepared.** Meeting agendas are shared in advance; showing up unprepared wastes everyone's time.
 - **Green & black points (Miro board).** Green points celebrate wins and effort; black points flag recurring patterns the team needs to address *together*.
 - **Mentor as tiebreaker.** When the team reaches a genuine impasse, we bring it to a mentor rather than letting it stall the sprint.
+- **AI as a tool, not a replacement.** We use AI the right way — as a study buddy, a rubber duck, and an occasionally overconfident pair programmer. It helps us learn faster and review smarter. It does not write our code while we watch YouTube. We stay in the driver's seat.
 
 ---
 
