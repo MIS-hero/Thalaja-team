@@ -187,17 +187,17 @@ Eleven screens. Wireframe specifications are in [`thalaja-stage3-wireframes.md`]
 Figma Mockup
 
 <p align="center">
-  <img src="images/register.png" width="180">
-  <img src="images/login.png" width="180">
-  <img src="images/groups_Home.png" width="180">
-  <img src="images/groups.png" width="180">
+  <img src="assets/register.png" width="180">
+  <img src="assets/login.png" width="180">
+  <img src="assets/groups_Home.png" width="180">
+  <img src="assets/groups.png" width="180">
 </p>
 
 <p align="center">
-  <img src="images/list_Detail.png" width="180">
-  <img src="images/item_add.png" width="180">
-  <img src="images/History (2).png" width="180">
-  <img src="images/History_screen.png" width="180">
+  <img src="assets/list_Detail.png" width="180">
+  <img src="assets/item_add.png" width="180">
+  <img src="assets/History (2).png" width="180">
+  <img src="assets/History_screen.png" width="180">
   
 
 </p>
