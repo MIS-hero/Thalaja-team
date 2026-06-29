@@ -957,7 +957,7 @@ sequenceDiagram
         App-->>User: Show action timeline
     end
 ```
-## External API Table
+## Internal API Table
 
 | Module | API Name | Method | Endpoint | Auth | Related Story |
 |---|---|---|---|---|---|
@@ -1003,6 +1003,342 @@ sequenceDiagram
 | Notification | Heading to Store | POST | /lists/{listId}/notifications/heading-to-store | Yes | US-30 |
 | Notification | Assign Buyer | POST | /lists/{listId}/notifications/assign-buyer | Yes | US-31 — sends FCM only, does not modify list |
 | Notification | Remind Member | POST | /lists/{listId}/notifications/remind-member | Yes | US-32 |
+
+#### API Request and Response Examples
+
+The following examples illustrate the input and output formats used by the Thalaja API. All request and response bodies use JSON.
+
+---
+
+### Register — Send OTP
+
+**Endpoint**
+
+```http
+POST /auth/register
+```
+
+**Request**
+
+```json
+{
+  "first_name": "Sara",
+  "last_name": "test",
+  "phone": "+966500000000",
+  "email": "sara@example.com"
+}
+```
+
+**Response**
+
+```json
+{
+  "message": "OTP sent successfully"
+}
+```
+
+---
+
+### Register — Verify OTP
+
+**Endpoint**
+
+```http
+POST /auth/register/verify
+```
+
+**Request**
+
+```json
+{
+  "phone": "+966500000000",
+  "otp": "123456",
+  "first_name": "Sara",
+  "last_name": "test",
+  "email": "test@example.com"
+}
+```
+
+**Response**
+
+```json
+{
+  "token": "jwt_token",
+  "user": {
+    "user_id": "uuid",
+    "first_name": "Sara",
+    "last_name": "test",
+    "phone": "+966500000000",
+    "email": "sara@example.com"
+  }
+}
+```
+
+---
+
+### Login — Send OTP
+
+**Endpoint**
+
+```http
+POST /auth/login
+```
+
+**Request**
+
+```json
+{
+  "phone": "+966500000000"
+}
+```
+
+**Response**
+
+```json
+{
+  "message": "OTP sent successfully"
+}
+```
+
+---
+
+### Login — Verify OTP
+
+**Endpoint**
+
+```http
+POST /auth/login/verify
+```
+
+**Request**
+
+```json
+{
+  "phone": "+966500000000",
+  "otp": "123456"
+}
+```
+
+**Response**
+
+```json
+{
+  "token": "jwt_token",
+  "user": {
+    "user_id": "uuid",
+    "first_name": "Sara",
+    "last_name": "test"
+  }
+}
+```
+
+---
+
+### Create Group
+
+**Endpoint**
+
+```http
+POST /groups
+```
+
+**Request**
+
+```json
+{
+  "name": "My Family",
+  "type": "household"
+}
+```
+
+**Response**
+
+```json
+{
+  "group_id": "uuid",
+  "name": "My Family",
+  "type": "household",
+  "invite_code": "ABCD123"
+}
+```
+
+---
+
+### Join Group
+
+**Endpoint**
+
+```http
+POST /groups/join
+```
+
+**Request**
+
+```json
+{
+  "invite_code": "ABCD123"
+}
+```
+
+**Response**
+
+```json
+{
+  "group_id": "uuid",
+  "name": "My Family",
+  "role": "member"
+}
+```
+
+---
+
+### Create Shopping List
+
+**Endpoint**
+
+```http
+POST /groups/{groupId}/lists
+```
+
+**Request**
+
+```json
+{
+  "name": "Weekly Groceries"
+}
+```
+
+**Response**
+
+```json
+{
+  "list_id": "uuid",
+  "name": "Weekly Groceries",
+  "status": "active"
+}
+```
+
+---
+
+### Add Item to List
+
+**Endpoint**
+
+```http
+POST /lists/{listId}/items
+```
+
+**Request**
+
+```json
+{
+  "name": "Milk",
+  "quantity": 2,
+  "unit": "L",
+  "notes": "Low fat",
+  "is_urgent": false
+}
+```
+
+**Response**
+
+```json
+{
+  "list_item_id": "uuid",
+  "name": "Milk",
+  "quantity": 2,
+  "unit": "L",
+  "is_bought": false,
+  "is_urgent": false
+}
+```
+
+---
+
+### Mark Item as Purchased
+
+**Endpoint**
+
+```http
+PATCH /lists/{listId}/items/{itemId}/purchase
+```
+
+**Request**
+
+```json
+{}
+```
+
+**Response**
+
+```json
+{
+  "list_item_id": "uuid",
+  "is_bought": true,
+  "bought_by": "user_uuid"
+}
+```
+
+---
+
+### Create Recipe
+
+**Endpoint**
+
+```http
+POST /groups/{groupId}/recipes
+```
+
+**Request**
+
+```json
+{
+  "name": "Pancakes",
+  "description": "Simple breakfast recipe",
+  "ingredients": [
+    {
+      "item_id": "uuid",
+      "quantity": 2,
+      "unit": "cups"
+    }
+  ]
+}
+```
+
+**Response**
+
+```json
+{
+  "recipe_id": "uuid",
+  "name": "Pancakes",
+  "ingredients_count": 1
+}
+```
+
+---
+
+### Send Heading-to-Store Notification
+
+**Endpoint**
+
+```http
+POST /lists/{listId}/notifications/heading-to-store
+```
+
+**Request**
+
+```json
+{}
+```
+
+**Response**
+
+```json
+{
+  "message": "Notification sent successfully"
+}
+```
+
 
 ## Internal API / Backend Operations Table
 
