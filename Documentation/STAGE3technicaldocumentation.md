@@ -1004,7 +1004,7 @@ sequenceDiagram
 | Notification | Assign Buyer | POST | /lists/{listId}/notifications/assign-buyer | Yes | US-31 — sends FCM only, does not modify list |
 | Notification | Remind Member | POST | /lists/{listId}/notifications/remind-member | Yes | US-32 |
 
-#### API Request and Response Examples
+## API Request and Response Examples
 
 The following examples illustrate the input and output formats used by the Thalaja API. All request and response bodies use JSON.
 
