@@ -31,8 +31,8 @@ Five people, five different strengths, one shared goal: ship something real and 
 | **Aljawharah Alammar** | Project Manager & Frontend Lead | Business thinking, pitch presentation, final ownership of the repo and project direction |
 | **Reem Alyamani** | Frontend Developer | Defines what gets built and why — owns user research and feature prioritization |
 | **Randa Baeshen Hussain** | Frontend Developer | Keeps sprints on track, brings the team together, creative input under deadline pressure |
-| **Mousa Alrizqi** | Backend Lead | System design, data architecture, technical depth |
-| **Abdullah Almouraibd** | Backend Developer | UI architecture, component structure, technical depth |
+| **Mousa Alrizqi** | Backend Developer | System design, data architecture, technical depth |
+| **Abdullah Almouraibd** | Backend Lead | UI architecture, component structure, technical depth |
 
 Permanent roles exist so every decision has a clear owner. Two backend developers and three frontend developers work in parallel streams, each with a lead driving technical decisions on their side.
 

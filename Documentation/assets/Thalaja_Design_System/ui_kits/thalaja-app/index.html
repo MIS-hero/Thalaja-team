@@ -1,0 +1,27 @@
+<!-- @dsCard group="Thalaja App" viewport="390x720" name="Thalaja mobile app" subtitle="Shared grocery lists for Saudi families — interactive click-through" -->
+<!-- @startingPoint section="Thalaja App" subtitle="Full interactive grocery app — lists, detail, shop, household" viewport="390x844" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thalaja — Shared groceries</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: radial-gradient(circle at 50% 0%, #ffe6df 0%, var(--cream) 60%);
+         display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; box-sizing: border-box; }
+  #root { display: flex; justify-content: center; }
+  button { font-family: inherit; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+  <script type="text/babel" src="icons.jsx"></script>
+  <script type="text/babel" src="ui.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

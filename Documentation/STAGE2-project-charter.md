@@ -57,8 +57,8 @@ Achieved through weekly team review of feedback, prioritized by frequency and se
 | Aljawharah Alammar | Project Manager & Frontend Lead |
 | Reem Alyamani | Frontend Developer |
 | Randa Baeshen | Frontend Developer |
-| Mousa Alrizqi | Backend Lead |
-| Abdullah Almouraibd | Backend Developer |
+| Mousa Alrizqi | Backend Developer |
+| Abdullah Almouraibd | Backend Lead |
 | Mentors | Guidance, feedback, and tiebreaker for team disagreements |
 
 > Two backend developers (Mousa and Abdullah) and three frontend developers (Aljawharah, Reem, and Randa) work in parallel streams with a lead on each side. The team holds a daily standup meeting to sync progress, blockers, and plans.

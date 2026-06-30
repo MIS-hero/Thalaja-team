@@ -1,0 +1,12 @@
+/* Thalaja — Font faces & webfont imports.
+   CooperArabic (provided) covers ARABIC display glyphs only.
+   Baloo 2 (Google) supplies the harmonious Latin display + Arabic fallback.
+   Tajawal (Google) is the bilingual body/UI face. */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@font-face {
+  font-family: 'CooperArabic';
+  src: url('../assets/fonts/CooperArabic.ttf') format('truetype');
+  font-weight: 400 800;
+  font-display: swap;
+}

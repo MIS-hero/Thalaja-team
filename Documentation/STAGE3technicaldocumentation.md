@@ -1,14 +1,48 @@
 # Thalaja — Stage 3 Technical Documentation
-## Section 1: User Stories and Mockups
 
 ---
 
 ## Table of Contents
 
+### User Stories
+
 - [1.1 Actors](#11-actors)
 - [1.2 User Stories](#12-user-stories)
-- [1.3 MoSCoW Summary](#13-moscow-summary)
-- [1.4 Mockups](#14-mockups)
+  - [1. Authentication & Onboarding](#1-authentication--onboarding)
+  - [2. Group Management](#2-group-management)
+  - [3. List Management](#3-list-management)
+  - [4. Item Submission](#4-item-submission)
+  - [5. Real-Time Collaboration](#5-real-time-collaboration)
+  - [6. Duplicate Prevention](#6-duplicate-prevention)
+  - [7. Buying Trip View](#7-buying-trip-view)
+  - [8. History](#8-history)
+  - [9. Notifications](#9-notifications)
+  - [10. Recipes](#10-recipes)
+- [1.3 MoSCoW Priority Summary](#13-moscow-priority-summary)
+
+### Technical Diagrams
+
+- [1. Use Case Diagram](#1-use-case-diagram)
+- [2. Entity-Relationship Diagram](#2-entity-relationship-diagram)
+  - [Entity Descriptions](#entity-descriptions)
+  - [Entity Relationships](#entity-relationships)
+- [3. Package Diagram](#3-package-diagram)
+- [4. Sequence Diagrams](#4-sequence-diagrams)
+- [5. User Flow Diagrams](#5-user-flow-diagrams)
+- [6. Backend Class Diagram](#6-backend-class-diagram)
+
+### API Reference
+
+- [External API Table](#external-api-table)
+- [Internal API Table](#internal-api-table)
+- [Backend Operations Table](#backend-operations-table)
+
+### Engineering
+
+- [7. Project Repository Structure](#7-project-repository-structure)
+- [8. SCM Plan](#8-scm-plan)
+- [9. QA Plan](#9-qa-plan)
+- [10. Technical Justifications](#10-technical-justifications)
 
 ---
 
@@ -26,17 +60,18 @@
 
 ## 1.2 User Stories
 
-### Authentication & Onboarding
+### 1. Authentication & Onboarding
 
 | ID | Story | Priority |
 |---|---|---|
-| US-01 | As a guest, I want to create an account with my name, phone, email, and password, so that I can join or create a household group. | **Must Have** |
-| US-02 | As a guest, I want to log in with my email or phone, and password, so that I can access my groups and lists. | **Must Have** |
+| US-01 | As a guest, I want to create an account with my name, phone, and email, so that I can join or create a household group. | **Must Have** |
+| US-02 | As a guest, I want to log in with my email or phone, so that I can access my groups and lists. | **Must Have** |
+| US-36 | As a guest, I want to verify my phone number via OTP during registration — delivered by SMS, WhatsApp, or email — so that my account is tied to a real identity. If one channel fails, the app automatically falls back to an available alternative. | **Must Have** |
 | US-03 | As a member, I want to update my display name and avatar, so that my identity is recognizable to other group members. | Should Have |
 
 ---
 
-### Group Management
+### 2. Group Management
 
 | ID | Story | Priority |
 |---|---|---|
@@ -52,32 +87,32 @@
 
 ---
 
-### List Management
+### 3. List Management
 
 | ID | Story | Priority |
 |---|---|---|
 | US-13 | As a member, I want to create and name a shared grocery list within a group, so that everyone can add their items before the shopping trip. | **Must Have** |
-| US-14 | As an admin, I want to edit the list name and icon after creation, so that lists can be renamed or visually distinguished without recreating them. | Should Have |
 | US-15 | As a buyer, I want to close the active list when the shopping trip is done, so that it moves to the group's trip history and the active view stays clean. | **Must Have** |
+| US-14 | As an admin, I want to edit the list name and icon after creation, so that lists can be renamed or visually distinguished without recreating them. | Should Have |
 
 ---
 
-### Item Submission
+### 4. Item Submission
 
 | ID | Story | Priority |
 |---|---|---|
 | US-16 | As a member, I want to add an item manually with name, brand, quantity, unit, and notes, so that the buyer has the detail they need to find exactly what I want. | **Must Have** |
 | US-17 | As a member, I want to browse my item history and re-add a past item, so that I don't have to re-enter its details from scratch. | **Must Have** |
-| US-18 | As a member, I want to browse a grocery catalog and select items from it, so that I can add common products without typing. | Should Have |
-| US-19 | As a member, I want to scan an item's barcode, so that its name and details are filled in automatically. | Could Have |
-| US-20 | As a member, I want to take a photo of an item and have it identified automatically, so that I can add it quickly without knowing the exact product name. | Could Have |
 | US-21 | As a member, I want to attach an image to an item I'm adding, so that the buyer can visually confirm the exact product on the shelf. | Should Have |
 | US-22 | As a member, I want to mark an item as urgent when adding it, so that the buyer knows it cannot wait for the next full trip. | Should Have |
 | US-23 | As a member, I want to bulk-delete all items from the list after a confirmation step, so that I can reset the list when needed — with the option to undo the action via the list's action log. | Should Have |
+| US-18 | As a member, I want to browse a grocery catalog and select items from it, so that I can add common products without typing. | Should Have |
+| US-19 | As a member, I want to scan an item's barcode, so that its name and details are filled in automatically. | Could Have |
+| US-20 | As a member, I want to take a photo of an item and have it identified automatically, so that I can add it quickly without knowing the exact product name. | Could Have |
 
 ---
 
-### Real-Time Collaboration
+### 5. Real-Time Collaboration
 
 | ID | Story | Priority |
 |---|---|---|
@@ -85,7 +120,7 @@
 
 ---
 
-### Duplicate Prevention
+### 6. Duplicate Prevention
 
 | ID | Story | Priority |
 |---|---|---|
@@ -93,16 +128,17 @@
 
 ---
 
-### Buying View
+### 7. Buying Trip View
 
 | ID | Story | Priority |
 |---|---|---|
 | US-26 | As a buyer, I want a dedicated buying view that locks the list from edits, organizes items by grocery aisle category in a standard store aisle sequence, and lets me check off items as I shop, so that I can move through the store efficiently without accidental changes. | **Must Have** |
+| US-38 | As a buyer, I want to lock the active list into a trip so no one can edit it while I shop, check off items as I pick them up, and finish the trip so that any items I did not buy are automatically returned to the active list for the next shopping run. | **Must Have** |
 | US-27 | As a buyer, I want to filter the buying view to show only urgent items, so that I can complete a quick trip when I don't have time for a full shop. | Should Have |
 
 ---
 
-### History
+### 8. History
 
 | ID | Story | Priority |
 |---|---|---|
@@ -111,51 +147,29 @@
 
 ---
 
-### Notifications
+### 9. Notifications
 
 | ID | Story | Priority |
 |---|---|---|
 | US-30 | As a buyer, I want to tap a "heading to store" button that sends a push notification to all group members, so that they have a final window to add any last-minute items before I leave. | **Must Have** |
 | US-31 | As a member, I want to assign a buyer for the upcoming trip and send them a push notification, so that the designated person knows they are expected to shop. | Should Have |
 | US-32 | As a member, I want to send a reminder notification to a specific group member to add their items to the list, so that no one's needs are missed before the trip. | Could Have |
+| US-43 | As a buyer, I want to set a reminder for myself to go shopping on a specific day, so that I don't forget the trip even when no one has assigned me. | Could Have |
 
 ---
 
-### Recipes
+### 10. Recipes
 
 | ID | Story | Priority |
 |---|---|---|
+| US-37 | As a recipe owner, I want to be able to edit or delete a recipe I created, so that I have control over my own content in the group. | **Must Have** |
 | US-33 | As a member, I want to create and save a recipe with a name, image, step-by-step instructions, and an ingredients list (name, quantity, and unit per ingredient), so that I can reuse it across multiple shopping trips. | Should Have |
 | US-34 | As a member, I want to import all ingredients from a saved recipe to any list I have access to in one tap, so that I don't have to add each ingredient individually. | Should Have |
 | US-35 | As a group, I want to share saved recipes within our group, so that any member can view and import a group recipe to the list. | Could Have |
 
 ---
 
-### Verification
-
-| ID | Story | Priority |
-|---|---|---|
-| US-36 | As a guest, I want to verify my phone number via OTP during registration — delivered by SMS, WhatsApp, or email — so that my account is tied to a real identity. If one channel fails, the app automatically falls back to an available alternative. | **Must Have** |
-
----
-
-### Recipe Permissions
-
-| ID | Story | Priority |
-|---|---|---|
-| US-37 | As a recipe owner, I want to be able to edit or delete a recipe I created, so that I have control over my own content in the group. | **Must Have** |
-
----
-
-### Trip Flow
-
-| ID | Story | Priority |
-|---|---|---|
-| US-38 | As a buyer, I want to lock the active list into a trip so no one can edit it while I shop, check off items as I pick them up, and finish the trip so that any items I did not buy are automatically returned to the active list for the next shopping run. | **Must Have** |
-
----
-
-## 1.3 MoSCoW Summary
+## 1.3 MoSCoW Priority Summary
 
 | Priority | Story IDs | Count |
 |---|---|---|
@@ -166,155 +180,154 @@
 
 ---
 
-## 1.4 Mockups
-
-Eleven screens. Wireframe specifications are in [`thalaja-stage3-wireframes.md`](./thalaja-stage3-wireframes.md). Figma designs will be embedded below as they are completed.
+## Mockups
 
 | Screen |
 |---|
-| Screen 1 — Register | 
-| Screen 2 — Login |    
-| Screen 3 — Groups Home | 
+| Screen 1 — Register |
+| Screen 2 — Login |
+| Screen 3 — Groups Home |
 | Screen 4 — Group Detail |
-| Screen 5 — List Detail | 
-| Screen 6 — Item Add Sheet | 
-| Screen 7 — Buying View | 
-| Screen 8 — History Screen | 
-| Screen 9 — Recipe Detail / Create | 
-| Screen 10 — Notifications & Buyer Assignment | 
-| Screen 11 — Group Admin Settings | 
+| Screen 5 — List Detail |
+| Screen 6 — Item Add Sheet |
+| Screen 7 — Buying View |
+| Screen 8 — History Screen |
+| Screen 9 — Recipe Detail / Create |
+| Screen 10 — Notifications & Buyer Assignment |
+| Screen 11 — Group Admin Settings |
 
 Figma Mockup
 
 <p align="center">
-  <img src="assets/register.png" width="180">
-  <img src="assets/login.png" width="180">
-  <img src="assets/groups_Home.png" width="180">
-  <img src="assets/groups.png" width="180">
+  <img src="assets/screens/01-register.png" width="180">
 </p>
 
-<p align="center">
-  <img src="assets/list_Detail.png" width="180">
-  <img src="assets/item_add.png" width="180">
-  <img src="assets/History (2).png" width="180">
-  <img src="assets/History_screen.png" width="180">
-  
-
-</p>
-
-
-
+=======
 ---
-# Thalaja — Technical Diagrams
 
-## 1. Package Diagram
+## 1. Use Case Diagram
 
 ```mermaid
-graph TB
-    subgraph FlutterApp["thalaja_mobile (Flutter)"]
-        subgraph presentation["presentation/"]
-            pages["pages/"]
-            widgets["widgets/"]
-            bloc["bloc/"]
-        end
-        subgraph domain["domain/"]
-            entities["entities/"]
-            usecases["usecases/"]
-            repo_iface["repositories/ interfaces"]
-        end
-        subgraph data["data/"]
-            models["models/"]
-            remote_ds["datasources/remote (REST via Dio)"]
-            realtime_ds["datasources/realtime (Flask-SocketIO WebSocket)"]
-            device_ds["datasources/device (camera, scanner)"]
-            repo_impl["repositories/ implementations"]
-        end
-        subgraph core["core/"]
-            network["network/"]
-            errors["errors/"]
-            utils["utils/"]
-        end
+flowchart LR
+    Guest(["👤 Guest"])
+    Member(["👤 Member"])
+    Buyer(["👤 Buyer"])
+    Admin(["👤 Admin"])
+    RecipeOwner(["👤 Recipe Owner"])
+
+    Buyer -->|is a| Member
+    Admin -->|is a| Member
+    RecipeOwner -->|is a| Member
+
+    subgraph System["Thalaja — Grocery Coordination System"]
+
+        Register["Register Account"]
+        VerifyPhone["Verify Phone via OTP"]
+        SignIn["Sign In"]
+        UpdateProfile["Update Profile"]
+
+        CreateGroup["Create Group"]
+        JoinGroup["Join Group via Invite Code"]
+        ShareInviteCode["Share Invite Code"]
+        EditGroupInfo["Edit Group Name & Icon"]
+        RemoveMember["Remove Member"]
+        TransferAdmin["Transfer Admin Role"]
+
+        CreateList["Create Shopping List"]
+        ViewLists["View Lists"]
+        RemoveList["Remove List from Group"]
+
+        AddItem["Add Item"]
+        AddItemDetails["Fill Item Details"]
+        BrowseItemHistory["Browse Item History"]
+        BrowseCatalog["Browse Grocery Catalog"]
+        AddByBarcode["Add by Barcode"]
+        AddByPhoto["Add by Photo Recognition"]
+        ImportRecipeIngredients["Import Recipe Ingredients"]
+        EditItem["Edit Item"]
+        DeleteItem["Delete Item"]
+        MarkUrgent["Mark Item as Urgent"]
+        BulkDelete["Bulk Delete Items"]
+        SyncList["Sync Shared List in Real Time"]
+
+        LockListIntoTrip["Lock List into Trip"]
+        CheckOffItem["Check Off Item"]
+        FilterUrgentItems["Filter Urgent Items"]
+        CompleteTrip["Complete Trip — Return Unbought Items"]
+
+        ViewActionLog["View Action Log"]
+        ViewTripHistory["View Trip History"]
+
+        HeadingToStore["Announce Heading to Store"]
+        AssignBuyer["Assign Buyer"]
+        RemindMember["Remind Member to Add Items"]
+
+        CreateRecipe["Create Recipe"]
+        ViewRecipes["Browse Recipes"]
+        ImportAllIngredients["Import All Ingredients to Any List"]
+        ShareRecipe["Share Recipe in Group"]
+        EditOwnRecipe["Edit Own Recipe"]
+        DeleteOwnRecipe["Delete Own Recipe"]
+        DeleteAnyRecipe["Delete Any Recipe in Group"]
     end
 
-    subgraph FlaskAPI["thalaja_api (Flask)"]
-        subgraph api_pkg["app/api/v1/"]
-            auth_routes["auth.py (register + OTP, login + OTP)"]
-            group_routes["groups.py (create/join, membership, roles)"]
-            list_routes["lists.py (shared lists)"]
-            item_routes["items.py (CRUD, mark purchased, bulk delete)"]
-            category_routes["categories.py (system-defined aisle categories)"]
-            recipe_routes["recipes.py"]
-            notification_routes["notifications.py (heading to store, assign buyer, remind)"]
-            history_routes["history.py (action log)"]
-        end
-        subgraph services_pkg["app/services/"]
-            auth_service["auth_service.py (OTP via Authentica)"]
-            group_service["group_service.py (membership + roles)"]
-            list_service["list_service.py"]
-            item_service["item_service.py"]
-            recipe_service["recipe_service.py"]
-            notification_service["notification_service.py (FCM)"]
-            history_service["history_service.py"]
-        end
-        subgraph models_pkg["app/models/"]
-            user_m["user.py"]
-            user_device_m["user_device.py"]
-            group_m["group.py"]
-            member_m["group_member.py (role: admin | member)"]
-            list_m["shopping_list.py"]
-            item_m["grocery_item.py"]
-            cat_m["category.py"]
-            recipe_m["recipe.py"]
-            ingredient_m["recipe_ingredient.py"]
-            action_m["list_action.py"]
-        end
-        subgraph persist_pkg["app/persistence/"]
-            repos["repositories/"]
-        end
-        config["app/config.py"]
-        extensions["app/extensions.py"]
-    end
+    %% Guest
+    Guest --> Register
+    Guest --> SignIn
 
-    subgraph External["External Services"]
-        subgraph Supabase["Supabase"]
-            postgres["PostgreSQL Database"]
-            storage["Supabase Storage"]
-        end
-        socketio_server["Flask-SocketIO (WebSocket server)"]
-        fcm["Firebase Cloud Messaging (FCM)"]
-        authentica["Authentica (OTP — SMS · WhatsApp · Email)"]
-        altamimi["Altamimi Grocery Catalog (barcode data)"]
-    end
+    %% Member
+    Member --> SignIn
+    Member --> UpdateProfile
+    Member --> CreateGroup
+    Member --> JoinGroup
+    Member --> ShareInviteCode
+    Member --> CreateList
+    Member --> ViewLists
+    Member --> AddItem
+    Member --> EditItem
+    Member --> DeleteItem
+    Member --> MarkUrgent
+    Member --> BulkDelete
+    Member --> ViewActionLog
+    Member --> ViewTripHistory
+    Member --> AssignBuyer
+    Member --> RemindMember
+    Member --> CreateRecipe
+    Member --> ViewRecipes
+    Member --> ImportAllIngredients
+    Member --> ShareRecipe
 
-    subgraph DevTools["Development & Documentation"]
-        swagger["Swagger / OpenAPI (API docs)"]
-        postman["Postman (API testing)"]
-        cleany["Cleany (Flutter Clean Arch generator)"]
-    end
+    %% Buyer
+    Buyer --> HeadingToStore
+    Buyer --> LockListIntoTrip
+    Buyer --> CheckOffItem
+    Buyer --> FilterUrgentItems
+    Buyer --> CompleteTrip
 
-    presentation --> domain
-    presentation --> core
-    data --> domain
-    data --> core
-    remote_ds -->|REST + JWT via Dio| api_pkg
-    realtime_ds -->|WebSocket events| socketio_server
-    socketio_server -->|broadcast item events| realtime_ds
-    device_ds --> repo_impl
-    repo_impl --> remote_ds
-    repo_impl --> realtime_ds
+    %% Admin
+    Admin --> EditGroupInfo
+    Admin --> RemoveMember
+    Admin --> TransferAdmin
+    Admin --> RemoveList
+    Admin --> DeleteAnyRecipe
 
-    api_pkg --> services_pkg
-    services_pkg --> models_pkg
-    services_pkg --> persist_pkg
-    persist_pkg --> models_pkg
-    persist_pkg --> postgres
-    notification_service -->|push| fcm
-    auth_service -->|send / verify OTP| authentica
-    item_service --> storage
-    item_service -->|barcode lookup| altamimi
+    %% Recipe Owner
+    RecipeOwner --> EditOwnRecipe
+    RecipeOwner --> DeleteOwnRecipe
 
-    api_pkg --> extensions
-    api_pkg --> config
+    %% includes
+    Register -.->|includes| VerifyPhone
+    AddItem -.->|includes| AddItemDetails
+    AddItem -.->|includes| SyncList
+    EditItem -.->|includes| SyncList
+    DeleteItem -.->|includes| SyncList
+
+    %% extends
+    BrowseItemHistory -.->|extends| AddItem
+    BrowseCatalog -.->|extends| AddItem
+    ImportRecipeIngredients -.->|extends| AddItem
+    AddByBarcode -.->|extends| AddItem
+    AddByPhoto -.->|extends| AddItem
 ```
 
 ---
@@ -335,7 +348,6 @@ erDiagram
         varchar     email
         varchar     phone
         varchar     avatar_url
-        varchar     password_hash
         timestamp   created_at
         timestamp   updated_at
     }
@@ -512,7 +524,7 @@ erDiagram
 
 | Entity | Description |
 | --- | --- |
-| USER | An authenticated app user with personal identity and login credentials |
+| USER | An authenticated app user with personal identity and contact info — no password stored; Authentica owns credential verification |
 | USER_DEVICE | Stores FCM push tokens per device so notifications reach the right hardware |
 | GROUP | A shared space (household, friends, roommates) that owns lists and recipes |
 | GROUP_MEMBER | Links users to groups and records their role (admin or member) |
@@ -547,132 +559,119 @@ erDiagram
 
 ---
 
-## 3. Use Case Diagram
+## 3. Package Diagram
 
 ```mermaid
-flowchart LR
-    Guest(["👤 Guest"])
-    Member(["👤 Member"])
-    Buyer(["👤 Buyer"])
-    Admin(["👤 Admin"])
-    RecipeOwner(["👤 Recipe Owner"])
-
-    Buyer -->|is a| Member
-    Admin -->|is a| Member
-    RecipeOwner -->|is a| Member
-
-    subgraph System["Thalaja — Grocery Coordination System"]
-
-        Register["Register Account"]
-        VerifyPhone["Verify Phone via OTP"]
-        SignIn["Sign In"]
-        ResetPassword["Reset Password"]
-        UpdateProfile["Update Profile"]
-
-        CreateGroup["Create Group"]
-        JoinGroup["Join Group via Invite Code"]
-        ShareInviteCode["Share Invite Code"]
-        EditGroupInfo["Edit Group Name & Icon"]
-        RemoveMember["Remove Member"]
-        TransferAdmin["Transfer Admin Role"]
-
-        CreateList["Create Shopping List"]
-        ViewLists["View Lists"]
-        RemoveList["Remove List from Group"]
-
-        AddItem["Add Item"]
-        AddItemDetails["Fill Item Details"]
-        BrowseItemHistory["Browse Item History"]
-        BrowseCatalog["Browse Grocery Catalog"]
-        AddByBarcode["Add by Barcode"]
-        AddByPhoto["Add by Photo Recognition"]
-        ImportRecipeIngredients["Import Recipe Ingredients"]
-        EditItem["Edit Item"]
-        DeleteItem["Delete Item"]
-        MarkUrgent["Mark Item as Urgent"]
-        BulkDelete["Bulk Delete Items"]
-        SyncList["Sync Shared List in Real Time"]
-
-        LockListIntoTrip["Lock List into Trip"]
-        CheckOffItem["Check Off Item"]
-        FilterUrgentItems["Filter Urgent Items"]
-        CompleteTrip["Complete Trip — Return Unbought Items"]
-
-        ViewActionLog["View Action Log"]
-        ViewTripHistory["View Trip History"]
-
-        HeadingToStore["Announce Heading to Store"]
-        AssignBuyer["Assign Buyer"]
-        RemindMember["Remind Member to Add Items"]
-
-        CreateRecipe["Create Recipe"]
-        ViewRecipes["Browse Recipes"]
-        ImportAllIngredients["Import All Ingredients to Any List"]
-        ShareRecipe["Share Recipe in Group"]
-        EditOwnRecipe["Edit Own Recipe"]
-        DeleteOwnRecipe["Delete Own Recipe"]
-        DeleteAnyRecipe["Delete Any Recipe in Group"]
+graph TB
+    subgraph FlutterApp["thalaja_mobile (Flutter)"]
+        subgraph presentation["presentation/"]
+            pages["pages/"]
+            widgets["widgets/"]
+            bloc["bloc/"]
+        end
+        subgraph domain["domain/"]
+            entities["entities/"]
+            usecases["usecases/"]
+            repo_iface["repositories/ interfaces"]
+        end
+        subgraph data["data/"]
+            models["models/"]
+            remote_ds["datasources/remote (REST via Dio)"]
+            realtime_ds["datasources/realtime (Flask-SocketIO WebSocket)"]
+            device_ds["datasources/device (camera, scanner)"]
+            repo_impl["repositories/ implementations"]
+        end
+        subgraph core["core/"]
+            network["network/"]
+            errors["errors/"]
+            utils["utils/"]
+        end
     end
 
-    %% Guest
-    Guest --> Register
-    Guest --> SignIn
-    Guest --> ResetPassword
+    subgraph FlaskAPI["thalaja_api (Flask)"]
+        subgraph api_pkg["app/api/v1/"]
+            auth_routes["auth.py (register + OTP, login + OTP)"]
+            group_routes["groups.py (create/join, membership, roles)"]
+            list_routes["lists.py (shared lists)"]
+            item_routes["items.py (CRUD, mark purchased, bulk delete)"]
+            category_routes["categories.py (system-defined aisle categories)"]
+            recipe_routes["recipes.py"]
+            notification_routes["notifications.py (heading to store, assign buyer, remind member, remind me)"]
+            history_routes["history.py (action log)"]
+        end
+        subgraph services_pkg["app/services/"]
+            auth_service["auth_service.py (OTP via Authentica)"]
+            group_service["group_service.py (membership + roles)"]
+            list_service["list_service.py"]
+            item_service["item_service.py"]
+            recipe_service["recipe_service.py"]
+            notification_service["notification_service.py (FCM push)"]
+            history_service["history_service.py"]
+        end
+        subgraph models_pkg["app/models/"]
+            user_m["user.py"]
+            user_device_m["user_device.py"]
+            group_m["group.py"]
+            member_m["group_member.py (role: admin | member)"]
+            list_m["shopping_list.py"]
+            item_m["grocery_item.py"]
+            cat_m["category.py"]
+            recipe_m["recipe.py"]
+            ingredient_m["recipe_ingredient.py"]
+            action_m["list_action.py"]
+        end
+        subgraph persist_pkg["app/persistence/"]
+            repos["repositories/"]
+        end
+        subgraph sockets_pkg["app/sockets/"]
+            item_events["item_events.py (item_added · item_updated · item_removed)"]
+        end
+        config["app/config.py"]
+        extensions["app/extensions.py (Flask-SocketIO init · SQLAlchemy init)"]
+    end
 
-    %% Member
-    Member --> SignIn
-    Member --> ResetPassword
-    Member --> UpdateProfile
-    Member --> CreateGroup
-    Member --> JoinGroup
-    Member --> ShareInviteCode
-    Member --> CreateList
-    Member --> ViewLists
-    Member --> AddItem
-    Member --> EditItem
-    Member --> DeleteItem
-    Member --> MarkUrgent
-    Member --> BulkDelete
-    Member --> ViewActionLog
-    Member --> ViewTripHistory
-    Member --> AssignBuyer
-    Member --> RemindMember
-    Member --> CreateRecipe
-    Member --> ViewRecipes
-    Member --> ImportAllIngredients
-    Member --> ShareRecipe
+    subgraph Database["Database Layer (Supabase)"]
+        postgres["PostgreSQL — all persistent read/write via SQLAlchemy TCP"]
+        storage["Supabase Storage — item & recipe images (service key, Flask only)"]
+    end
 
-    %% Buyer
-    Buyer --> HeadingToStore
-    Buyer --> LockListIntoTrip
-    Buyer --> CheckOffItem
-    Buyer --> FilterUrgentItems
-    Buyer --> CompleteTrip
+    subgraph External["External Services"]
+        fcm["Firebase Cloud Messaging (FCM)"]
+        authentica["Authentica (OTP — SMS · WhatsApp · Email)"]
+        altamimi["Altamimi Grocery Catalog (barcode data)"]
+    end
 
-    %% Admin
-    Admin --> EditGroupInfo
-    Admin --> RemoveMember
-    Admin --> TransferAdmin
-    Admin --> RemoveList
-    Admin --> DeleteAnyRecipe
+    subgraph DevTools["Development & Documentation"]
+        swagger["Swagger / OpenAPI (API docs)"]
+        postman["Postman (API testing)"]
+        cleany["Cleany (Flutter Clean Arch generator)"]
+    end
 
-    %% Recipe Owner
-    RecipeOwner --> EditOwnRecipe
-    RecipeOwner --> DeleteOwnRecipe
+    presentation --> domain
+    presentation --> core
+    data --> domain
+    data --> core
+    remote_ds -->|REST + JWT via Dio| api_pkg
+    realtime_ds -->|WebSocket events| sockets_pkg
+    sockets_pkg -->|broadcast item events to list room| realtime_ds
+    device_ds --> repo_impl
+    repo_impl --> remote_ds
+    repo_impl --> realtime_ds
 
-    %% includes
-    Register -.->|includes| VerifyPhone
-    AddItem -.->|includes| AddItemDetails
-    AddItem -.->|includes| SyncList
-    EditItem -.->|includes| SyncList
-    DeleteItem -.->|includes| SyncList
+    api_pkg --> services_pkg
+    services_pkg --> models_pkg
+    services_pkg --> persist_pkg
+    persist_pkg --> models_pkg
+    persist_pkg --> postgres
+    notification_service -->|push| fcm
+    auth_service -->|send / verify OTP| authentica
+    item_service --> storage
+    recipe_service --> storage
+    item_service -->|barcode lookup| altamimi
 
-    %% extends
-    BrowseItemHistory -.->|extends| AddItem
-    BrowseCatalog -.->|extends| AddItem
-    ImportRecipeIngredients -.->|extends| AddItem
-    AddByBarcode -.->|extends| AddItem
-    AddByPhoto -.->|extends| AddItem
+    api_pkg --> extensions
+    api_pkg --> config
+    sockets_pkg --> extensions
 ```
 
 ---
@@ -781,7 +780,59 @@ sequenceDiagram
 
 ### 4.3 Account Recovery
 
-> **Note:** With Authentica OTP authentication, account recovery is handled by re-verifying ownership of the registered phone number. There is no email-based password reset flow. If a user loses access to their phone, account recovery is handled via Authentica support procedures. This sequence diagram is deferred pending final confirmation of the Authentica account recovery flow.
+With Authentica OTP authentication, account recovery is structurally identical to Sign In — the user re-verifies ownership of their registered phone number to receive a new JWT. Lost-phone recovery is out of scope for this phase and is handled by Authentica support procedures.
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant App as Flutter App
+    participant API as Flask API
+    participant Auth as Auth Service
+    participant Authentica as Authentica (OTP)
+    participant DB as Supabase PostgreSQL
+
+    User->>App: Open account recovery entry point
+    App-->>User: Show phone entry screen
+
+    User->>App: Enter registered phone number
+    App->>API: POST /auth/login { phone }
+    API->>Auth: initiateLogin(phone)
+    Auth->>DB: Find user by phone
+
+    alt Phone not registered
+        DB-->>Auth: No user found
+        Auth-->>API: User not found
+        API-->>App: 404 Not Found
+        App-->>User: Show phone not registered message
+    else Phone registered
+        DB-->>Auth: User found
+        Auth->>Authentica: POST /otp/send { phone }
+        Authentica-->>Auth: OTP sent
+        Auth-->>API: OTP dispatched
+        API-->>App: 200 OK — OTP sent
+        App-->>User: Show OTP entry screen
+
+        User->>App: Enter OTP
+        App->>API: POST /auth/login/verify { phone, otp }
+        API->>Auth: completeLogin(phone, otp)
+        Auth->>Authentica: POST /otp/verify { phone, otp }
+
+        alt OTP invalid or expired
+            Authentica-->>Auth: Verification failed
+            Auth-->>API: OTP rejected
+            API-->>App: 422 Unprocessable Entity
+            App-->>User: Show invalid OTP message
+        else OTP valid
+            Authentica-->>Auth: Verified
+            Auth->>DB: Load user by phone
+            DB-->>Auth: User record
+            Auth-->>API: JWT issued
+            API-->>App: 200 OK with token
+            App-->>User: Navigate to Groups Home
+            note over App,User: Lost-phone recovery is out of scope — refer to Authentica support.
+        end
+    end
+```
 
 ### 4.4 Create Group
 
@@ -957,6 +1008,197 @@ sequenceDiagram
         App-->>User: Show action timeline
     end
 ```
+
+## External API Table
+
+| Service | Call | Method | Purpose | Used By |
+|---|---|---|---|---|
+| Authentica | POST /otp/send | HTTP | Send OTP via SMS, WhatsApp, or email | auth_service — registration + login |
+| Authentica | POST /otp/verify | HTTP | Verify submitted OTP code | auth_service — registration + login |
+| Firebase FCM | POST /fcm/send (batch) | HTTP | Push notification to one or many device tokens | notification_service |
+| Supabase PostgreSQL | TCP connection (SQLAlchemy) | — | All persistent read/write operations | all repositories |
+| Supabase Storage | PUT /object/{bucket}/{path} | HTTP | Upload item or recipe images | item_service, recipe_service |
+| Altamimi Catalog | GET /items/barcode/{code} | HTTP | Barcode-to-product lookup for item add | item_service |
+
+---
+
+## External API Request and Response Examples
+
+The following examples show the exact payloads exchanged between Flask and each external service.
+
+---
+
+### Authentica — Send OTP
+
+**Request**
+
+```http
+POST https://api.authentica.sa/otp/send
+Content-Type: application/json
+Authorization: Bearer {AUTHENTICA_API_KEY}
+```
+
+```json
+{
+  "phone": "+966500000000",
+  "channel": "sms"
+}
+```
+
+**Response**
+
+```json
+{
+  "status": "sent",
+  "expires_in": 300
+}
+```
+
+> `channel` can be `"sms"`, `"whatsapp"`, or `"email"`. If the selected channel fails, `auth_service` retries with the next available channel automatically.
+
+---
+
+### Authentica — Verify OTP
+
+**Request**
+
+```http
+POST https://api.authentica.sa/otp/verify
+Content-Type: application/json
+Authorization: Bearer {AUTHENTICA_API_KEY}
+```
+
+```json
+{
+  "phone": "+966500000000",
+  "otp": "123456"
+}
+```
+
+**Response**
+
+```json
+{
+  "verified": true
+}
+```
+
+---
+
+### Firebase Cloud Messaging — Send Push Notification
+
+**Request**
+
+```http
+POST https://fcm.googleapis.com/fcm/send
+Content-Type: application/json
+Authorization: key={FCM_SERVER_KEY}
+```
+
+```json
+{
+  "registration_ids": [
+    "device_token_1",
+    "device_token_2"
+  ],
+  "notification": {
+    "title": "سارة في طريقها للمتجر",
+    "body": "أضف ما تحتاجه الآن قبل أن تغادر."
+  },
+  "data": {
+    "type": "heading_to_store",
+    "list_id": "d4f1a2b3-0001-0002-0003-000000000001"
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "multicast_id": 7391048291234567890,
+  "success": 2,
+  "failure": 0,
+  "results": [
+    { "message_id": "0:1234567890123456%abc123" },
+    { "message_id": "0:9876543210987654%def456" }
+  ]
+}
+```
+
+> `notification_service` makes a batch call with all group member device tokens. A `failure` count greater than zero triggers a stale-token cleanup that removes the failing `USER_DEVICE` rows.
+
+---
+
+### Supabase PostgreSQL — SQLAlchemy Query Example
+
+Supabase PostgreSQL is accessed over a standard TCP connection managed by SQLAlchemy — there is no HTTP call. The following shows a representative repository query.
+
+```python
+# ListItemRepository — fetch active items for a list
+items = (
+    session.query(ListItem)
+    .filter(ListItem.list_id == list_id, ListItem.is_bought == False)
+    .order_by(ListItem.created_at.asc())
+    .all()
+)
+```
+
+**Returned ORM objects are mapped to Pydantic/dataclass response models before leaving the service layer.**
+
+---
+
+### Supabase Storage — Upload Item Image
+
+**Request**
+
+```http
+PUT https://{PROJECT_REF}.supabase.co/storage/v1/object/item-images/{item_id}/image.jpg
+Content-Type: image/jpeg
+Authorization: Bearer {SUPABASE_SERVICE_KEY}
+```
+
+*(Binary image body)*
+
+**Response**
+
+```json
+{
+  "Key": "item-images/d4f1a2b3-0001-0002-0003-000000000042/image.jpg"
+}
+```
+
+> Flask uses the Supabase **service key** — never the anon key. After a successful upload, `item_service` writes the public URL back to `LIST_ITEM.image_url`.
+
+---
+
+### Altamimi Grocery Catalog — Barcode Lookup
+
+**Request**
+
+```http
+GET https://api.altamimi.com.sa/items/barcode/6281001137087
+Authorization: Bearer {ALTAMIMI_API_KEY}
+```
+
+**Response**
+
+```json
+{
+  "barcode": "6281001137087",
+  "name": "أرز بسمتي",
+  "brand": "لولو",
+  "unit": "كيلوجرام",
+  "quantity": 5,
+  "category": "rice_grains",
+  "image_url": "https://cdn.altamimi.com.sa/products/6281001137087.jpg"
+}
+```
+
+> If the barcode is not found, the catalog returns `404`. `item_service` falls back to a manual item-add form pre-filled with the scanned code.
+
+---
+
 ## Internal API Table
 
 | Module | API Name | Method | Endpoint | Auth | Related Story |
@@ -1003,6 +1245,7 @@ sequenceDiagram
 | Notification | Heading to Store | POST | /lists/{listId}/notifications/heading-to-store | Yes | US-30 |
 | Notification | Assign Buyer | POST | /lists/{listId}/notifications/assign-buyer | Yes | US-31 — sends FCM only, does not modify list |
 | Notification | Remind Member | POST | /lists/{listId}/notifications/remind-member | Yes | US-32 |
+| Notification | Remind Me to Go Shopping | POST | /lists/{listId}/notifications/remind-me | Yes | US-43 — schedules a local FCM push to the caller's own device |
 
 ## API Request and Response Examples
 
@@ -1339,7 +1582,6 @@ POST /lists/{listId}/notifications/heading-to-store
 }
 ```
 
-
 ## Backend Operations Table
 
 | Layer | Internal Operation | Purpose | Used By External API | Related Story |
@@ -1348,7 +1590,7 @@ POST /lists/{listId}/notifications/heading-to-store
 | Service | complete_registration() | Call Authentica POST /otp/verify; on success insert USER row | /auth/register/verify | US-01 |
 | Service | send_login_otp() | Verify phone exists in USER, then call Authentica POST /otp/send | /auth/login | US-02 |
 | Service | complete_login() | Call Authentica POST /otp/verify; on success load USER by phone, issue JWT | /auth/login/verify | US-02 |
-| Service | register_device_token() | Upsert USER_DEVICE row with FCM token | /users/me/devices | US-30, US-31, US-32 |
+| Service | register_device_token() | Upsert USER_DEVICE row with FCM token | /users/me/devices | US-30, US-31, US-32, US-43 |
 | Service | create_group() | Insert GROUP, add creator as admin GROUP_MEMBER | /groups | US-04 |
 | Service | join_group_by_code() | Validate invite code, insert GROUP_MEMBER with role=member | /groups/join | US-05 |
 | Service | update_group() | Update name or image_url | /groups/{groupId} | US-09 |
@@ -1375,8 +1617,9 @@ POST /lists/{listId}/notifications/heading-to-store
 | Service | add_recipe_ingredients_to_list() | Bulk-insert GROCERY_ITEM rows from RECIPE_INGREDIENT | /lists/{listId}/items/from-recipe/{recipeId} | US-34 |
 | Service | send_heading_to_store() | Query USER_DEVICE for all group members, fire FCM batch push | /lists/{listId}/notifications/heading-to-store | US-30 |
 | Service | send_remind_member() | Query USER_DEVICE for target member, fire FCM push | /lists/{listId}/notifications/remind-member | US-32 |
+| Service | send_remind_me_to_shop() | Query USER_DEVICE for the caller's own devices, schedule a delayed FCM push for the requested time | /lists/{listId}/notifications/remind-me | US-43 |
 | Repository | UserRepository.find_by_phone() | Lookup for OTP login flow | auth_service | US-01, US-02 |
-| Repository | UserDeviceRepository.upsert() | Save or update FCM token per user+platform | auth_service | US-30, US-31, US-32 |
+| Repository | UserDeviceRepository.upsert() | Save or update FCM token per user+platform | auth_service | US-30, US-31, US-32, US-43 |
 | Repository | GroupRepository.find_by_invite_code() | Lookup for join flow | group_service | US-05 |
 | Repository | GroupMemberRepository.add_member() / get_role() | Membership inserts and role checks | group_service, list_service | US-04, US-05, US-08 |
 | Repository | ListRepository.get_group_lists() | Fetch all SHOPPING_LIST rows for a group | list_service | US-13 |
@@ -1390,7 +1633,6 @@ POST /lists/{listId}/notifications/heading-to-store
 | Helper | require_auth() | Decorator validating JWT on protected routes | all protected routes | — |
 | Helper | require_admin() | Decorator verifying caller has role=admin in the target group | group + list admin endpoints | US-08, US-09, US-10, US-11, US-12 |
 
-
 ---
 
 ## 5. User Flow Diagrams
@@ -1401,11 +1643,11 @@ POST /lists/{listId}/notifications/heading-to-store
 flowchart TD
     A([Open App]) --> B{Account exists?}
     B -->|No| C[Register Screen\nEnter first name, last name, phone, email]
-    C --> D[OTP Screen\nEnter code sent via SMS / WhatsApp / email]
+    C --> D[OTP Screen\nEnter code via SMS / WhatsApp / email]
     D --> E{OTP valid?}
     E -->|No| D
     E -->|Yes| F[Groups Home]
-    B -->|Yes| G[Login Screen\nEnter phone]
+    B -->|Yes| G[Login Screen\nEnter phone or email]
     G --> H[OTP Screen]
     H --> I{OTP valid?}
     I -->|No| H
@@ -1417,7 +1659,7 @@ flowchart TD
     K -->|Join| M[Enter invite code]
     L --> N[Group Detail]
     M --> N
-    J -->|Yes — returning| O[Select a group from list]
+    J -->|Yes — returning| O[Select group from list\nmulti-group supported]
     O --> N
 
     N --> P{Which tab?}
@@ -1426,41 +1668,92 @@ flowchart TD
     P -->|Admin settings| S[Edit group name · icon · manage members]
 
     Q --> T{Action on list?}
-    T -->|Create new list| U[Enter list name → List Detail]
+    T -->|Create new list| U[List Detail]
     T -->|Open existing list| U
+    T -->|Admin: Remove list| RL{Confirm removal?}
+    RL -->|Yes| RL2[List removed from group] --> Q
+    RL -->|No| Q
 
     U --> V{Action in list?}
+    V -->|Edit list name/icon — admin| EL[Save changes] --> U
     V -->|Add item| W[Item Add Sheet\nManual · History · Catalog · Barcode · Photo · Recipe]
-    W --> X[Item saved to list\nReal-time sync pushes to all members]
+
+    W --> MU{Mark as Urgent?}
+    MU -->|Yes — urgent flag set| PH{Attach Photo?}
+    MU -->|No| PH
+    PH -->|Yes| PH2[Camera / Library\nImage attached to item] --> DC{Duplicate check}
+    PH -->|No| DC
+    DC -->|No similar item found| X[Item saved to list\nReal-time sync to all members]
+    DC -->|Possible duplicate found| DW[Non-blocking duplicate warning]
+    DW -->|Add anyway| X
+    DW -->|Update existing item| X
+    DW -->|Cancel| V
     X --> V
+
     V -->|Edit item| V
-    V -->|Mark urgent| V
+    V -->|Mark urgent post-add| V
     V -->|Bulk delete| V
-    V -->|View action log| Y[Action Log Screen]
+    V -->|View action log & trip history| Y[Action Log · Trip History Screen]
     Y --> V
-    V -->|Enter Buying View| Z[Lock list into Trip\nBuying View — read-only for others]
-    Z --> AA[Check off items as picked up]
-    AA --> AB{Filter?}
-    AB -->|Urgent only| AC[Show urgent items only]
-    AC --> AA
-    AB -->|All items| AA
-    AA --> AD[Complete Trip\nUnbought items return to active list]
-    AD --> AE[Trip History updated]
-    AE --> U
+    V -->|Assign Buyer| BAS[Select group member\nPush notification sent to buyer] --> Z
+    V -->|Remind member — Could Have| RM[Select member\nTargeted reminder notification] --> V
+    V -->|Enter Buying View| Z
+
+    subgraph BuyingTrip [Buying Trip]
+        Z[Buying View\nList locked — add/edit disabled]
+        Z --> HTS[Buyer taps Heading to Store\nPush notification sent to all group members]
+        HTS --> IG[Items grouped by aisle / category\nin standard store sequence]
+        IG --> CO[Check off items as picked up]
+        CO --> FI{Filter?}
+        FI -->|Urgent only| FU[Show urgent items only] --> CO
+        FI -->|All items| CO
+        CO --> CT[Complete Trip\nUnbought items return to active list]
+        CT --> TH[Trip History updated]
+    end
+    TH --> U
 
     R --> AF{Action on recipe?}
-    AF -->|Create recipe| AG[Recipe Create Screen\nName · image · steps · ingredients from catalog]
-    AG --> R
+    AF -->|Create recipe| RCS[Recipe Create Screen\nName · image · steps · ingredients from catalog]
+    RCS --> R
     AF -->|View recipe| AH[Recipe Detail Screen]
     AH --> AI{Action?}
     AI -->|Import ingredients| AJ[Select target list → ingredients added]
-    AI -->|Edit — owner or admin| AG
+    AI -->|Edit — owner or admin| RCS
     AI -->|Delete — owner or admin| R
 
     F --> AK[Profile / Settings]
     AK --> AL[Update display name and avatar]
     AK --> AM[Log out → Login Screen]
 ```
+
+---
+
+### Flow Change Report
+
+| US ID | Priority | Gap Found | Change Added | Where Added |
+| --- | --- | --- | --- | --- |
+| US-02 | Must Have | Login field accepted phone only | Login node updated to "Enter phone or email" | Authentication → Login Screen |
+| US-25 | Must Have | Item save went directly W→X with no duplicate logic | Added `Duplicate check` branch with non-blocking warning and Add anyway / Update existing / Cancel exits | Item Add flow, after optional urgent + photo steps |
+| US-30 | Must Have | Buying View had no "Heading to Store" action | Added `Heading to Store` node inside Buying Trip subgraph before item check-off | Buying Trip subgraph — first step after list locks |
+| US-26 | Must Have | Buying View was a plain checklist with no aisle grouping | Added "Items grouped by aisle/category in standard store sequence" step | Buying Trip subgraph — after Heading to Store, before check-off |
+| US-14 | Should Have | No option to edit list name or icon after creation | Added "Edit list name/icon — admin" branch from List Detail | List Detail action branch → save → return |
+| US-11 | Should Have | No admin remove-list flow | Added "Admin: Remove list" branch with confirmation step | Group Lists tab → confirm → list removed → back to lists |
+| US-21 | Should Have | Item Add Sheet had no image attach step | Added optional `Attach Photo?` step inside Item Add flow | Item Add flow, after urgent toggle, before duplicate check |
+| US-31 | Should Have | No buyer assignment flow | Added "Assign Buyer" from List Detail → member picker → push notification → Buying View | List Detail action branch |
+| US-22 | Should Have | Urgent flag only settable post-add | Added `Mark as Urgent?` toggle as first step inside Item Add flow | Item Add flow, immediately after opening the sheet |
+| US-32 | Could Have | No targeted reminder notification flow | Added "Remind member — Could Have" optional branch from List Detail | List Detail action branch, labeled Could Have |
+
+---
+
+### Assumptions
+
+1. **Buyer assignment lives in List Detail** — US-31 is trip-specific, so it belongs with the list, not at group level. If the team prefers it on Screen 10 (Notifications), only the entry point changes.
+2. **"Heading to Store" is inside Buying View** — the logical sequence requested places it after the list locks. Screen 10 in the design reference shows it as a separate screen; the flowchart models the intended user sequence.
+3. **Members cannot add or edit items after "Heading to Store"** — the locked-behavior rule disables add and edit once Buying View is entered. The notification is the final call to action before locking.
+4. **"Assign Buyer" routes directly into Buying View** — the assigned buyer receives a push notification and is expected to proceed to Buying View. In practice they may open it separately via the notification.
+5. **Only admins can edit list name/icon** — US-14 actor is "admin." The branch is labeled accordingly. If the team later allows the list creator to rename their own list, the label and guard can be relaxed.
+6. **Only admins can remove lists** — US-11 actor is "admin." The branch is labeled accordingly.
+7. **"Remind Member" is accessible from List Detail** — reminders are tied to a specific list/trip. If the team prefers it on Screen 10, only the entry point changes.
 
 ---
 
@@ -1691,6 +1984,7 @@ Example: feat: add OTP verification endpoint
 ### Definition of Done
 
 A feature card is done when:
+
 1. Unit tests pass for the affected service or BLoC
 2. Postman collection test for the endpoint passes
 3. Manual smoke test on a real device confirms the golden path
