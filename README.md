@@ -1,142 +1,232 @@
-<div align="center">
-  <img src="Documentation/assets/banner.svg" alt="Thalaja" width="100%"/>
-  <br/><br/>
+# Thalaja — `dev` branch
 
-  ![Platform](https://img.shields.io/badge/iOS_%26_Android-Flutter-FF4924?style=flat-square&logo=flutter&logoColor=white&labelColor=0D0050)
-  ![Sprint](https://img.shields.io/badge/Sprint_4-Active-FF4924?style=flat-square&labelColor=0D0050)
-  ![MVP](https://img.shields.io/badge/MVP-Jul_25_2026-FF4924?style=flat-square&labelColor=0D0050)
-  ![License](https://img.shields.io/badge/License-MIT-FF4924?style=flat-square&labelColor=0D0050)
-</div>
+`dev` is the **integration branch**. It holds the full project and is the
+parent of two work branches:
 
----
+- **`frontend`** → owns `thalaja_mobile/` (Flutter, Clean Architecture)
+- **`backend`**  → owns `thalaja_api/` + `supabase/` (Flask, layered + facade)
 
-In most Saudi households, one person shops for the entire family — often monthly. But there's no shared space for everyone to say what they need before the buyer leaves. Thalaja fixes that: every member adds their requests to one shared list, and the buyer walks into the store with everything accounted for.
+Work happens on `frontend` / `backend`, then merges back into `dev`.
 
----
+> **Scope of this slice:** only the first three user stories, all auth:
+> **US-01** register · **US-02** login (email *or* phone) · **US-36** OTP
+> verification with channel fallback (SMS → WhatsApp(mock) → email).
+> Everything else in the ERD exists as labeled placeholders.
 
-## Features
-
-- 🛒 &nbsp;Shared group lists with item-level detail — brand, quantity, unit, notes, and image
-- ⚡ &nbsp;Real-time sync — every addition or edit appears instantly for all members currently viewing the list
-- 🔔 &nbsp;Buyer alert — one tap notifies the whole household you're heading to the store
-- 🛍️ &nbsp;Buying view — checklist locked from edits, items organized by grocery aisle
-- 📋 &nbsp;Full history — action log of every change and a record of past completed trips
-- 🍳 &nbsp;Group recipes — save recipes and add all ingredients to the active list in one tap
+Legend: ✅ = built for US-01/02/36 · ⬜ = placeholder for a later story.
 
 ---
 
-## Built With
+## Full repository structure (every dir & file commented)
 
-**Mobile**
-
-![Flutter](https://img.shields.io/badge/Flutter-BLoC_%2B_Clean_Arch-FF4924?style=for-the-badge&logo=flutter&logoColor=white&labelColor=0D0050)
-![Dart](https://img.shields.io/badge/Dart-3.x-FF4924?style=for-the-badge&logo=dart&logoColor=white&labelColor=0D0050)
-
-**Backend**
-
-![Python](https://img.shields.io/badge/Python-Flask_REST-FF4924?style=for-the-badge&logo=python&logoColor=white&labelColor=0D0050)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-FF4924?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=0D0050)
-![SocketIO](https://img.shields.io/badge/Socket.IO-Realtime_Sync-FF4924?style=for-the-badge&logo=socketdotio&logoColor=white&labelColor=0D0050)
-![Firebase](https://img.shields.io/badge/Firebase-Push_Notifications-FF4924?style=for-the-badge&logo=firebase&logoColor=white&labelColor=0D0050)
-
-**Design & Tooling**
-
-![Figma](https://img.shields.io/badge/Figma-UI_Design-FF4924?style=for-the-badge&logo=figma&logoColor=white&labelColor=0D0050)
-![GitHub](https://img.shields.io/badge/GitHub-Version_Control-FF4924?style=for-the-badge&logo=github&logoColor=white&labelColor=0D0050)
-![Jira](https://img.shields.io/badge/Jira-Sprint_Management-FF4924?style=for-the-badge&logo=jira&logoColor=white&labelColor=0D0050)
-
----
-
-## Getting Started
-
-<details>
-<summary><b>Prerequisites</b></summary>
-<br/>
-
-- Flutter SDK 3.x
-- Dart 3.x
-- Python 3.11+
-- PostgreSQL (via Supabase project)
-- Firebase project with FCM enabled
-
-</details>
-
-<details>
-<summary><b>Installation</b></summary>
-<br/>
-
-**1. Clone the repository**
-```bash
-git clone https://github.com/your-org/thalaja.git
-cd thalaja
+```
+.
+├── README.md                                  # THIS FILE — dev branch overview: full tree, branch flow, front↔back wiring
+├── .gitignore                                 # ignores venv, .env, .dart_tool, build/, caches, IDE/OS junk
+│
+├── thalaja_mobile/                            # ── FRONTEND branch ── Flutter client (Clean Architecture)
+│   ├── README.md                              # frontend guide: structure, layer rules, setup & run
+│   ├── pubspec.yaml                           # Flutter deps: flutter_bloc, dio, dartz, get_it, equatable
+│   ├── lib/                                   # all Dart source lives here
+│   │   ├── main.dart                          # app entrypoint: init get_it DI, then runApp(ThalajaApp)
+│   │   ├── app.dart                           # ThalajaApp: MaterialApp, applies AppTheme, home = LoginPage
+│   │   ├── injection_container.dart           # ✅ get_it wiring: datasource → repo → usecases → cubits
+│   │   │
+│   │   ├── core/                              # cross-feature building blocks (shared by every feature)
+│   │   │   ├── constants/                     # app-wide constant values
+│   │   │   │   └── api_constants.dart          # ✅ Flask base URL (10.0.2.2 etc.) + /auth/* endpoint paths
+│   │   │   ├── errors/                         # error types kept separate per architecture layer
+│   │   │   │   ├── exceptions.dart             # ✅ data-layer throwables: ServerException, NetworkException
+│   │   │   │   └── failure.dart                # ✅ domain-layer failures: Server/Network/Validation Failure
+│   │   │   ├── network/                        # HTTP plumbing (front talks only to Flask)
+│   │   │   │   ├── api_client.dart             # ✅ Dio instance: baseUrl, timeouts, attaches interceptors
+│   │   │   │   └── auth_interceptor.dart       # ✅ adds "Authorization: Bearer <jwt>"; holds in-memory TokenStore
+│   │   │   ├── theme/                          # global look & feel
+│   │   │   │   ├── app_colors.dart             # ⚠ PALETTE — replace placeholder Figma hexes here (single source)
+│   │   │   │   └── app_theme.dart              # ✅ ThemeData (inputs, buttons, colors) built from AppColors
+│   │   │   └── utils/                          # small shared helpers
+│   │   │       └── validators.dart            # ✅ form validators: email, phone, password, login identifier
+│   │   │
+│   │   └── features/                           # one folder per feature; each = data + domain + presentation
+│   │       ├── auth/                           # ✅ BUILT — US-01 register, US-02 login, US-36 OTP
+│   │       │   ├── data/                       # outer layer: talks to the network, maps JSON
+│   │       │   │   ├── datasources/            # raw remote calls
+│   │       │   │   │   └── auth_remote_datasource.dart   # ✅ Dio POSTs to Flask /auth/* ; throws exceptions
+│   │       │   │   ├── models/                 # JSON ↔ entity mappers (extend domain entities)
+│   │       │   │   │   ├── auth_session_model.dart        # ✅ parses Supabase session (access/refresh tokens)
+│   │       │   │   │   └── registration_result_model.dart # ✅ parses /register response (channel, ids)
+│   │       │   │   └── repositories/           # implements the domain contract
+│   │       │   │       └── auth_repository_impl.dart      # ✅ calls datasource, maps exceptions → Failures, saves tokens
+│   │       │   ├── domain/                     # pure Dart core: NO Flutter, NO Dio, NO JSON
+│   │       │   │   ├── entities/               # business objects
+│   │       │   │   │   ├── auth_session.dart    # ✅ AuthSession + AuthUserRef (tokens + minimal user)
+│   │       │   │   │   ├── auth_user.dart        # ✅ AuthUser profile entity
+│   │       │   │   │   └── registration_result.dart      # ✅ result of US-01 (which channel got the OTP)
+│   │       │   │   ├── repositories/           # abstract contracts the data layer must satisfy
+│   │       │   │   │   └── auth_repository.dart  # ✅ AuthRepository interface (register/login/verify/resend)
+│   │       │   │   └── usecases/               # one class per user action (single responsibility)
+│   │       │   │       ├── register_user.dart   # ✅ US-01
+│   │       │   │       ├── login_user.dart      # ✅ US-02
+│   │       │   │       ├── verify_otp.dart       # ✅ US-36 (verify the code)
+│   │       │   │       └── resend_otp.dart       # ✅ US-36 (resend, re-runs channel fallback)
+│   │       │   └── presentation/               # UI layer: Cubits + screens + widgets
+│   │       │       ├── bloc/                    # Cubit state management (one cubit + state per screen)
+│   │       │       │   ├── register_cubit.dart  # ✅ drives RegisterPage
+│   │       │       │   ├── register_state.dart   # ✅ Initial/Loading/Success/Error
+│   │       │       │   ├── login_cubit.dart      # ✅ drives LoginPage
+│   │       │       │   ├── login_state.dart      # ✅ Initial/Loading/Success/Error
+│   │       │       │   ├── otp_cubit.dart         # ✅ drives OtpPage (verify + resend)
+│   │       │       │   └── otp_state.dart          # ✅ Initial/Verifying/Resending/Resent/Verified/Error
+│   │       │       ├── pages/                   # full screens
+│   │       │       │   ├── register_page.dart   # ✅ US-01 form → on success navigates to OtpPage
+│   │       │       │   ├── login_page.dart       # ✅ US-02 form (email or phone) → links to RegisterPage
+│   │       │       │   └── otp_page.dart          # ✅ US-36 code entry, shows channel, resend button
+│   │       │       └── widgets/                 # small reusable UI pieces (stateless)
+│   │       │           ├── app_text_field.dart  # ✅ themed TextFormField wrapper
+│   │       │           └── primary_button.dart   # ✅ full-width button with built-in loading spinner
+│   │       │
+│   │       ├── groups/                          # ⬜ later story (GROUP / GROUP_MEMBER)
+│   │       │   └── README.md                    # ⬜ explains it follows the same data/domain/presentation layout
+│   │       ├── lists/                           # ⬜ later story (SHOPPING_LIST / LIST_ITEM)
+│   │       │   └── README.md                    # ⬜ placeholder doc
+│   │       ├── items/                           # ⬜ later story (ITEM catalog)
+│   │       │   └── README.md                    # ⬜ placeholder doc
+│   │       ├── categories/                      # ⬜ later story (CATEGORY)
+│   │       │   └── README.md                    # ⬜ placeholder doc
+│   │       ├── recipes/                         # ⬜ later story (RECIPE / RECIPE_INGREDIENT / INSTRUCTION)
+│   │       │   └── README.md                    # ⬜ placeholder doc
+│   │       └── history/                         # ⬜ later story (LIST_ACTION / history feed)
+│   │           └── README.md                    # ⬜ placeholder doc
+│   │
+│   └── test/                                    # Flutter tests
+│       └── register_cubit_test.dart            # ✅ unit test for RegisterCubit (mocktail + bloc_test)
+│
+├── thalaja_api/                                # ── BACKEND branch ── Flask API (layered + facade, HBnB-style)
+│   ├── README.md                               # backend guide: endpoints, Swagger, .env, Supabase, run steps
+│   ├── run.py                                  # ✅ entrypoint: creates app, serves on :5000
+│   ├── requirements.txt                        # Python deps: flask, flask-restx, SQLAlchemy, PyJWT, requests…
+│   ├── .env.example                            # template for secrets (copy → .env, then fill in)
+│   ├── app/                                     # application package
+│   │   ├── __init__.py                          # ✅ app factory: init extensions, mount flask-restx Api + Swagger
+│   │   ├── config.py                            # ✅ config: DATABASE_URL, Supabase keys, JWT secret, OTP order
+│   │   ├── extensions.py                        # ✅ shared singletons: db (SQLAlchemy), cors
+│   │   │
+│   │   ├── api/                                 # HTTP layer (controllers)
+│   │   │   └── v1/                              # version 1 of the API
+│   │   │       ├── __init__.py                  # marks the package
+│   │   │       ├── security.py                  # ✅ @jwt_required decorator: verifies Supabase-issued JWT
+│   │   │       ├── auth.py                       # ✅ US-01/02/36 endpoints + flask-restx Swagger models
+│   │   │       ├── groups.py                     # ⬜ placeholder namespace (no endpoints yet)
+│   │   │       ├── lists.py                       # ⬜ placeholder namespace
+│   │   │       ├── items.py                       # ⬜ placeholder namespace
+│   │   │       ├── categories.py                  # ⬜ placeholder namespace
+│   │   │       └── histories.py                   # ⬜ placeholder namespace
+│   │   │
+│   │   ├── models/                              # SQLAlchemy ORM models (one per ERD entity)
+│   │   │   ├── __init__.py                       # ✅ model registry (imports User; others commented until built)
+│   │   │   ├── base_model.py                     # ✅ shared UUID PK helper + created/updated TimestampMixin
+│   │   │   ├── user.py                            # ✅ USER — public profile mirror (user_id == Supabase auth uid)
+│   │   │   ├── user_device.py                     # ⬜ ERD stub (push tokens) — fields in docstring
+│   │   │   ├── group.py                            # ⬜ ERD stub (GROUP: individual|household, invite_code)
+│   │   │   ├── group_member.py                     # ⬜ ERD stub (user↔group join + role)
+│   │   │   ├── category.py                          # ⬜ ERD stub (16 system categories enum)
+│   │   │   ├── item.py                               # ⬜ ERD stub (canonical catalog entry)
+│   │   │   ├── shopping_list.py                       # ⬜ ERD stub (SHOPPING_LIST)
+│   │   │   ├── list_item.py                            # ⬜ ERD stub (one item added to a list)
+│   │   │   ├── history.py                               # ⬜ ERD stub (LIST_ACTION — activity log + undo)
+│   │   │   ├── trip.py                                   # ⬜ ERD stub (locks a list for a shopping session)
+│   │   │   ├── recipe.py                                  # ⬜ ERD stub (RECIPE)
+│   │   │   ├── recipe_ingredient.py                        # ⬜ ERD stub (recipe↔item junction)
+│   │   │   └── instruction.py                               # ⬜ ERD stub (ordered recipe step)
+│   │   │
+│   │   ├── services/                            # business / orchestration layer
+│   │   │   ├── __init__.py                       # marks the package
+│   │   │   ├── facade.py                          # ✅ ThalajaFacade — the ONLY thing the API layer calls
+│   │   │   └── providers/                         # external-service adapters (behind the facade)
+│   │   │       ├── __init__.py                    # marks the package
+│   │   │       ├── supabase_provider.py           # ✅ calls Supabase Auth (GoTrue): signup/token/otp/verify
+│   │   │       └── channels.py                     # ✅ US-36 fallback: SMS(real) → WhatsApp(mock) → Email(real)
+│   │   │
+│   │   └── persistence/                         # data-access layer (DB only — no business logic)
+│   │       ├── __init__.py                       # marks the package
+│   │       └── repositories/                     # one repository per aggregate
+│   │           ├── __init__.py                   # ✅ repo registry (UserRepository active)
+│   │           ├── user_repository.py            # ✅ profile CRUD via SQLAlchemy (create/get/update)
+│   │           ├── group_repository.py           # ⬜ stub
+│   │           ├── list_repository.py             # ⬜ stub
+│   │           ├── item_repository.py             # ⬜ stub
+│   │           └── history_repository.py          # ⬜ stub
+│   │
+│   ├── migrations/                              # Alembic database migrations
+│   │   └── README.md                            # how to init Alembic & autogenerate the users table
+│   └── tests/                                    # backend tests
+│       ├── __init__.py                          # marks the package
+│       └── test_auth.py                          # ✅ validation smoke tests (run without live Supabase)
+│
+└── supabase/                                    # ── BACKEND branch ── DB scripts (Supabase Postgres)
+    ├── schema.sql                                # ✅ public.users profile mirror + trigger auto-creating it on signup
+    └── seed.sql                                  # ⬜ placeholder (system categories & sample recipes later)
 ```
 
-**2. Backend setup**
-```bash
-cd backend
-python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # fill in DATABASE_URL, JWT_SECRET, FCM credentials
-flask db upgrade
-flask run
+---
+
+## How the two halves connect
+
+The Flutter app **never** touches Supabase or the database directly. It calls
+the Flask API, and Flask is the single gateway to Supabase Auth and the DB.
+
+```
+Flutter (thalaja_mobile)                 Flask (thalaja_api)              Supabase
+─────────────────────────                ───────────────────             ────────
+RegisterPage / LoginPage / OtpPage
+        │  (Cubit → UseCase → Repository)
+        ▼
+   Dio  (api_client.dart)  ──HTTP──▶  /api/v1/auth/*  ──▶  ThalajaFacade
+   Authorization: Bearer <jwt>                                │
+                                                              ├─▶ SupabaseProvider ─▶ Supabase Auth (GoTrue)
+                                                              ├─▶ channels.py      ─▶ SMS / WhatsApp(mock) / Email
+                                                              └─▶ UserRepository   ─▶ Postgres (public.users)
 ```
 
-**3. Mobile setup**
-```bash
-cd mobile
-flutter pub get
-cp lib/core/config.example.dart lib/core/config.dart   # fill in API base URL
-flutter run
-```
-
-</details>
+- **US-01** register → `auth.py` → facade → Supabase `signup` → mirror profile row → dispatch OTP (fallback) → return channel
+- **US-02** login → `auth.py` → facade → Supabase password grant → return session tokens
+- **US-36** verify/resend → `auth.py` → facade → Supabase verify / re-run channel fallback
 
 ---
 
-## Team
+## Branch & push flow
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/MIS-hero">
-        <img src="https://avatars.githubusercontent.com/u/0?v=4" width="72px" alt="Aljawharah"/>
-        <br/><sub><b>Aljawharah Alammar</b></sub>
-      </a>
-      <br/><sub>Project Manager</sub>
-    </td>
-    <td align="center">
-      <a href="https://github.com/reemmalyamani">
-        <img src="https://avatars.githubusercontent.com/u/0?v=4" width="72px" alt="Reem"/>
-        <br/><sub><b>Reem Alyamani</b></sub>
-      </a>
-      <br/><sub>Product Manager</sub>
-    </td>
-    <td align="center">
-      <a href="https://github.com/0-Mousa-0">
-        <img src="https://avatars.githubusercontent.com/u/0?v=4" width="72px" alt="Mousa"/>
-        <br/><sub><b>Mousa Alrizqi</b></sub>
-      </a>
-      <br/><sub>Backend Developer</sub>
-    </td>
-    <td align="center">
-      <a href="https://github.com/ahotb">
-        <img src="https://avatars.githubusercontent.com/u/0?v=4" width="72px" alt="Abdullah"/>
-        <br/><sub><b>Abdullah Almouraibd</b></sub>
-      </a>
-      <br/><sub>Backend Lead</sub>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Randa-hb10">
-        <img src="https://avatars.githubusercontent.com/u/0?v=4" width="72px" alt="Randa"/>
-        <br/><sub><b>Randa Baeshen</b></sub>
-      </a>
-      <br/><sub>Frontend Developer</sub>
-    </td>
-  </tr>
-</table>
+```bash
+# in the project root, with all files in place → this becomes `dev`
+git init
+git remote add origin https://github.com/MIS-hero/Thalaja-team.git
+git add .
+git commit -m "scaffold dev: auth slice (US-01/02/36) + ERD placeholders"
+git branch -M dev
+git push -u origin dev
+
+# create the two work branches FROM dev
+git checkout -b frontend dev
+git push -u origin frontend
+
+git checkout -b backend dev
+git push -u origin backend
+```
+
+Day-to-day: commit Flutter work on `frontend`, backend work on `backend`,
+then open PRs back into `dev`.
 
 ---
 
-<div align="center">
-  <sub>Built at Holberton / Tuwaiq Academy · Saudi Arabia · 2026</sub>
-</div>
+## Run order (local)
+
+1. **Backend** — see `thalaja_api/README.md` (fill `.env`, `pip install -r requirements.txt`, `python run.py`).
+2. **Supabase** — run `supabase/schema.sql` in the SQL editor; configure an SMS provider in Auth settings for real US-36 SMS.
+3. **Frontend** — see `thalaja_mobile/README.md` (`flutter pub get`, set the base URL, `flutter run`).
+
+---
+
+## After pushing — two flagged TODOs
+
+- **Colors** — `thalaja_mobile/lib/core/theme/app_colors.dart` uses placeholder hexes, each tagged `// TODO(figma)`. Replace them with the real values from the Figma file (node 231-72) — one place restyles the whole app.
+- **WhatsApp** — real SMS + email OTP run through Supabase Auth; WhatsApp is a **mock** that logs the code. `thalaja_api/app/services/providers/channels.py` → `WhatsAppChannel.send()` shows where to wire the real WhatsApp Cloud API.
