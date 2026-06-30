@@ -154,6 +154,7 @@
 | US-30 | As a buyer, I want to tap a "heading to store" button that sends a push notification to all group members, so that they have a final window to add any last-minute items before I leave. | **Must Have** |
 | US-31 | As a member, I want to assign a buyer for the upcoming trip and send them a push notification, so that the designated person knows they are expected to shop. | Should Have |
 | US-32 | As a member, I want to send a reminder notification to a specific group member to add their items to the list, so that no one's needs are missed before the trip. | Could Have |
+| US-43 | As a buyer, I want to set a reminder for myself to go shopping on a specific day, so that I don't forget the trip even when no one has assigned me. | Could Have |
 
 ---
 
@@ -198,18 +199,7 @@
 Figma Mockup
 
 <p align="center">
-  <img src="assets/register.png" width="180">
-  <img src="assets/login.png" width="180">
-  <img src="assets/groups_Home.png" width="180">
-  <img src="assets/groups.png" width="180">
-</p>
-
-<p align="center">
-  <img src="assets/list_Detail.png" width="180">
-  <img src="assets/item_add.png" width="180">
-  <img src="assets/History (2).png" width="180">
-  <img src="assets/History_screen.png" width="180">
-  
+  <img src="assets/screens/01-register.png" width="180">
 </p>
 
 =======
@@ -606,7 +596,7 @@ graph TB
             item_routes["items.py (CRUD, mark purchased, bulk delete)"]
             category_routes["categories.py (system-defined aisle categories)"]
             recipe_routes["recipes.py"]
-            notification_routes["notifications.py (heading to store, assign buyer, remind)"]
+            notification_routes["notifications.py (heading to store, assign buyer, remind member, remind me)"]
             history_routes["history.py (action log)"]
         end
         subgraph services_pkg["app/services/"]
@@ -615,7 +605,7 @@ graph TB
             list_service["list_service.py"]
             item_service["item_service.py"]
             recipe_service["recipe_service.py"]
-            notification_service["notification_service.py (FCM)"]
+            notification_service["notification_service.py (FCM push)"]
             history_service["history_service.py"]
         end
         subgraph models_pkg["app/models/"]
@@ -633,16 +623,19 @@ graph TB
         subgraph persist_pkg["app/persistence/"]
             repos["repositories/"]
         end
+        subgraph sockets_pkg["app/sockets/"]
+            item_events["item_events.py (item_added · item_updated · item_removed)"]
+        end
         config["app/config.py"]
-        extensions["app/extensions.py"]
+        extensions["app/extensions.py (Flask-SocketIO init · SQLAlchemy init)"]
+    end
+
+    subgraph Database["Database Layer (Supabase)"]
+        postgres["PostgreSQL — all persistent read/write via SQLAlchemy TCP"]
+        storage["Supabase Storage — item & recipe images (service key, Flask only)"]
     end
 
     subgraph External["External Services"]
-        subgraph Supabase["Supabase"]
-            postgres["PostgreSQL Database"]
-            storage["Supabase Storage"]
-        end
-        socketio_server["Flask-SocketIO (WebSocket server)"]
         fcm["Firebase Cloud Messaging (FCM)"]
         authentica["Authentica (OTP — SMS · WhatsApp · Email)"]
         altamimi["Altamimi Grocery Catalog (barcode data)"]
@@ -659,8 +652,8 @@ graph TB
     data --> domain
     data --> core
     remote_ds -->|REST + JWT via Dio| api_pkg
-    realtime_ds -->|WebSocket events| socketio_server
-    socketio_server -->|broadcast item events| realtime_ds
+    realtime_ds -->|WebSocket events| sockets_pkg
+    sockets_pkg -->|broadcast item events to list room| realtime_ds
     device_ds --> repo_impl
     repo_impl --> remote_ds
     repo_impl --> realtime_ds
@@ -673,10 +666,12 @@ graph TB
     notification_service -->|push| fcm
     auth_service -->|send / verify OTP| authentica
     item_service --> storage
+    recipe_service --> storage
     item_service -->|barcode lookup| altamimi
 
     api_pkg --> extensions
     api_pkg --> config
+    sockets_pkg --> extensions
 ```
 
 ---
@@ -1027,6 +1022,183 @@ sequenceDiagram
 
 ---
 
+## External API Request and Response Examples
+
+The following examples show the exact payloads exchanged between Flask and each external service.
+
+---
+
+### Authentica — Send OTP
+
+**Request**
+
+```http
+POST https://api.authentica.sa/otp/send
+Content-Type: application/json
+Authorization: Bearer {AUTHENTICA_API_KEY}
+```
+
+```json
+{
+  "phone": "+966500000000",
+  "channel": "sms"
+}
+```
+
+**Response**
+
+```json
+{
+  "status": "sent",
+  "expires_in": 300
+}
+```
+
+> `channel` can be `"sms"`, `"whatsapp"`, or `"email"`. If the selected channel fails, `auth_service` retries with the next available channel automatically.
+
+---
+
+### Authentica — Verify OTP
+
+**Request**
+
+```http
+POST https://api.authentica.sa/otp/verify
+Content-Type: application/json
+Authorization: Bearer {AUTHENTICA_API_KEY}
+```
+
+```json
+{
+  "phone": "+966500000000",
+  "otp": "123456"
+}
+```
+
+**Response**
+
+```json
+{
+  "verified": true
+}
+```
+
+---
+
+### Firebase Cloud Messaging — Send Push Notification
+
+**Request**
+
+```http
+POST https://fcm.googleapis.com/fcm/send
+Content-Type: application/json
+Authorization: key={FCM_SERVER_KEY}
+```
+
+```json
+{
+  "registration_ids": [
+    "device_token_1",
+    "device_token_2"
+  ],
+  "notification": {
+    "title": "سارة في طريقها للمتجر",
+    "body": "أضف ما تحتاجه الآن قبل أن تغادر."
+  },
+  "data": {
+    "type": "heading_to_store",
+    "list_id": "d4f1a2b3-0001-0002-0003-000000000001"
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "multicast_id": 7391048291234567890,
+  "success": 2,
+  "failure": 0,
+  "results": [
+    { "message_id": "0:1234567890123456%abc123" },
+    { "message_id": "0:9876543210987654%def456" }
+  ]
+}
+```
+
+> `notification_service` makes a batch call with all group member device tokens. A `failure` count greater than zero triggers a stale-token cleanup that removes the failing `USER_DEVICE` rows.
+
+---
+
+### Supabase PostgreSQL — SQLAlchemy Query Example
+
+Supabase PostgreSQL is accessed over a standard TCP connection managed by SQLAlchemy — there is no HTTP call. The following shows a representative repository query.
+
+```python
+# ListItemRepository — fetch active items for a list
+items = (
+    session.query(ListItem)
+    .filter(ListItem.list_id == list_id, ListItem.is_bought == False)
+    .order_by(ListItem.created_at.asc())
+    .all()
+)
+```
+
+**Returned ORM objects are mapped to Pydantic/dataclass response models before leaving the service layer.**
+
+---
+
+### Supabase Storage — Upload Item Image
+
+**Request**
+
+```http
+PUT https://{PROJECT_REF}.supabase.co/storage/v1/object/item-images/{item_id}/image.jpg
+Content-Type: image/jpeg
+Authorization: Bearer {SUPABASE_SERVICE_KEY}
+```
+
+*(Binary image body)*
+
+**Response**
+
+```json
+{
+  "Key": "item-images/d4f1a2b3-0001-0002-0003-000000000042/image.jpg"
+}
+```
+
+> Flask uses the Supabase **service key** — never the anon key. After a successful upload, `item_service` writes the public URL back to `LIST_ITEM.image_url`.
+
+---
+
+### Altamimi Grocery Catalog — Barcode Lookup
+
+**Request**
+
+```http
+GET https://api.altamimi.com.sa/items/barcode/6281001137087
+Authorization: Bearer {ALTAMIMI_API_KEY}
+```
+
+**Response**
+
+```json
+{
+  "barcode": "6281001137087",
+  "name": "أرز بسمتي",
+  "brand": "لولو",
+  "unit": "كيلوجرام",
+  "quantity": 5,
+  "category": "rice_grains",
+  "image_url": "https://cdn.altamimi.com.sa/products/6281001137087.jpg"
+}
+```
+
+> If the barcode is not found, the catalog returns `404`. `item_service` falls back to a manual item-add form pre-filled with the scanned code.
+
+---
+
 ## Internal API Table
 
 | Module | API Name | Method | Endpoint | Auth | Related Story |
@@ -1073,6 +1245,7 @@ sequenceDiagram
 | Notification | Heading to Store | POST | /lists/{listId}/notifications/heading-to-store | Yes | US-30 |
 | Notification | Assign Buyer | POST | /lists/{listId}/notifications/assign-buyer | Yes | US-31 — sends FCM only, does not modify list |
 | Notification | Remind Member | POST | /lists/{listId}/notifications/remind-member | Yes | US-32 |
+| Notification | Remind Me to Go Shopping | POST | /lists/{listId}/notifications/remind-me | Yes | US-43 — schedules a local FCM push to the caller's own device |
 
 ## API Request and Response Examples
 
@@ -1417,7 +1590,7 @@ POST /lists/{listId}/notifications/heading-to-store
 | Service | complete_registration() | Call Authentica POST /otp/verify; on success insert USER row | /auth/register/verify | US-01 |
 | Service | send_login_otp() | Verify phone exists in USER, then call Authentica POST /otp/send | /auth/login | US-02 |
 | Service | complete_login() | Call Authentica POST /otp/verify; on success load USER by phone, issue JWT | /auth/login/verify | US-02 |
-| Service | register_device_token() | Upsert USER_DEVICE row with FCM token | /users/me/devices | US-30, US-31, US-32 |
+| Service | register_device_token() | Upsert USER_DEVICE row with FCM token | /users/me/devices | US-30, US-31, US-32, US-43 |
 | Service | create_group() | Insert GROUP, add creator as admin GROUP_MEMBER | /groups | US-04 |
 | Service | join_group_by_code() | Validate invite code, insert GROUP_MEMBER with role=member | /groups/join | US-05 |
 | Service | update_group() | Update name or image_url | /groups/{groupId} | US-09 |
@@ -1444,8 +1617,9 @@ POST /lists/{listId}/notifications/heading-to-store
 | Service | add_recipe_ingredients_to_list() | Bulk-insert GROCERY_ITEM rows from RECIPE_INGREDIENT | /lists/{listId}/items/from-recipe/{recipeId} | US-34 |
 | Service | send_heading_to_store() | Query USER_DEVICE for all group members, fire FCM batch push | /lists/{listId}/notifications/heading-to-store | US-30 |
 | Service | send_remind_member() | Query USER_DEVICE for target member, fire FCM push | /lists/{listId}/notifications/remind-member | US-32 |
+| Service | send_remind_me_to_shop() | Query USER_DEVICE for the caller's own devices, schedule a delayed FCM push for the requested time | /lists/{listId}/notifications/remind-me | US-43 |
 | Repository | UserRepository.find_by_phone() | Lookup for OTP login flow | auth_service | US-01, US-02 |
-| Repository | UserDeviceRepository.upsert() | Save or update FCM token per user+platform | auth_service | US-30, US-31, US-32 |
+| Repository | UserDeviceRepository.upsert() | Save or update FCM token per user+platform | auth_service | US-30, US-31, US-32, US-43 |
 | Repository | GroupRepository.find_by_invite_code() | Lookup for join flow | group_service | US-05 |
 | Repository | GroupMemberRepository.add_member() / get_role() | Membership inserts and role checks | group_service, list_service | US-04, US-05, US-08 |
 | Repository | ListRepository.get_group_lists() | Fetch all SHOPPING_LIST rows for a group | list_service | US-13 |
@@ -1469,11 +1643,11 @@ POST /lists/{listId}/notifications/heading-to-store
 flowchart TD
     A([Open App]) --> B{Account exists?}
     B -->|No| C[Register Screen\nEnter first name, last name, phone, email]
-    C --> D[OTP Screen\nEnter code sent via SMS / WhatsApp / email]
+    C --> D[OTP Screen\nEnter code via SMS / WhatsApp / email]
     D --> E{OTP valid?}
     E -->|No| D
     E -->|Yes| F[Groups Home]
-    B -->|Yes| G[Login Screen\nEnter phone]
+    B -->|Yes| G[Login Screen\nEnter phone or email]
     G --> H[OTP Screen]
     H --> I{OTP valid?}
     I -->|No| H
@@ -1485,7 +1659,7 @@ flowchart TD
     K -->|Join| M[Enter invite code]
     L --> N[Group Detail]
     M --> N
-    J -->|Yes — returning| O[Select a group from list]
+    J -->|Yes — returning| O[Select group from list\nmulti-group supported]
     O --> N
 
     N --> P{Which tab?}
@@ -1494,41 +1668,92 @@ flowchart TD
     P -->|Admin settings| S[Edit group name · icon · manage members]
 
     Q --> T{Action on list?}
-    T -->|Create new list| U[Enter list name → List Detail]
+    T -->|Create new list| U[List Detail]
     T -->|Open existing list| U
+    T -->|Admin: Remove list| RL{Confirm removal?}
+    RL -->|Yes| RL2[List removed from group] --> Q
+    RL -->|No| Q
 
     U --> V{Action in list?}
+    V -->|Edit list name/icon — admin| EL[Save changes] --> U
     V -->|Add item| W[Item Add Sheet\nManual · History · Catalog · Barcode · Photo · Recipe]
-    W --> X[Item saved to list\nReal-time sync pushes to all members]
+
+    W --> MU{Mark as Urgent?}
+    MU -->|Yes — urgent flag set| PH{Attach Photo?}
+    MU -->|No| PH
+    PH -->|Yes| PH2[Camera / Library\nImage attached to item] --> DC{Duplicate check}
+    PH -->|No| DC
+    DC -->|No similar item found| X[Item saved to list\nReal-time sync to all members]
+    DC -->|Possible duplicate found| DW[Non-blocking duplicate warning]
+    DW -->|Add anyway| X
+    DW -->|Update existing item| X
+    DW -->|Cancel| V
     X --> V
+
     V -->|Edit item| V
-    V -->|Mark urgent| V
+    V -->|Mark urgent post-add| V
     V -->|Bulk delete| V
-    V -->|View action log| Y[Action Log Screen]
+    V -->|View action log & trip history| Y[Action Log · Trip History Screen]
     Y --> V
-    V -->|Enter Buying View| Z[Lock list into Trip\nBuying View — read-only for others]
-    Z --> AA[Check off items as picked up]
-    AA --> AB{Filter?}
-    AB -->|Urgent only| AC[Show urgent items only]
-    AC --> AA
-    AB -->|All items| AA
-    AA --> AD[Complete Trip\nUnbought items return to active list]
-    AD --> AE[Trip History updated]
-    AE --> U
+    V -->|Assign Buyer| BAS[Select group member\nPush notification sent to buyer] --> Z
+    V -->|Remind member — Could Have| RM[Select member\nTargeted reminder notification] --> V
+    V -->|Enter Buying View| Z
+
+    subgraph BuyingTrip [Buying Trip]
+        Z[Buying View\nList locked — add/edit disabled]
+        Z --> HTS[Buyer taps Heading to Store\nPush notification sent to all group members]
+        HTS --> IG[Items grouped by aisle / category\nin standard store sequence]
+        IG --> CO[Check off items as picked up]
+        CO --> FI{Filter?}
+        FI -->|Urgent only| FU[Show urgent items only] --> CO
+        FI -->|All items| CO
+        CO --> CT[Complete Trip\nUnbought items return to active list]
+        CT --> TH[Trip History updated]
+    end
+    TH --> U
 
     R --> AF{Action on recipe?}
-    AF -->|Create recipe| AG[Recipe Create Screen\nName · image · steps · ingredients from catalog]
-    AG --> R
+    AF -->|Create recipe| RCS[Recipe Create Screen\nName · image · steps · ingredients from catalog]
+    RCS --> R
     AF -->|View recipe| AH[Recipe Detail Screen]
     AH --> AI{Action?}
     AI -->|Import ingredients| AJ[Select target list → ingredients added]
-    AI -->|Edit — owner or admin| AG
+    AI -->|Edit — owner or admin| RCS
     AI -->|Delete — owner or admin| R
 
     F --> AK[Profile / Settings]
     AK --> AL[Update display name and avatar]
     AK --> AM[Log out → Login Screen]
 ```
+
+---
+
+### Flow Change Report
+
+| US ID | Priority | Gap Found | Change Added | Where Added |
+| --- | --- | --- | --- | --- |
+| US-02 | Must Have | Login field accepted phone only | Login node updated to "Enter phone or email" | Authentication → Login Screen |
+| US-25 | Must Have | Item save went directly W→X with no duplicate logic | Added `Duplicate check` branch with non-blocking warning and Add anyway / Update existing / Cancel exits | Item Add flow, after optional urgent + photo steps |
+| US-30 | Must Have | Buying View had no "Heading to Store" action | Added `Heading to Store` node inside Buying Trip subgraph before item check-off | Buying Trip subgraph — first step after list locks |
+| US-26 | Must Have | Buying View was a plain checklist with no aisle grouping | Added "Items grouped by aisle/category in standard store sequence" step | Buying Trip subgraph — after Heading to Store, before check-off |
+| US-14 | Should Have | No option to edit list name or icon after creation | Added "Edit list name/icon — admin" branch from List Detail | List Detail action branch → save → return |
+| US-11 | Should Have | No admin remove-list flow | Added "Admin: Remove list" branch with confirmation step | Group Lists tab → confirm → list removed → back to lists |
+| US-21 | Should Have | Item Add Sheet had no image attach step | Added optional `Attach Photo?` step inside Item Add flow | Item Add flow, after urgent toggle, before duplicate check |
+| US-31 | Should Have | No buyer assignment flow | Added "Assign Buyer" from List Detail → member picker → push notification → Buying View | List Detail action branch |
+| US-22 | Should Have | Urgent flag only settable post-add | Added `Mark as Urgent?` toggle as first step inside Item Add flow | Item Add flow, immediately after opening the sheet |
+| US-32 | Could Have | No targeted reminder notification flow | Added "Remind member — Could Have" optional branch from List Detail | List Detail action branch, labeled Could Have |
+
+---
+
+### Assumptions
+
+1. **Buyer assignment lives in List Detail** — US-31 is trip-specific, so it belongs with the list, not at group level. If the team prefers it on Screen 10 (Notifications), only the entry point changes.
+2. **"Heading to Store" is inside Buying View** — the logical sequence requested places it after the list locks. Screen 10 in the design reference shows it as a separate screen; the flowchart models the intended user sequence.
+3. **Members cannot add or edit items after "Heading to Store"** — the locked-behavior rule disables add and edit once Buying View is entered. The notification is the final call to action before locking.
+4. **"Assign Buyer" routes directly into Buying View** — the assigned buyer receives a push notification and is expected to proceed to Buying View. In practice they may open it separately via the notification.
+5. **Only admins can edit list name/icon** — US-14 actor is "admin." The branch is labeled accordingly. If the team later allows the list creator to rename their own list, the label and guard can be relaxed.
+6. **Only admins can remove lists** — US-11 actor is "admin." The branch is labeled accordingly.
+7. **"Remind Member" is accessible from List Detail** — reminders are tied to a specific list/trip. If the team prefers it on Screen 10, only the entry point changes.
 
 ---
 
