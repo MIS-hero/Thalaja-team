@@ -25,11 +25,10 @@ ns = Namespace("auth", description="Authentication & onboarding (US-01/02/36)")
 register_model = ns.model(
     "RegisterRequest",
     {
-        "first_name": fields.String(required=True, example="Sara"),
+        "first_name": fields.String(required=True, example="Abdullah"),
         "last_name": fields.String(required=True, example="Al-Otaibi"),
-        "email": fields.String(required=True, example="sara@example.com"),
+        "email": fields.String(required=True, example="Ab@example.com"),
         "phone": fields.String(required=True, example="+966500000000"),
-        "password": fields.String(required=True, min_length=8, example="StrongPass1"),
     },
 )
 
@@ -37,8 +36,7 @@ login_model = ns.model(
     "LoginRequest",
     {
         # email OR phone — anything with '@' is treated as email
-        "identifier": fields.String(required=True, example="sara@example.com"),
-        "password": fields.String(required=True, example="StrongPass1"),
+        "identifier": fields.String(required=True, example="Ab@example.com"),
     },
 )
 
@@ -82,7 +80,6 @@ class Register(Resource):
                 last_name=data["last_name"],
                 email=data["email"],
                 phone=data["phone"],
-                password=data["password"],
             )
         )
         return result, 201
