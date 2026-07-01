@@ -5,6 +5,14 @@ Never hard-code keys here.
 """
 import os
 
+from dotenv import load_dotenv
+
+# Load here (not just in run.py) so any entry point that imports this
+# module first — pytest, gunicorn, a shell — still picks up .env.
+# interpolate=False keeps literal '$' in values intact (the Authentica
+# API key is a bcrypt-style string containing '$').
+load_dotenv(interpolate=False)
+
 
 class Config:
     # ── Flask ────────────────────────────────────────────────
