@@ -45,19 +45,10 @@ def create_app(config_object=None):
 
     # ── namespaces ───────────────────────────────────────────
     from .api.v1.auth import ns as auth_ns
-    from .api.v1.groups import ns as groups_ns
-    from .api.v1.lists import ns as lists_ns
-    from .api.v1.items import ns as items_ns
-    from .api.v1.categories import ns as categories_ns
-    from .api.v1.histories import ns as histories_ns
+   
 
     api.add_namespace(auth_ns, path="/auth")
-    api.add_namespace(groups_ns, path="/groups")
-    api.add_namespace(lists_ns, path="/lists")
-    api.add_namespace(items_ns, path="/items")
-    api.add_namespace(categories_ns, path="/categories")
-    api.add_namespace(histories_ns, path="/histories")
-
+   
     # Create tables for models that exist (profile mirror, etc.).
     # In real deployments prefer Alembic migrations over create_all.
     with app.app_context():
